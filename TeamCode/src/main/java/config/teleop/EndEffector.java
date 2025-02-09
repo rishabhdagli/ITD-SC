@@ -37,9 +37,9 @@ public class EndEffector {
 
         double offsetAngle = 391.30435 * (armTicks) - 195.65217;
 
-        double wirstTicks = -0.0031111*(wristAngle+25+offsetAngle) + 0.5;
+        double wristTicks = -0.0031111*(wristAngle+25+offsetAngle) + 0.5;
 
         Arm.setPosition(armTicks);
-        Wrist.setPosition(wirstTicks);
+        Wrist.setPosition(wristTicks);
     }
 }
