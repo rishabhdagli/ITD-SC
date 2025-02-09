@@ -6,15 +6,21 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.IMU;
 
-public class DragonWarrior implements Subsystem{
+import org.firstinspires.ftc.robotcore.external.Telemetry;
+
+public class Drivetrain {
 
     public DcMotorEx LF,LR,RF,RR,parralel,perpendicular;
     //IMU straffe lock stuff
     public double kpStraffe,angle;
 
     public IMU imu;
-    @Override
-    public void init(HardwareMap hardwareMap) {
+
+    Telemetry t;
+
+    public Drivetrain(HardwareMap hardwareMap, Telemetry t) {
+        this.t = t;
+
 
         //using pinpoint now
         //parralel = hardwareMap.get(DcMotorEx.class,"Boxtube2odoleft");

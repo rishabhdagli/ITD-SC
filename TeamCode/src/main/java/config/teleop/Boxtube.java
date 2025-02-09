@@ -5,10 +5,14 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
-import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-public class DiddyArm implements Subsystem {
+import org.firstinspires.ftc.robotcore.external.Telemetry;
+
+public class Boxtube{
+
+    Telemetry t;
+    HardwareMap h;
 
    AnalogInput PivotAbs;
    AnalogInput boxtubeAbs;
@@ -19,7 +23,6 @@ public class DiddyArm implements Subsystem {
     public DcMotorEx Pivot, BT1, BT2, BT3;
     public DcMotorEx PivotEnc;
     //    public AnalogInput PivotEnc, ExtensionEnc;
-    public Servo Wrist, Arm, Turret, Hand, Claw;
 
     public double offsetAngle,  KpExt = 0.0005, ExtPwr;
 
@@ -28,9 +31,10 @@ public class DiddyArm implements Subsystem {
     double PivotDownKp = 0.003, PivotDownKd = 0, PivotkP = 0.003, PivotKd = 0,Tick90 = 1000,FF = 0.05,period = (2*Math.PI)/(Tick90*4),
             ExtensionKp,ExtensionKd,lasterror;
 
-    @Override
-    public void init(HardwareMap hardwareMap) {
 
+    public Boxtube(HardwareMap hardwareMap, Telemetry t) {
+        this.h = hardwareMap;
+        this.t = t;
         // Initialize motors with proper names
         Pivot = hardwareMap.get(DcMotorEx.class, "pivotENC");
         BT1 = hardwareMap.get(DcMotorEx.class, "Boxtube1ENC");
@@ -65,16 +69,6 @@ public class DiddyArm implements Subsystem {
         BT2.setDirection(DcMotorSimple.Direction.REVERSE);
         BT3.setDirection(DcMotorSimple.Direction.REVERSE);
 
-        // Initialize other hardware
-//        PivotEnc = hardwareMap.get(AnalogInput.class, "PivotEnc");
-//        ExtensionEnc = hardwareMap.get(AnalogInput.class, "ExtensionEnc");
-
-        Wrist = hardwareMap.get(Servo.class, "Servo6");
-        Arm = hardwareMap.get(Servo.class, "Servo7");
-        Turret = hardwareMap.get(Servo.class, "Servo10");
-        Hand = hardwareMap.get(Servo.class, "Servo8");
-        Claw = hardwareMap.get(Servo.class, "Servo9");
-
         timer = new ElapsedTime(ElapsedTime.Resolution.SECONDS);
         timer.startTime();
 
@@ -87,15 +81,6 @@ public class DiddyArm implements Subsystem {
                 //1243.083*(boxtubeAbs.getVoltage()) - 2292.24506;
 
     }
-
-    public double getPivotMotor(){
-        return Pivot.getPower();
-    }
-
-    public double getTubePower(){
-        return BT1.getPower();
-    }
-
 
     public void PivotMove(double targetPos) {
         double currentPivot = pivotoffset + (-Pivot.getCurrentPosition());
@@ -116,9 +101,6 @@ public class DiddyArm implements Subsystem {
 
             timer.reset();
         }
-    }
-    public double pivotPos(){
-        return pivotoffset + (-Pivot.getCurrentPosition());
     }
 
     public void ExtensionPower(double power) {
@@ -142,88 +124,4 @@ public class DiddyArm implements Subsystem {
         ExtensionPower(ExtPwr);
 
     }
-
-    public void wrist(double pos) {
-        Wrist.setPosition(pos);
-    }
-
-    public void hand(double pos) {
-        Hand.setPosition(pos);
-    }
-
-    public double handPos() {
-        return Hand.getPosition();
-    }
-
-
-    public void arm(double pos) {
-        Arm.setPosition(pos);
-    }
-
-
-    public void turret(double pos) {
-        Turret.setPosition(pos);
-    }
-
-    public void claw(double pos) {
-        Claw.setPosition(pos);
-
-    }
-
-    public void setArmAngle(double armAngle) {
-        double armTicks = 0.0033333*(armAngle) + 0.5;
-        offsetAngle = 391.30435*(armTicks) - 195.65217;
-        double wristTicks = Wrist.getPosition()+(-0.0031111*(offsetAngle));
-        if(Wrist.getPosition() != wristTicks) {
-            Wrist.setPosition(wristTicks);
-        }
-        Arm.setPosition(armTicks);
-    }
-    public void setWristAngle(double wristAngle){
-        double wristTicks = -0.0031111*(wristAngle + offsetAngle+25) + 0.5;
-        Wrist.setPosition(wristTicks);
-    }
-    public void setEndEffector(double armAngle, double wristAngle){
-        double armTicks = 0.0033333*(armAngle) + 0.5;
-        //step 1(angle to tick)
-
-        //step 2 (ticks to offset angle)
-        double offsetAngle = 391.30435 * (armTicks) - 195.65217;
-        //Could be offsetAngle = armAngle *1.2
-
-        //step 3 (offset to wrist ofset)
-        double wirstTicks = -0.0031111*(wristAngle+25+offsetAngle) + 0.5;
-
-        Arm.setPosition(armTicks);
-        Wrist.setPosition(wirstTicks);
-    }
-
-
-    //Order is:
-    //Servos are in Loiter
-    //button click
-    //Boxtube fully extends into the sub
-    //button click
-    //Servos then go to hover - operator can increment
-    //button click
-    //Servos grab the sample
-    //button click
-    //servos go to hover, if its there - button click - go to loiter, if not, different button to reset state machine back to hover state
-    //If its there: its now in loiter with the claw CLOSED
-    // certain button click - goes to obszonerelease(); - button click - obszonereleasescore();
-    // different button click - goes to basketposition() - button click - basketscore();
-
-
-    //After this ^ return to specimenWall!!!!  THIS IS EXTREMELY IMPORTANT /TODO: Make action
-
-
-
-
-
-    public void setHandAngle(double Angle){
-        //need todo
-    }
-
-
-
 }

@@ -6,7 +6,7 @@ import com.pedropathing.pathgen.PathBuilder;
 import com.pedropathing.pathgen.PathChain;
 import com.pedropathing.pathgen.Point;
 
-public class BomboclatPaths {
+public class FiveSpecPaths {
 
         public static PathBuilder builder = new PathBuilder();
 

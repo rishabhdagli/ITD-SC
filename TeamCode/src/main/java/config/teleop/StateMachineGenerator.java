@@ -7,7 +7,7 @@ import com.sfdev.assembly.state.StateMachineBuilder;
 
 public class StateMachineGenerator {
     public static double num = 0;
-    public static StateMachine GenerateSpecimenMachine(Gamepad g, Robot r) {
+    public static StateMachine GenerateSpecimenMachine(Gamepad g, TeleRobot r) {
         return new StateMachineBuilder()
 
 
@@ -65,7 +65,7 @@ public class StateMachineGenerator {
     }
 
     // X is primary, A is secondary, B is escape for logitech gamepad
-    public static StateMachine GenerateSampleMachine(Gamepad g, Robot r) {
+    public static StateMachine GenerateSampleMachine(Gamepad g, TeleRobot r) {
         return new StateMachineBuilder()
                 .state(States.Stationary)
                 .onEnter(r::Loiter)
@@ -112,33 +112,28 @@ public class StateMachineGenerator {
                 .transitionTimed(0.25, States.ObsZoneRelease)
 
                 .state(States.ObsZoneRelease) //Moves Pivot and arm to the position
-                .onEnter(r::ObszoneScoreing)
-                .loop(r::ObszoneScoreing)
+                .onEnter(r::obsZoneRelease)
+                .loop(r::obsZoneRelease)
                 .transition(()-> g.x,States.WAIT7) // primary to basketpos
 
                 .state(States.WAIT7) //drops sample in the obs zone
                 .onEnter(r::Score)
                 .transitionTimed(0.25,States.Stationary)
 
-                //OBS ZONE STATES END
-
-
-                // HIGH BASKET STATES START
-
                 .state(States.WAIT8)
                 .transitionTimed(0.25,States.PivotOverCenter)
 
                 .state(States.PivotOverCenter) //Moves pivot
-                .onEnter(r::MovingPivotforHighBasket)
-                .loop(r::MovingPivotforHighBasket)
+                .onEnter(r::PivotBack)
+                .loop(r::PivotBack)
                 .transitionTimed(1, States.BasketExtend)
 
 //                .state(States.WAIT6)
 //                .transitionTimed(0.25, States.BasketExtend)
 
                 .state(States.BasketExtend)
-                .onEnter(r::MovingExtentionforHighBasket)
-                .loop(r::MovingExtentionforHighBasket)
+                .onEnter(r::BasketExtension)
+                .loop(r::BasketExtension)
                 .transition(()-> g.x,States.WAIT9)
 
                 .state(States.WAIT9)
@@ -149,8 +144,8 @@ public class StateMachineGenerator {
                 .transitionTimed(0.5, States.BasketPosition2)
 
                 .state(States.BasketPosition2)// no hang on high basket
-                .onEnter(r::BasketPos2)
-                .loop(r::BasketPos2)
+                .onEnter(r::BasketReturn)
+                .loop(r::BasketReturn)
                 .transitionTimed(0.5, States.Stationary)
 
                 .build();

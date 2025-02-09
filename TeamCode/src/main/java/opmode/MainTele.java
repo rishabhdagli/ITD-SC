@@ -5,17 +5,17 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.LED;
 import com.sfdev.assembly.state.StateMachine;
 
-import config.teleop.DiddyArm;
-import config.teleop.DragonWarrior;
-import config.teleop.Robot;
+import config.teleop.Boxtube;
+import config.teleop.Drivetrain;
+import config.teleop.TeleRobot;
 import config.teleop.StateMachineGenerator;
 
-@TeleOp(name = "LosConflictosArmadosTeleOP")
-public class LosConflictosArmadosTeleOP extends LinearOpMode {
+@TeleOp(name = "MainTele")
+public class MainTele extends LinearOpMode {
 
-    public DragonWarrior dragon;
-    public Robot robot;
-    public DiddyArm diddy;
+    public Drivetrain drivetrain;
+    public TeleRobot teleRobot;
+    public Boxtube boxtube;
     boolean sampleMode = true, check = false;
     double MonkeyExpressFlashBang = 0;
 
@@ -23,13 +23,9 @@ public class LosConflictosArmadosTeleOP extends LinearOpMode {
 
     @Override
     public void runOpMode() throws InterruptedException {
-        diddy = new DiddyArm();
-        robot = new Robot();
-        dragon = new DragonWarrior();
-        dragon.init(hardwareMap);
-        robot.init(hardwareMap, gamepad2);
-        diddy.init(hardwareMap);
-
+        boxtube= new Boxtube(hardwareMap, telemetry);
+        teleRobot = new TeleRobot(hardwareMap, telemetry, gamepad2);
+        drivetrain = new Drivetrain(hardwareMap, telemetry);
 
         redLED = hardwareMap.get(LED.class, "red");
         greenLED = hardwareMap.get(LED.class, "green");
@@ -38,8 +34,8 @@ public class LosConflictosArmadosTeleOP extends LinearOpMode {
         greenLED2 = hardwareMap.get(LED.class, "green2");
 
 
-        StateMachine sampleMachine = StateMachineGenerator.GenerateSampleMachine(gamepad2, robot);
-        StateMachine specimenMachine = StateMachineGenerator.GenerateSpecimenMachine(gamepad2, robot);
+        StateMachine sampleMachine = StateMachineGenerator.GenerateSampleMachine(gamepad2, teleRobot);
+        StateMachine specimenMachine = StateMachineGenerator.GenerateSpecimenMachine(gamepad2, teleRobot);
 
 
         waitForStart();
@@ -57,9 +53,9 @@ public class LosConflictosArmadosTeleOP extends LinearOpMode {
 
 
             if (gamepad1.right_bumper) {
-                dragon.TeleopControl(gamepad1.left_stick_y * 0.7, gamepad1.left_stick_x * 0.7, gamepad1.right_stick_x / 2.0);
+                drivetrain.TeleopControl(gamepad1.left_stick_y * 0.7, gamepad1.left_stick_x * 0.7, gamepad1.right_stick_x / 2.0);
             } else {
-                dragon.TeleopControl(gamepad1.left_stick_y, gamepad1.left_stick_x, gamepad1.right_stick_x);
+                drivetrain.TeleopControl(gamepad1.left_stick_y, gamepad1.left_stick_x, gamepad1.right_stick_x);
             }
 
 
@@ -121,8 +117,6 @@ public class LosConflictosArmadosTeleOP extends LinearOpMode {
                 telemetry.addData("State: ", specimenMachine.getStateString());
             }
             else{telemetry.addData("State: ", sampleMachine.getStateString());}
-            telemetry.addData("Pivot Motors", diddy.getPivotMotor());
-            telemetry.addData("Boxtube motors", diddy.getTubePower());
 
             telemetry.update();
 
