@@ -17,7 +17,7 @@ public class Boxtube{
    AnalogInput PivotAbs;
    AnalogInput boxtubeAbs;
 
-   public double pivotoffset,Boxtubeoffset;
+   public double pivotoffset,Boxtubeoffset, targetPiv, targetExt;
     final int MaxExtension = 30500;
 
     public DcMotorEx Pivot, BT1, BT2, BT3;
@@ -82,6 +82,12 @@ public class Boxtube{
 
     }
 
+    public void setPivot(double val) {
+        targetPiv = val;
+    }
+    public void updatePiv() {
+        PivotMove(targetPiv);
+    }
     public void PivotMove(double targetPos) {
         double currentPivot = pivotoffset + (-Pivot.getCurrentPosition());
         double error = targetPos - currentPivot;
@@ -107,6 +113,13 @@ public class Boxtube{
         BT1.setPower(power);
         BT2.setPower(power);
         BT3.setPower(power);
+    }
+
+    public void setExt(double val) {
+        targetExt = val;
+    }
+    public void updateExt() {
+        ExtensionMove(targetExt);
     }
 
     public void ExtensionMove(double extensionTargetPos){

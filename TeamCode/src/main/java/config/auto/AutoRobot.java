@@ -2,6 +2,8 @@ package config.auto;
 
 import com.pedropathing.follower.Follower;
 import com.pedropathing.localization.Pose;
+import com.pedropathing.util.Constants;
+import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
@@ -9,8 +11,12 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 
 import config.teleop.Boxtube;
 import config.teleop.EndEffector;
+import pedroPathing.constants.FConstants;
+import pedroPathing.constants.LConstants;
 
 public class AutoRobot {
+
+    public DcMotorEx LF,LR,RF,RR;
     public Boxtube boxtube;
     public EndEffector endEffector;
     double specPreScore = 2000;
@@ -24,7 +30,15 @@ public class AutoRobot {
     public AutoRobot(HardwareMap h, Telemetry t, Pose startPose) {
         this.t = t;
 
+//        LF = h.get(DcMotorEx.class,"leftFront");
+//        LR = h.get(DcMotorEx.class,"leftBack");
+//        RF = h.get(DcMotorEx.class,"rightFront");
+//        RR = h.get(DcMotorEx.class,"rightBack");
+
+        Constants.setConstants(FConstants.class, LConstants.class);
+
         boxtube = new Boxtube(h, t);
+        endEffector = new EndEffector(h, t);
         follower = new Follower(h);
 
         follower.setStartingPose(startPose);
@@ -42,6 +56,8 @@ public class AutoRobot {
         endEffector.hand(0.48);
         endEffector.setEndEffector(80, -110);
         endEffector.turret(0.47);
+        boxtube.setPivot(0);
+        boxtube.setExt(0);
         ClawClose();
     }
 
@@ -49,6 +65,20 @@ public class AutoRobot {
         endEffector.hand(0.48);
         endEffector.setEndEffector(0,0);
         endEffector.turret(0.47);
+        boxtube.setPivot(400);
+        boxtube.setExt(0);
+        ClawClose();
+    }
+
+    public void PreloadSpecExt(){
+        boxtube.setExt(26000);
+    }
+
+    public void SpecimenPreLoadScore(){
+        endEffector.hand(0.48);
+        endEffector.setEndEffector(0,0);
+        endEffector.turret(0.47);
+        boxtube.setPivot(200);
         ClawClose();
     }
 
@@ -75,15 +105,15 @@ public class AutoRobot {
     }
 
     public void SpecimenPreScore() {
-        boxtube.ExtensionMove(specPreScore);
+        boxtube.setExt(specPreScore);
         endEffector.turret(0.47);
         endEffector.hand(0.48);
-        boxtube.PivotMove(700);
+        boxtube.setPivot(700);
         endEffector.setEndEffector(100,-45);
     }
 
     public void SpecimenLatch() {
-        boxtube.ExtensionMove(specScore);
+        boxtube.setExt(specScore);
     }
 
     public void SpecimenLatchOpen(){

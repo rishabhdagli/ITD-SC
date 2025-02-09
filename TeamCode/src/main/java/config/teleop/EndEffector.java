@@ -8,11 +8,20 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
+import org.firstinspires.ftc.robotcore.external.Telemetry;
+
 public class EndEffector {
 
     public Servo Wrist, Arm, Turret, Hand, Claw;
 
-    public void init(HardwareMap hardwareMap) {
+    HardwareMap h;
+
+    Telemetry t;
+
+    public EndEffector(HardwareMap hardwareMap, Telemetry t) {
+        this.h = hardwareMap;
+        this.t = t;
+
         Wrist = hardwareMap.get(Servo.class, "Servo6");
         Arm = hardwareMap.get(Servo.class, "Servo7");
         Turret = hardwareMap.get(Servo.class, "Servo10");

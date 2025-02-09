@@ -20,8 +20,6 @@ public class TeleRobot {
 
     final int pivotSpecSpos = 700;
 
-    Drivetrain drivetrain;
-
     public Telemetry t;
 
     Gamepad gamepad;
@@ -31,7 +29,7 @@ public class TeleRobot {
         this.t = t;
 
         boxtube = new Boxtube(hardwareMap,t);
-        drivetrain = new Drivetrain(hardwareMap, t);
+        endEffector = new EndEffector(hardwareMap, t);
 
         gamepad = g2;
     }
@@ -55,7 +53,7 @@ public class TeleRobot {
 
     public void SampleHover(){
         boxtube.PivotMove(pivotHorizontal);
-        boxtube.ExtensionMove(minExtension);
+        boxtube.ExtensionMove(midExtension);
         endEffector.setEndEffector(10, -115);
         endEffector.turret(0.47);
         ClawOpen();

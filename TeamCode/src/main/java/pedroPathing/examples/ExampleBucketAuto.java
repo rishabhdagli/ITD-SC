@@ -142,7 +142,7 @@ public class ExampleBucketAuto extends OpMode {
      * The followPath() function sets the follower to run the specific path, but does NOT wait for it to finish before moving on. */
     public void autonomousPathUpdate() {
         switch (pathState) {
-            case 0:
+            case 0: //Start Case
                 follower.followPath(scorePreload);
                 setPathState(1);
                 break;

@@ -7,6 +7,7 @@ import com.sfdev.assembly.state.StateMachine;
 
 import config.teleop.Boxtube;
 import config.teleop.Drivetrain;
+import config.teleop.EndEffector;
 import config.teleop.TeleRobot;
 import config.teleop.StateMachineGenerator;
 
@@ -16,6 +17,8 @@ public class MainTele extends LinearOpMode {
     public Drivetrain drivetrain;
     public TeleRobot teleRobot;
     public Boxtube boxtube;
+
+    public EndEffector endEffector;
     boolean sampleMode = true, check = false;
     double MonkeyExpressFlashBang = 0;
 
@@ -24,8 +27,10 @@ public class MainTele extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
         boxtube= new Boxtube(hardwareMap, telemetry);
+        endEffector = new EndEffector(hardwareMap, telemetry);
         teleRobot = new TeleRobot(hardwareMap, telemetry, gamepad2);
         drivetrain = new Drivetrain(hardwareMap, telemetry);
+
 
         redLED = hardwareMap.get(LED.class, "red");
         greenLED = hardwareMap.get(LED.class, "green");
@@ -44,7 +49,6 @@ public class MainTele extends LinearOpMode {
         telemetry.addData("States", sampleMachine.getStateString());
 
 
-        telemetry.update();
         while (opModeIsActive()) {
             if(sampleMode){
                 sampleMachine.update();
