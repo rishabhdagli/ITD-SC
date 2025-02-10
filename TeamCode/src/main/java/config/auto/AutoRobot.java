@@ -45,11 +45,20 @@ public class AutoRobot {
     }
 
     public void ClawOpen() {
-        endEffector.claw(0.65);
+        endEffector.claw(0.55);
     }
 
     public void ClawClose() {
-        endEffector.claw(1);
+        endEffector.claw(0.9);
+    }
+
+    public void InitPosition(){
+        endEffector.setEndEffector(100, -130);
+        endEffector.turret(0.2);
+        endEffector.hand(47);
+        boxtube.setPivot(250);
+        boxtube.setExt(0);
+        ClawClose();
     }
 
     public void Loiter(){
@@ -61,22 +70,30 @@ public class AutoRobot {
         ClawClose();
     }
 
+    public void LoiterIn(){
+        endEffector.hand(0.48);
+        endEffector.turret(0.47);
+        endEffector.setEndEffector(110,-20);
+        boxtube.setPivot(0);
+        boxtube.setExt(0);
+    }
+
     public void SpecimenPreLoad() {
         endEffector.hand(0.48);
-        endEffector.setEndEffector(0,0);
+        endEffector.setEndEffector(0,-15);
         endEffector.turret(0.47);
-        boxtube.setPivot(400);
+        boxtube.setPivot(470);
         boxtube.setExt(0);
         ClawClose();
     }
 
     public void PreloadSpecExt(){
-        boxtube.setExt(26000);
-    }
+        boxtube.setExt(16000);
+    };
 
     public void SpecimenPreLoadScore(){
         endEffector.hand(0.48);
-        endEffector.setEndEffector(0,0);
+        endEffector.setEndEffector(0,-15);
         endEffector.turret(0.47);
         boxtube.setPivot(200);
         ClawClose();
@@ -120,25 +137,25 @@ public class AutoRobot {
         ClawOpen();
     }
 
-    public boolean conditionalEndPivot(double target) {
-        double currentPivot = boxtube.pivotoffset + (boxtube.Pivot.getCurrentPosition());
-        currentPivot = -currentPivot;
-        if (currentPivot >= target - 60 && currentPivot <= target + 60) {
-            boxtube.Pivot.setPower(0);
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    public boolean conditionalEndExtension(double target) {
-        double currentExt = boxtube.BT1.getCurrentPosition();
-        currentExt = -currentExt;
-        if (currentExt >= target - 500 && currentExt <= target + 500) {
-            boxtube.ExtensionPower(0);
-            return true;
-        } else {
-            return false;
-        }
-    }
+//    public boolean conditionalEndPivot(double target) {
+//        double currentPivot = boxtube.pivotoffset + (boxtube.Pivot.getCurrentPosition());
+//        currentPivot = -currentPivot;
+//        if (currentPivot >= target - 60 && currentPivot <= target + 60) {
+//            boxtube.Pivot.setPower(0);
+//            return true;
+//        } else {
+//            return false;
+//        }
+//    }
+//
+//    public boolean conditionalEndExtension(double target) {
+//        double currentExt = boxtube.BT1.getCurrentPosition();
+//        currentExt = -currentExt;
+//        if (currentExt >= target - 500 && currentExt <= target + 500) {
+//            boxtube.ExtensionPower(0);
+//            return true;
+//        } else {
+//            return false;
+//        }
+//    }
 }
