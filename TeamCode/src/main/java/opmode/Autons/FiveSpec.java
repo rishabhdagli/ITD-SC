@@ -1,10 +1,9 @@
-package opmode;
+package opmode.Autons;
 
 import com.pedropathing.follower.Follower;
 import com.pedropathing.localization.Pose;
 import com.pedropathing.pathgen.BezierCurve;
 import com.pedropathing.pathgen.BezierLine;
-import com.pedropathing.pathgen.Path;
 import com.pedropathing.pathgen.PathBuilder;
 import com.pedropathing.pathgen.PathChain;
 import com.pedropathing.pathgen.Point;
@@ -19,7 +18,7 @@ import config.teleop.EndEffector;
 import pedroPathing.constants.FConstants;
 import pedroPathing.constants.LConstants;
 
-@Autonomous(name = "5+0")
+@Autonomous(name = "5 Specimen")
 public class FiveSpec extends LinearOpMode {
     AutoRobot r;
 
@@ -64,6 +63,14 @@ public class FiveSpec extends LinearOpMode {
     private void setPathState(PathStates state) {
         currentPathState = state;
         pathTimer.resetTimer();
+        pathDone = false;
+    }
+
+    private void resetActionTimer(){
+        pathDone = true;
+        if(pathDone && !prevPathDone){
+            actionTimer.resetTimer();
+        }
     }
 
 
@@ -103,24 +110,26 @@ public class FiveSpec extends LinearOpMode {
 
                 case PrePush1:
                     if (!follower.isBusy()) {
+
+                        resetActionTimer();
+
                         r.PreloadSpecExt();
 
 
-                        r.SpecimenPreLoadScore();
-
-                        r.Loiter();
-
-                        follower.followPath(Push1);
-                        setPathState(PathStates.Push1);
+                        if(actionTimer.getElapsedTimeSeconds() > 0.5){
+                            r.SpecimenPreLoadScore();
+                            if(actionTimer.getElapsedTimeSeconds() > 1){
+                                r.Loiter();
+                                follower.followPath(Push1);
+                                setPathState(PathStates.Push1);
+                            }
+                        }
                     }
-
                     break;
-                case WAIT1:
 
                 case Push1:
                     if(!follower.isBusy()){
                         follower.followPath(Push1);
-                        r.Loiter();
                         setPathState(PathStates.PrePush2);
                     }
                     break;
@@ -156,14 +165,32 @@ public class FiveSpec extends LinearOpMode {
                     break;
                 case Score1:
                     if(!follower.isBusy()){
-                        follower.followPath(Score1);
-                        setPathState(PathStates.Pickup2);
+                        resetActionTimer();
+
+                        r.SpecimenWall();
+
+
+                        if(actionTimer.getElapsedTimeSeconds() > 0.25){
+                            r.SpecimenWallUp();
+                            follower.followPath(Score1);
+                            r.SpecimenPreScore();
+                            setPathState(PathStates.Pickup2);
+                        }
                     }
                     break;
                 case Pickup2:
                     if(!follower.isBusy()){
-                        follower.followPath(Pickup2);
-                        setPathState(PathStates.Score2);
+
+                        resetActionTimer();
+
+                        r.SpecimenLatch();
+
+                        if(actionTimer.getElapsedTimeSeconds() > 0.25){
+                            r.SpecimenLatchOpen();
+                            follower.followPath(Pickup2);
+                            setPathState(PathStates.Score2);
+
+                        }
                     }
                     break;
                 case Score2:
@@ -212,7 +239,6 @@ public class FiveSpec extends LinearOpMode {
         }
     }
     public void buildPaths() {
-            PathBuilder builder = new PathBuilder();
 
             Preload = follower.pathBuilder()
                     .addPath(
@@ -233,7 +259,7 @@ public class FiveSpec extends LinearOpMode {
                                     new Point(58.000, 25.000, Point.CARTESIAN)
                             )
                     )
-                    .setConstantHeadingInterpolation(Math.toRadians(0))
+                    .setLinearHeadingInterpolation(Math.toRadians(0), Math.toRadians(180))
                     .build();
 
             Push1 = follower.pathBuilder()
@@ -243,7 +269,7 @@ public class FiveSpec extends LinearOpMode {
                                     new Point(17.000, 25.000, Point.CARTESIAN)
                             )
                     )
-                    .setConstantHeadingInterpolation(Math.toRadians(0))
+                    .setConstantHeadingInterpolation(Math.toRadians(180))
                     .build();
 
             PrePush2 = follower.pathBuilder()
@@ -255,7 +281,7 @@ public class FiveSpec extends LinearOpMode {
                                     new Point(57.000, 16.000, Point.CARTESIAN)
                             )
                     )
-                    .setConstantHeadingInterpolation(Math.toRadians(0))
+                    .setConstantHeadingInterpolation(Math.toRadians(180))
                     .build();
 
             Push2 = follower.pathBuilder()
@@ -265,7 +291,7 @@ public class FiveSpec extends LinearOpMode {
                                     new Point(17.000, 13.000, Point.CARTESIAN)
                             )
                     )
-                    .setConstantHeadingInterpolation(Math.toRadians(0))
+                    .setConstantHeadingInterpolation(Math.toRadians(180))
                     .build();
 
             PrePush3 = follower.pathBuilder()
@@ -277,7 +303,7 @@ public class FiveSpec extends LinearOpMode {
                                     new Point(57, 8.000, Point.CARTESIAN)
                             )
                     )
-                    .setConstantHeadingInterpolation(Math.toRadians(0))
+                    .setConstantHeadingInterpolation(Math.toRadians(180))
                     .build();
 
             Push3 = follower.pathBuilder()
@@ -287,7 +313,7 @@ public class FiveSpec extends LinearOpMode {
                                     new Point(17.000, 8.000, Point.CARTESIAN)
                             )
                     )
-                    .setConstantHeadingInterpolation(Math.toRadians(0))
+                    .setConstantHeadingInterpolation(Math.toRadians(180))
                     .build();
 
             Pickup1 = follower.pathBuilder()
@@ -297,7 +323,8 @@ public class FiveSpec extends LinearOpMode {
                                     new Point(15.000, 30.000, Point.CARTESIAN)
                             )
                     )
-                    .setLinearHeadingInterpolation(Math.toRadians(0), Math.toRadians(180))
+                    .setConstantHeadingInterpolation(Math.toRadians(180))
+//                    .setZeroPowerAccelerationMultiplier(4)
                     .build();
 
             Score1 = follower.pathBuilder()
