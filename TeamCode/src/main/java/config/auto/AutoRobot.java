@@ -80,25 +80,25 @@ public class AutoRobot {
 
     public void SpecimenPreLoad() {
         endEffector.hand(0.48);
-        endEffector.setEndEffector(0,-55);
+        endEffector.setEndEffector(0,-15);
         endEffector.turret(0.47);
-        boxtube.setPivot(460);
+        boxtube.setPivot(490);
         boxtube.setExt(0);
         ClawClose();
     }
 
     public void PreloadSpecExt(){
         endEffector.hand(0.48);
-        endEffector.setEndEffector(0,-55);
+        endEffector.setEndEffector(0,-15);
         endEffector.turret(0.47);
-        boxtube.setPivot(460);
+        boxtube.setPivot(490);
         ClawClose();
         boxtube.setExt(14500);
     };
 
     public void SpecimenPreLoadScore(){
         endEffector.hand(0.48);
-        endEffector.setEndEffector(0,-55);
+        endEffector.setEndEffector(0,-15);
         endEffector.turret(0.47);
         boxtube.setPivot(200);
         ClawClose();
@@ -106,14 +106,14 @@ public class AutoRobot {
 
     public void SpecimenWall(){
         endEffector.hand(0.48);
-        endEffector.setEndEffector(90,-120);
+        endEffector.setEndEffector(90,-80);
         endEffector.turret(0.47);
         ClawOpen();
     }
 
     public void SpecimenWallGrab() {
         endEffector.hand(0.48);
-        endEffector.setEndEffector(90,-120);
+        endEffector.setEndEffector(90,-80);
         endEffector.turret(0.47);
         ClawClose();
     }
@@ -131,7 +131,7 @@ public class AutoRobot {
         endEffector.turret(0.47);
         endEffector.hand(0.48);
         boxtube.setPivot(700);
-        endEffector.setEndEffector(55,-20);
+        endEffector.setEndEffector(51,20);
     }
 
     public void SpecimenLatch() {
@@ -141,7 +141,7 @@ public class AutoRobot {
     public void SpecimenLatchOpen(){
         endEffector.turret(0.47);
         endEffector.hand(0.48);
-        endEffector.setEndEffector(55,-20);
+        endEffector.setEndEffector(51,20);
         ClawOpen();
     }
 

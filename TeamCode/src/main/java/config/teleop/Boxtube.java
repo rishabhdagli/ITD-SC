@@ -82,6 +82,11 @@ public class Boxtube{
 
     }
 
+    public void update(){
+        updatePiv();
+        updateExt();
+    }
+
     public void setPivot(double val) {
         targetPiv = val;
     }

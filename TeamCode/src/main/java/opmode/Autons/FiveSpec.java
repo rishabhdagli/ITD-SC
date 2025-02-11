@@ -181,12 +181,12 @@ public class FiveSpec extends LinearOpMode {
 
                         if(actionTimer.getElapsedTimeSeconds()>1)
                             r.SpecimenWallGrab();
-                        else r.SpecimenWall();
+
                         if(actionTimer.getElapsedTimeSeconds() > 2){
                             r.SpecimenWallUp();
                             follower.followPath(Score1);
                             r.SpecimenPreScore();
-//                            setPathState(PathStates.Pickup2);
+                          setPathState(PathStates.Pickup2);
                         }
                     }
                     break;
@@ -197,7 +197,7 @@ public class FiveSpec extends LinearOpMode {
                         r.SpecimenLatch();
                         if(actionTimer.getElapsedTimeSeconds() > 0.75){
                             r.SpecimenLatchOpen();
-                            if(actionTimer.getElapsedTimeSeconds()>1) {
+                            if(actionTimer.getElapsedTimeSeconds()>2) {
                                 r.SpecimenWall();
                                 follower.followPath(Pickup2);
                                 setPathState(PathStates.Score2);
