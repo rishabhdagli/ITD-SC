@@ -53,7 +53,7 @@ public class AutoRobot {
     }
 
     public void InitPosition(){
-        endEffector.setEndEffector(100, -130);
+        endEffector.setEndEffector(100, -110);
         endEffector.turret(0.2);
         endEffector.hand(47);
         boxtube.setPivot(250);
@@ -131,7 +131,7 @@ public class AutoRobot {
         endEffector.turret(0.47);
         endEffector.hand(0.48);
         boxtube.setPivot(700);
-        endEffector.setEndEffector(51,20);
+        endEffector.setEndEffector(60,20);
     }
 
     public void SpecimenLatch() {
@@ -141,7 +141,7 @@ public class AutoRobot {
     public void SpecimenLatchOpen(){
         endEffector.turret(0.47);
         endEffector.hand(0.48);
-        endEffector.setEndEffector(51,20);
+        endEffector.setEndEffector(60,20);
         ClawOpen();
     }
 

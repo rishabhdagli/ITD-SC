@@ -35,11 +35,11 @@ public class TeleRobot {
     }
 
     public void ClawOpen() {
-        endEffector.claw(0.65);
+        endEffector.claw(0.75);
     }
 
     public void ClawClose() {
-        endEffector.claw(1);
+        endEffector.claw(0.9);
     }
 
     public void Loiter() {
