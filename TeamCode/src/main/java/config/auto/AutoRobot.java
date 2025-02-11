@@ -20,7 +20,7 @@ public class AutoRobot {
     public Boxtube boxtube;
     public EndEffector endEffector;
     double specPreScore = 2000;
-    double specScore = 20000;
+    double specScore = 13500;
 
     public Telemetry t;
     public Follower follower;
@@ -80,20 +80,25 @@ public class AutoRobot {
 
     public void SpecimenPreLoad() {
         endEffector.hand(0.48);
-        endEffector.setEndEffector(0,-15);
+        endEffector.setEndEffector(0,-55);
         endEffector.turret(0.47);
-        boxtube.setPivot(470);
+        boxtube.setPivot(460);
         boxtube.setExt(0);
         ClawClose();
     }
 
     public void PreloadSpecExt(){
-        boxtube.setExt(16000);
+        endEffector.hand(0.48);
+        endEffector.setEndEffector(0,-55);
+        endEffector.turret(0.47);
+        boxtube.setPivot(460);
+        ClawClose();
+        boxtube.setExt(14500);
     };
 
     public void SpecimenPreLoadScore(){
         endEffector.hand(0.48);
-        endEffector.setEndEffector(0,-15);
+        endEffector.setEndEffector(0,-55);
         endEffector.turret(0.47);
         boxtube.setPivot(200);
         ClawClose();
@@ -101,14 +106,14 @@ public class AutoRobot {
 
     public void SpecimenWall(){
         endEffector.hand(0.48);
-        endEffector.setEndEffector(80,-80);
+        endEffector.setEndEffector(90,-120);
         endEffector.turret(0.47);
         ClawOpen();
     }
 
     public void SpecimenWallGrab() {
         endEffector.hand(0.48);
-        endEffector.setEndEffector(80,-80);
+        endEffector.setEndEffector(90,-120);
         endEffector.turret(0.47);
         ClawClose();
     }
@@ -126,7 +131,7 @@ public class AutoRobot {
         endEffector.turret(0.47);
         endEffector.hand(0.48);
         boxtube.setPivot(700);
-        endEffector.setEndEffector(100,-45);
+        endEffector.setEndEffector(55,-20);
     }
 
     public void SpecimenLatch() {
@@ -134,6 +139,9 @@ public class AutoRobot {
     }
 
     public void SpecimenLatchOpen(){
+        endEffector.turret(0.47);
+        endEffector.hand(0.48);
+        endEffector.setEndEffector(55,-20);
         ClawOpen();
     }
 
