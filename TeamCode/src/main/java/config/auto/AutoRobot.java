@@ -20,7 +20,11 @@ public class AutoRobot {
     public Boxtube boxtube;
     public EndEffector endEffector;
     double specPreScore = 2000;
-    double specScore = 13500;
+    double specScore = 16000;
+    double sampleScore = 31500;
+    double samplePickupExt = 2000;
+    double pivotHorizontal = 0;
+    double pivotBackPos = 1175;
 
     public Telemetry t;
     public Follower follower;
@@ -106,14 +110,14 @@ public class AutoRobot {
 
     public void SpecimenWall(){
         endEffector.hand(0.48);
-        endEffector.setEndEffector(90,-80);
+        endEffector.setEndEffector(90,-90);
         endEffector.turret(0.47);
         ClawOpen();
     }
 
     public void SpecimenWallGrab() {
         endEffector.hand(0.48);
-        endEffector.setEndEffector(90,-80);
+        endEffector.setEndEffector(90,-90);
         endEffector.turret(0.47);
         ClawClose();
     }
@@ -130,8 +134,9 @@ public class AutoRobot {
         boxtube.setExt(specPreScore);
         endEffector.turret(0.47);
         endEffector.hand(0.48);
-        boxtube.setPivot(700);
-        endEffector.setEndEffector(60,20);
+        boxtube.setPivot(800);
+        endEffector.setEndEffector(50,50);
+        endEffector.claw(0.88);
     }
 
     public void SpecimenLatch() {
@@ -141,7 +146,61 @@ public class AutoRobot {
     public void SpecimenLatchOpen(){
         endEffector.turret(0.47);
         endEffector.hand(0.48);
-        endEffector.setEndEffector(60,20);
+        endEffector.setEndEffector(50,50);
+        ClawOpen();
+    }
+
+    public void SampleHover(){
+        boxtube.setPivot(pivotHorizontal);
+        boxtube.setExt(samplePickupExt);
+        endEffector.setEndEffector(10, -115);
+        endEffector.turret(0.47);
+        ClawOpen();
+
+        //Add stuff to move extension + hand stuff using new .copy() method
+    }
+
+    public void SampleGrab() {
+        boxtube.setPivot(pivotHorizontal);
+        endEffector.turret(0.47);
+        endEffector.setEndEffector(-25,-75);
+        ClawOpen();
+    }
+
+    public void LoiterSample() {
+        boxtube.setPivot(pivotHorizontal); // pivot should be horizontal
+        boxtube.setExt(samplePickupExt); //Make sure this is always in
+        endEffector.setEndEffector(80, -110);
+        endEffector.hand(0.48);
+        endEffector.turret(0.47);
+        ClawClose();
+
+    }
+
+    public void PivotBack(){
+        boxtube.setPivot(pivotBackPos);
+        boxtube.setExt(samplePickupExt); //Make sure this is always in when rotating
+        endEffector.setEndEffector(-20,60); //Needs fixing
+        endEffector.hand(0.48);
+        endEffector.turret(0.47);
+        ClawClose();
+    }
+
+    public void BasketExtension(){ // Ready to score
+        boxtube.setPivot(pivotBackPos);
+        boxtube.setExt(sampleScore);
+        endEffector.setEndEffector(-10,20); //Needs fixing
+        endEffector.hand(0.48);
+        endEffector.turret(0.47);
+        ClawClose();
+    }
+
+    public void BasketReturn(){
+        endEffector.setEndEffector(-40,0);
+        endEffector.hand(0.48);
+        endEffector.turret(0.47);
+        boxtube.setExt(samplePickupExt);
+        boxtube.setPivot(pivotBackPos - 200);
         ClawOpen();
     }
 
