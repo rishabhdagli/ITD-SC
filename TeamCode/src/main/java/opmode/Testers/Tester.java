@@ -163,6 +163,9 @@ public class Tester extends LinearOpMode {
             //step 3 (offset to wrist ofset)
             double wirstTicks = -0.0031111*(servoControl.wristAngle+25+offsetAngle) + 0.5;
 
+            tele.addData("Wrist ticks", wirstTicks);
+            tele.addData("Arm ticks", armTicks);
+
             servo6.setPosition(wirstTicks); //wrist servo
             servo7.setPosition(armTicks); //arm servo
 

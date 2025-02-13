@@ -28,7 +28,7 @@ public class Boxtube{
 
     ElapsedTime timer;
 
-    double PivotDownKp = 0.003, PivotDownKd = 0, PivotkP = 0.003, PivotKd = 0,Tick90 = 1000,FF = 0.05,period = (2*Math.PI)/(Tick90*4),
+    double PivotDownKp = 0.001, PivotDownKd = 0.0005, PivotkP = 0.001, PivotKd = 0.0001,Tick90 = 1250,FF = 0.09,period = (2*Math.PI)/(Tick90*4),
             ExtensionKp,ExtensionKd,lasterror;
 
 
