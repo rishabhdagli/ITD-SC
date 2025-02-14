@@ -3,6 +3,7 @@ package opmode;
 import com.pedropathing.follower.Follower;
 import com.pedropathing.localization.Pose;
 import com.pedropathing.pathgen.Point;
+import com.pedropathing.util.Constants;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.LED;
@@ -13,6 +14,8 @@ import config.Subsystem.Drivetrain;
 import config.Subsystem.EndEffector;
 import config.Subsystem.TeleRobot;
 import config.Subsystem.StateMachineGenerator;
+import pedroPathing.constants.FConstants;
+import pedroPathing.constants.LConstants;
 
 @TeleOp(name = "MainTele")
 public class MainTele extends LinearOpMode {
@@ -33,6 +36,8 @@ public class MainTele extends LinearOpMode {
         endEffector = new EndEffector(hardwareMap, telemetry);
         teleRobot = new TeleRobot(hardwareMap, telemetry, gamepad2);
         drivetrain = new Drivetrain(hardwareMap, telemetry);
+
+        Constants.setConstants(FConstants.class, LConstants.class);
 
         follower = new Follower(hardwareMap);
 

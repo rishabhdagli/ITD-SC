@@ -3,6 +3,7 @@ package opmode.Testers;
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.AnalogInput;
@@ -13,6 +14,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 @Config
+@Disabled
 @TeleOp(name = "Tester Class")
 public class Tester extends LinearOpMode {
 
@@ -37,7 +39,7 @@ public class Tester extends LinearOpMode {
 
 
 
-    public double PivotDownKp = 0.003, PivotDownKd = 0, PivotkP = 0.003, PivotKd = 0,Tick90 = 1000,FF = 0.05,period = (2*Math.PI)/(Tick90*4),
+    double PivotDownKp = 0.002, PivotDownKd = 0.001, PivotkP = 0.007, PivotKd = 0.0008,Tick90 = 1147,FF = 0.09,period = (2*Math.PI)/(Tick90*4),
             ExtensionKp,ExtensionKd,lasterror,KpExt = 0.0005;
 
     public static double targetPosPivot,extensionTargetPos;

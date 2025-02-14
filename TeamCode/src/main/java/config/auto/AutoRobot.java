@@ -19,15 +19,15 @@ public class AutoRobot {
     public DcMotorEx LF,LR,RF,RR;
     public Boxtube boxtube;
     public EndEffector endEffector;
-    double specPreScore = 2000;
+    double specPreScore = 0;
     double specScore = 15250;
 
     double specGrabExt = 10000;
     double sampleScore = 31500;
     double samplePickupExt = 2000;
     double pivotHorizontal = 0;
-
-    double pivotPreLoad = 485;
+    double pivotSpecScore = 850;
+    double pivotPreLoad = 500;
     double pivotBackPos = 1147;
 
     public Telemetry t;
@@ -51,6 +51,10 @@ public class AutoRobot {
 
         follower.setStartingPose(startPose);
     }
+    public void ChangePivotKP(double kp){
+        boxtube.changekP(kp);
+    }
+
 
     public void ClawOpen() {
         endEffector.claw(0.55);
@@ -108,30 +112,22 @@ public class AutoRobot {
         endEffector.hand(0.48);
         endEffector.setEndEffector(0,-15);
         endEffector.turret(0.47);
-        boxtube.setPivot(200);
+        boxtube.setPivot(50);
         ClawClose();
     }
 
     public void SpecimenWall(){
         boxtube.setPivot(pivotHorizontal);
         endEffector.hand(0.48);
-        endEffector.setEndEffector(90,-90);
+        endEffector.setEndEffector(60,-45);
         endEffector.turret(0.47);
         ClawOpen();
     }
 
     public void SpecimenWallGrab() {
         endEffector.hand(0.48);
-        endEffector.setEndEffector(90,-90);
+        endEffector.setEndEffector(60,-45);
         endEffector.turret(0.47);
-        ClawClose();
-    }
-
-
-    public void SpecimenWallUp(){
-        endEffector.hand(0.48);
-        endEffector.turret(0.47);
-        endEffector.setEndEffector(100, -40);
         ClawClose();
     }
 
@@ -139,9 +135,8 @@ public class AutoRobot {
         boxtube.setExt(specPreScore);
         endEffector.turret(0.47);
         endEffector.hand(0.48);
-        boxtube.setPivot(800);
-        endEffector.setEndEffector(45,50);
-        endEffector.claw(0.88);
+        endEffector.setEndEffector(45,70);
+        ClawClose();
     }
 
     public void SpecimenLatch() {
@@ -153,39 +148,13 @@ public class AutoRobot {
         boxtube.setExt(0);
     }
 
-    public void SpecimenExtendedWall(){
-        boxtube.setPivot(pivotHorizontal);
-        boxtube.setExt(specGrabExt);
-        endEffector.hand(0.48);
-        endEffector.setEndEffector(90,-90);
-        endEffector.turret(0.47);
-        ClawOpen();
-    }
-
-    public void SpecimenExtendedWallGrab() {
-        boxtube.setPivot(pivotHorizontal);
-        boxtube.setExt(specGrabExt);
-        endEffector.hand(0.48);
-        endEffector.setEndEffector(90,-90);
-        endEffector.turret(0.47);
-        ClawClose();
+    public void PivotUpSpec(){
+        boxtube.setPivot(pivotSpecScore);
     }
 
 
-    public void SpecimenExtendedWallUp(){
-        boxtube.setPivot(pivotHorizontal);
-        boxtube.setExt(specGrabExt);
-        endEffector.hand(0.48);
-        endEffector.turret(0.47);
-        endEffector.setEndEffector(100, -40);
-        ClawClose();
-    }
-    public void SpecimenLatchOpen(){
-        endEffector.turret(0.47);
-        endEffector.hand(0.48);
-        endEffector.setEndEffector(45,50);
-        ClawOpen();
-    }
+    //SAMPLE POSITIONS
+
 
     public void SampleHover(){
         boxtube.setPivot(pivotHorizontal);
@@ -193,8 +162,6 @@ public class AutoRobot {
         endEffector.setEndEffector(10, -115);
         endEffector.turret(0.47);
         ClawOpen();
-
-        //Add stuff to move extension + hand stuff using new .copy() method
     }
 
     public void SampleGrab() {
@@ -240,26 +207,4 @@ public class AutoRobot {
         boxtube.setPivot(pivotBackPos - 200);
         ClawOpen();
     }
-
-//    public boolean conditionalEndPivot(double target) {
-//        double currentPivot = boxtube.pivotoffset + (boxtube.Pivot.getCurrentPosition());
-//        currentPivot = -currentPivot;
-//        if (currentPivot >= target - 60 && currentPivot <= target + 60) {
-//            boxtube.Pivot.setPower(0);
-//            return true;
-//        } else {
-//            return false;
-//        }
-//    }
-//
-//    public boolean conditionalEndExtension(double target) {
-//        double currentExt = boxtube.BT1.getCurrentPosition();
-//        currentExt = -currentExt;
-//        if (currentExt >= target - 500 && currentExt <= target + 500) {
-//            boxtube.ExtensionPower(0);
-//            return true;
-//        } else {
-//            return false;
-//        }
-//    }
 }

@@ -17,8 +17,8 @@ import config.Subsystem.EndEffector;
 import pedroPathing.constants.FConstants;
 import pedroPathing.constants.LConstants;
 
-@Autonomous(name = "DRIVING - 5 Specimen")
-public class DrivingFiveSpec extends LinearOpMode {
+@Autonomous(name = "4 Specimen")
+public class FourSpecimen extends LinearOpMode {
     AutoRobot r;
 
     Boxtube boxtube;
@@ -122,7 +122,7 @@ public class DrivingFiveSpec extends LinearOpMode {
 
                         if(actionTimer.getElapsedTimeSeconds() > 0.5){
                             r.SpecimenPreLoadScore();
-                            if(actionTimer.getElapsedTimeSeconds() > 1.25){
+                            if(actionTimer.getElapsedTimeSeconds() > 1){
                                 r.LoiterIn();
                                 follower.followPath(PrePush1);
                                 setPathState(PathStates.Push1);
@@ -178,14 +178,14 @@ public class DrivingFiveSpec extends LinearOpMode {
                     if(!follower.isBusy()){
 
                         resetActionTimer();
-
-                        if(actionTimer.getElapsedTimeSeconds()>0.5) {
+                        if(actionTimer.getElapsedTimeSeconds()>0.05) {
                             r.SpecimenWallGrab();
-                            if(actionTimer.getElapsedTimeSeconds() > 1) {
-                                r.SpecimenWallUp();
-                                follower.followPath(Score1);
+                            if(actionTimer.getElapsedTimeSeconds() > 0.1) {
                                 r.SpecimenPreScore();
-                                setPathState(PathStates.Pickup2);
+                                if(actionTimer.getElapsedTimeSeconds() > 0.35){
+                                    follower.followPath(Score1);
+                                    setPathState(PathStates.Pickup2);
+                                }
                             }
                         } else {
                             r.SpecimenWall();
@@ -195,19 +195,16 @@ public class DrivingFiveSpec extends LinearOpMode {
 
                 case Pickup2:
                     if(!follower.isBusy()){
+                        r.PivotUpSpec();
                         resetActionTimer();
-                        if(actionTimer.getElapsedTimeSeconds() > 0.75){
+                        if(actionTimer.getElapsedTimeSeconds() > 0.7){
                             r.SpecimenLatch();
-                            if(actionTimer.getElapsedTimeSeconds() > 1.25){
-                                r.SpecimenLatchOpen();
-                                if(actionTimer.getElapsedTimeSeconds()>2) {
+                                if(actionTimer.getElapsedTimeSeconds()>1.3) {
                                     r.SpecimenExtDown();
-                                    if(actionTimer.getElapsedTimeSeconds() > 2.5){
+                                    if(actionTimer.getElapsedTimeSeconds() > 1.35){
                                         r.SpecimenWall();
                                         follower.followPath(Pickup2);
                                         setPathState(PathStates.Score2);
-                                    }
-
                                 }
                             }
                         }
@@ -217,14 +214,14 @@ public class DrivingFiveSpec extends LinearOpMode {
                 case Score2:
                     if(!follower.isBusy()){
                         resetActionTimer();
-
-                        if(actionTimer.getElapsedTimeSeconds()>0.5) {
+                        if(actionTimer.getElapsedTimeSeconds()>0.05) {
                             r.SpecimenWallGrab();
-                            if(actionTimer.getElapsedTimeSeconds() > 1) {
-                                r.SpecimenWallUp();
-                                follower.followPath(Score2);
+                            if(actionTimer.getElapsedTimeSeconds() > 0.1) {
                                 r.SpecimenPreScore();
-                                setPathState(PathStates.Pickup3);
+                                if(actionTimer.getElapsedTimeSeconds() > 0.35){
+                                    follower.followPath(Score2);
+                                    setPathState(PathStates.Pickup3);
+                                    }
                             }
                         } else {
                             r.SpecimenWall();
@@ -234,19 +231,16 @@ public class DrivingFiveSpec extends LinearOpMode {
 
                 case Pickup3:
                     if(!follower.isBusy()) {
+                        r.PivotUpSpec();
                         resetActionTimer();
-                        if(actionTimer.getElapsedTimeSeconds() > 1.5){
+                        if(actionTimer.getElapsedTimeSeconds() > 0.7){
                             r.SpecimenLatch();
-                            if(actionTimer.getElapsedTimeSeconds() > 2.5){
-                                r.SpecimenLatchOpen();
-                                if(actionTimer.getElapsedTimeSeconds()>3.5) {
+                                if(actionTimer.getElapsedTimeSeconds()>1.3) {
                                     r.SpecimenExtDown();
-                                    if(actionTimer.getElapsedTimeSeconds() > 4){
+                                    if(actionTimer.getElapsedTimeSeconds() > 1.35){
                                         r.SpecimenWall();
                                         follower.followPath(Pickup3);
                                         setPathState(PathStates.Score3);
-                                    }
-
                                 }
                             }
                         }
@@ -256,36 +250,33 @@ public class DrivingFiveSpec extends LinearOpMode {
                 case Score3:
                     if(!follower.isBusy()){
                         resetActionTimer();
-
-                        if(actionTimer.getElapsedTimeSeconds()>0.5) {
+                        if(actionTimer.getElapsedTimeSeconds()>0.05) {
                             r.SpecimenWallGrab();
-                            if(actionTimer.getElapsedTimeSeconds() > 1) {
-                                r.SpecimenWallUp();
-                                follower.followPath(Score3);
+                            if (actionTimer.getElapsedTimeSeconds() > 0.1) {
                                 r.SpecimenPreScore();
-                                setPathState(PathStates.Pickup4);
+                                if (actionTimer.getElapsedTimeSeconds() > 0.35) {
+                                    follower.followPath(Score3);
+                                    setPathState(PathStates.Pickup4);
+                                }
+                            } else {
+                                r.SpecimenWall();
                             }
-                        } else {
-                            r.SpecimenWall();
                         }
                     }
                     break;
 
                 case Pickup4:
                     if(!follower.isBusy()){
+                        r.PivotUpSpec();
                         resetActionTimer();
-                        if(actionTimer.getElapsedTimeSeconds() > 1.5){
+                        if(actionTimer.getElapsedTimeSeconds() > 0.7){
                             r.SpecimenLatch();
-                            if(actionTimer.getElapsedTimeSeconds() > 2.5){
-                                r.SpecimenLatchOpen();
-                                if(actionTimer.getElapsedTimeSeconds()>3.5) {
+                                if(actionTimer.getElapsedTimeSeconds()>1.3) {
                                     r.SpecimenExtDown();
-                                    if(actionTimer.getElapsedTimeSeconds() > 4){
+                                    if(actionTimer.getElapsedTimeSeconds() > 1.35){
                                         r.SpecimenWall();
                                         follower.followPath(Pickup4);
                                         setPathState(PathStates.Score4);
-                                    }
-
                                 }
                             }
                         }
@@ -295,14 +286,14 @@ public class DrivingFiveSpec extends LinearOpMode {
                 case Score4:
                     if(!follower.isBusy()){
                         resetActionTimer();
-
-                        if(actionTimer.getElapsedTimeSeconds()>1) {
+                        if(actionTimer.getElapsedTimeSeconds()>0.05) {
                             r.SpecimenWallGrab();
-                            if(actionTimer.getElapsedTimeSeconds() > 2) {
-                                r.SpecimenWallUp();
-                                follower.followPath(Score4);
+                            if(actionTimer.getElapsedTimeSeconds() > 0.1) {
                                 r.SpecimenPreScore();
-                                setPathState(PathStates.Park);
+                                if(actionTimer.getElapsedTimeSeconds() > 0.35){
+                                    follower.followPath(Score4);
+                                    setPathState(PathStates.Park);
+                                }
                             }
                         } else {
                             r.SpecimenWall();
@@ -312,20 +303,17 @@ public class DrivingFiveSpec extends LinearOpMode {
 
                 case Park:
                     if(!follower.isBusy()){
+                        r.PivotUpSpec();
                         resetActionTimer();
-                        if(actionTimer.getElapsedTimeSeconds() > 1.5){
+                        if(actionTimer.getElapsedTimeSeconds() > 0.7){
                             r.SpecimenLatch();
-                            if(actionTimer.getElapsedTimeSeconds() > 2.5){
-                                r.SpecimenLatchOpen();
-                                if(actionTimer.getElapsedTimeSeconds()>3.5) {
+                                if(actionTimer.getElapsedTimeSeconds()>1.3) {
                                     r.SpecimenExtDown();
-                                    if(actionTimer.getElapsedTimeSeconds() > 4){
+                                    if(actionTimer.getElapsedTimeSeconds() > 1.35){
                                         r.LoiterIn();
                                         follower.followPath(Park);
                                         setPathState(PathStates.End);
                                     }
-
-                                }
                             }
                         }
                     }
@@ -369,7 +357,7 @@ public class DrivingFiveSpec extends LinearOpMode {
                     .addPath(
                             new BezierLine(
                                     new Point(58.000, 25.000, Point.CARTESIAN),
-                                    new Point(22.000, 25.000, Point.CARTESIAN)
+                                    new Point(30.000, 25.000, Point.CARTESIAN)
                             )
                     )
                     .setConstantHeadingInterpolation(Math.toRadians(180))
@@ -378,7 +366,7 @@ public class DrivingFiveSpec extends LinearOpMode {
             PrePush2 = follower.pathBuilder()
                     .addPath(
                             new BezierCurve(
-                                    new Point(22.000, 25.000, Point.CARTESIAN),
+                                    new Point(30.000, 25.000, Point.CARTESIAN),
                                     new Point(59.613, 26.323, Point.CARTESIAN),
                                     new Point(55.226, 27.613, Point.CARTESIAN),
                                     new Point(57.000, 16.000, Point.CARTESIAN)
@@ -391,7 +379,7 @@ public class DrivingFiveSpec extends LinearOpMode {
                     .addPath(
                             new BezierLine(
                                     new Point(57.000, 16.000, Point.CARTESIAN),
-                                    new Point(22.000, 13.000, Point.CARTESIAN)
+                                    new Point(30.000, 13.000, Point.CARTESIAN)
                             )
                     )
                     .setConstantHeadingInterpolation(Math.toRadians(180))
@@ -400,10 +388,9 @@ public class DrivingFiveSpec extends LinearOpMode {
             PrePush3 = follower.pathBuilder()
                     .addPath(
                             new BezierCurve(
-                                    new Point(22.000, 13.000, Point.CARTESIAN),
-                                    new Point(32.000, 11.871, Point.CARTESIAN),
-                                    new Point(59.100, 18.050, Point.CARTESIAN),
-                                    new Point(57, 8.000, Point.CARTESIAN)
+                                    new Point(30.000, 13.000, Point.CARTESIAN),
+                                    new Point(57.000, 18.000, Point.CARTESIAN),
+                                    new Point(57.000, 9.000, Point.CARTESIAN)
                             )
                     )
                     .setConstantHeadingInterpolation(Math.toRadians(180))
@@ -412,8 +399,8 @@ public class DrivingFiveSpec extends LinearOpMode {
             Push3 = follower.pathBuilder()
                     .addPath(
                             new BezierLine(
-                                    new Point(57, 8.000, Point.CARTESIAN),
-                                    new Point(19.750, 8.000, Point.CARTESIAN)
+                                    new Point(57.000, 9.000, Point.CARTESIAN),
+                                    new Point(30.000, 9.000, Point.CARTESIAN)
                             )
                     )
                     .setConstantHeadingInterpolation(Math.toRadians(180))
@@ -422,100 +409,104 @@ public class DrivingFiveSpec extends LinearOpMode {
             Pickup1 = follower.pathBuilder()
                     .addPath(
                             new BezierLine(
-                                    new Point(19.750, 8.000, Point.CARTESIAN),
-                                    new Point(21.000, 8.000, Point.CARTESIAN)
+                                    new Point(30.000, 9.000, Point.CARTESIAN),
+                                    new Point(19.500, 9.000, Point.CARTESIAN)
                             )
                     )
                     .setConstantHeadingInterpolation(Math.toRadians(180))
+                    .setZeroPowerAccelerationMultiplier(0.75)
                     .build();
 
             Score1 = follower.pathBuilder()
                     .addPath(
                             new BezierCurve(
-                                    new Point(21.000, 8.000, Point.CARTESIAN),
+                                    new Point(19.500, 8.000, Point.CARTESIAN),
                                     new Point(12.903, 62.000, Point.CARTESIAN),
-                                    new Point(44.000, 69.000, Point.CARTESIAN)
+                                    new Point(44.750, 69.000, Point.CARTESIAN)
                             )
                     )
                     .setConstantHeadingInterpolation(Math.toRadians(180))
-                    .setZeroPowerAccelerationMultiplier(0.1)
+                    .setZeroPowerAccelerationMultiplier(1.75)
                     .build();
 
             Pickup2 = follower.pathBuilder()
                     .addPath(
                             new BezierCurve(
-                                    new Point(44.000, 69.000, Point.CARTESIAN),
+                                    new Point(44.750, 69.000, Point.CARTESIAN),
                                     new Point(24.000, 62.000, Point.CARTESIAN),
                                     new Point(55.000,35.000, Point.CARTESIAN),
-                                    new Point(21.000, 30.000, Point.CARTESIAN)
+                                    new Point(19.500, 30.000, Point.CARTESIAN)
                             )
                     )
                     .setConstantHeadingInterpolation(Math.toRadians(180))
+                    .setZeroPowerAccelerationMultiplier(1.25)
                     .build();
 
             Score2 = follower.pathBuilder()
                     .addPath(
                             new BezierCurve(
-                                    new Point(21.000, 30.000, Point.CARTESIAN),
+                                    new Point(19.500, 30.000, Point.CARTESIAN),
                                     new Point(12.903, 62.000, Point.CARTESIAN),
-                                    new Point(44.000, 73.000, Point.CARTESIAN)
+                                    new Point(44.750, 73.000, Point.CARTESIAN)
                             )
                     )
                     .setConstantHeadingInterpolation(Math.toRadians(180))
-                    .setZeroPowerAccelerationMultiplier(0.5)
+                    .setZeroPowerAccelerationMultiplier(1.75)
                     .build();
 
             Pickup3 = follower.pathBuilder()
                     .addPath(
                             new BezierCurve(
-                                    new Point(44.000, 73.000, Point.CARTESIAN),
+                                    new Point(44.750, 73.000, Point.CARTESIAN),
                                     new Point(24.000, 62.000, Point.CARTESIAN),
                                     new Point(55.000,35.000, Point.CARTESIAN),
-                                    new Point(21.000, 30.000, Point.CARTESIAN)
+                                    new Point(19.500, 30.000, Point.CARTESIAN)
                             )
                     )
                     .setConstantHeadingInterpolation(Math.toRadians(180))
+                    .setZeroPowerAccelerationMultiplier(1.25)
                     .build();
 
             Score3 = follower.pathBuilder()
                     .addPath(
                             new BezierCurve(
-                                    new Point(21.000, 30.000, Point.CARTESIAN),
+                                    new Point(19.500, 30.000, Point.CARTESIAN),
                                     new Point(12.903, 62.000, Point.CARTESIAN),
-                                    new Point(44.000, 77.000, Point.CARTESIAN)
+                                    new Point(44.750, 77.000, Point.CARTESIAN)
                             )
                     )
                     .setConstantHeadingInterpolation(Math.toRadians(180))
-                    .setZeroPowerAccelerationMultiplier(0.1)
+                    .setZeroPowerAccelerationMultiplier(1.75)
                     .build();
 
             Pickup4 = follower.pathBuilder()
                     .addPath(
                             new BezierCurve(
-                                    new Point(44.000, 77.000, Point.CARTESIAN),
+                                    new Point(44.750, 77.000, Point.CARTESIAN),
                                     new Point(24.000, 62.000, Point.CARTESIAN),
                                     new Point(55.000,35.000, Point.CARTESIAN),
-                                    new Point(21.000, 30.000, Point.CARTESIAN)
+                                    new Point(19.500, 30.000, Point.CARTESIAN)
                             )
                     )
                     .setConstantHeadingInterpolation(Math.toRadians(180))
+                    .setZeroPowerAccelerationMultiplier(1.25)
                     .build();
 
             Score4 = follower.pathBuilder()
                     .addPath(
                             new BezierCurve(
-                                    new Point(21.000, 30.000, Point.CARTESIAN),
+                                    new Point(19.500, 30.000, Point.CARTESIAN),
                                     new Point(12.903, 62.000, Point.CARTESIAN),
-                                    new Point(44.000, 80.000, Point.CARTESIAN)
+                                    new Point(44.750, 80.000, Point.CARTESIAN)
                             )
                     )
                     .setConstantHeadingInterpolation(Math.toRadians(180))
-                    .setZeroPowerAccelerationMultiplier(0.1)
+                    .setZeroPowerAccelerationMultiplier(1.75)
                     .build();
             Park = follower.pathBuilder()
                     .addPath(
                             new BezierLine(
-                                    new Point(44.000, 80.000, Point.CARTESIAN),
+                                    new Point(44.750, 80.000, Point.CARTESIAN),
                                     new Point(22.000, 30.000, Point.CARTESIAN)
                             )
                     )

@@ -1,8 +1,12 @@
 package opmode.Testers;
 
+import android.provider.SyncStateContract;
+
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
+import com.pedropathing.follower.Follower;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.AnalogInput;
@@ -13,6 +17,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 @Config
+@Disabled
 @TeleOp(name = "Tester - Expanded")
 public class TesterExpanded extends LinearOpMode {
 
@@ -30,6 +35,7 @@ public class TesterExpanded extends LinearOpMode {
     AnalogInput PivotAbs, boxtubeAbs;
 
     ElapsedTime timer;
+    Follower follower;
 
     public static class ServoControl{
         public double pos0, pos1, pos2, pos3, pos4, pos5, wristAngle, armAngle, hand=0.5, claw, turret = 0.5, pos11;
@@ -53,6 +59,9 @@ public class TesterExpanded extends LinearOpMode {
 
     @Override
     public void runOpMode() {
+
+        follower = new Follower(hardwareMap);
+        //do that constants thing
         FtcDashboard dashboard = FtcDashboard.getInstance();
         MultipleTelemetry tele = new MultipleTelemetry(telemetry, dashboard.getTelemetry());
 
