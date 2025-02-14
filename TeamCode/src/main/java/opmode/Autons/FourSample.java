@@ -4,7 +4,6 @@ import com.pedropathing.follower.Follower;
 import com.pedropathing.localization.Pose;
 import com.pedropathing.pathgen.BezierCurve;
 import com.pedropathing.pathgen.BezierLine;
-import com.pedropathing.pathgen.PathBuilder;
 import com.pedropathing.pathgen.PathChain;
 import com.pedropathing.pathgen.Point;
 import com.pedropathing.util.Constants;
@@ -13,8 +12,8 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import config.auto.AutoRobot;
-import config.teleop.Boxtube;
-import config.teleop.EndEffector;
+import config.Subsystem.Boxtube;
+import config.Subsystem.EndEffector;
 import pedroPathing.constants.FConstants;
 import pedroPathing.constants.LConstants;
 

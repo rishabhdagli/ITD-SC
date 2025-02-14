@@ -1,12 +1,7 @@
-package config.teleop;
+package config.Subsystem;
 
 import com.qualcomm.robotcore.hardware.Servo;
-import com.qualcomm.robotcore.hardware.AnalogInput;
-import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorEx;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
-import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 
@@ -31,6 +26,10 @@ public class EndEffector {
 
     public void hand(double pos) {
         Hand.setPosition(pos);
+    }
+
+    public double handPos(){
+        return Hand.getPosition();
     }
 
     public void turret(double pos) {

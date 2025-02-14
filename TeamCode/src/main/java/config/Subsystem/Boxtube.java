@@ -1,4 +1,4 @@
-package config.teleop;
+package config.Subsystem;
 
 import com.qualcomm.robotcore.hardware.AnalogInput;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -28,7 +28,7 @@ public class Boxtube{
 
     ElapsedTime timer;
 
-    double PivotDownKp = 0.001, PivotDownKd = 0.0005, PivotkP = 0.001, PivotKd = 0.0001,Tick90 = 1250,FF = 0.09,period = (2*Math.PI)/(Tick90*4),
+    double PivotDownKp = 0.001, PivotDownKd = 0.0003, PivotkP = 0.007, PivotKd = 0.001,Tick90 = 1147,FF = 0.09,period = (2*Math.PI)/(Tick90*4),
             ExtensionKp,ExtensionKd,lasterror;
 
 
@@ -125,6 +125,16 @@ public class Boxtube{
     }
     public void updateExt() {
         ExtensionMove(targetExt);
+    }
+
+    public boolean PivotisMoving() {
+        //change to if moving slow when down
+       if(Pivot.getPower() > 0.3){
+           return true;
+       }
+       else{
+           return false;
+       }
     }
 
     public void ExtensionMove(double extensionTargetPos){

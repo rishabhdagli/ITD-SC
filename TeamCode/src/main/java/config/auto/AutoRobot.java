@@ -9,8 +9,8 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 
-import config.teleop.Boxtube;
-import config.teleop.EndEffector;
+import config.Subsystem.Boxtube;
+import config.Subsystem.EndEffector;
 import pedroPathing.constants.FConstants;
 import pedroPathing.constants.LConstants;
 
@@ -20,11 +20,13 @@ public class AutoRobot {
     public Boxtube boxtube;
     public EndEffector endEffector;
     double specPreScore = 2000;
-    double specScore = 16000;
+    double specScore = 15250;
     double sampleScore = 31500;
     double samplePickupExt = 2000;
     double pivotHorizontal = 0;
-    double pivotBackPos = 1250;
+
+    double pivotPreLoad = 485;
+    double pivotBackPos = 1147;
 
     public Telemetry t;
     public Follower follower;
@@ -53,14 +55,14 @@ public class AutoRobot {
     }
 
     public void ClawClose() {
-        endEffector.claw(0.9);
+        endEffector.claw(1);
     }
 
     public void InitPosition(){
         endEffector.setEndEffector(100, -110);
         endEffector.turret(0.2);
         endEffector.hand(47);
-        boxtube.setPivot(350);
+        boxtube.setPivot(200);
         boxtube.setExt(0);
         ClawClose();
     }
@@ -86,7 +88,7 @@ public class AutoRobot {
         endEffector.hand(0.48);
         endEffector.setEndEffector(0,-15);
         endEffector.turret(0.47);
-        boxtube.setPivot(900);
+        boxtube.setPivot(pivotPreLoad);
         boxtube.setExt(0);
         ClawClose();
     }
@@ -95,9 +97,9 @@ public class AutoRobot {
         endEffector.hand(0.48);
         endEffector.setEndEffector(0,-15);
         endEffector.turret(0.47);
-        boxtube.setPivot(490);
+        boxtube.setPivot(pivotPreLoad);
         ClawClose();
-        boxtube.setExt(14500);
+        boxtube.setExt(13750);
     };
 
     public void SpecimenPreLoadScore(){
@@ -136,7 +138,7 @@ public class AutoRobot {
         endEffector.turret(0.47);
         endEffector.hand(0.48);
         boxtube.setPivot(800);
-        endEffector.setEndEffector(50,50);
+        endEffector.setEndEffector(45,50);
         endEffector.claw(0.88);
     }
 
@@ -151,7 +153,7 @@ public class AutoRobot {
     public void SpecimenLatchOpen(){
         endEffector.turret(0.47);
         endEffector.hand(0.48);
-        endEffector.setEndEffector(50,50);
+        endEffector.setEndEffector(45,50);
         ClawOpen();
     }
 

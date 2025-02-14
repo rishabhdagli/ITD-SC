@@ -4,7 +4,6 @@ import com.pedropathing.follower.Follower;
 import com.pedropathing.localization.Pose;
 import com.pedropathing.pathgen.BezierCurve;
 import com.pedropathing.pathgen.BezierLine;
-import com.pedropathing.pathgen.PathBuilder;
 import com.pedropathing.pathgen.PathChain;
 import com.pedropathing.pathgen.Point;
 import com.pedropathing.util.Constants;
@@ -13,8 +12,8 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import config.auto.AutoRobot;
-import config.teleop.Boxtube;
-import config.teleop.EndEffector;
+import config.Subsystem.Boxtube;
+import config.Subsystem.EndEffector;
 import pedroPathing.constants.FConstants;
 import pedroPathing.constants.LConstants;
 
@@ -121,9 +120,9 @@ public class FiveSpec extends LinearOpMode {
 
                         r.PreloadSpecExt();
 
-                        if(actionTimer.getElapsedTimeSeconds() > 1.25){
+                        if(actionTimer.getElapsedTimeSeconds() > 0.5){
                             r.SpecimenPreLoadScore();
-                            if(actionTimer.getElapsedTimeSeconds() > 2.25){
+                            if(actionTimer.getElapsedTimeSeconds() > 1.25){
                                 r.LoiterIn();
                                 follower.followPath(PrePush1);
                                 setPathState(PathStates.Push1);
@@ -180,9 +179,9 @@ public class FiveSpec extends LinearOpMode {
 
                         resetActionTimer();
 
-                        if(actionTimer.getElapsedTimeSeconds()>1) {
+                        if(actionTimer.getElapsedTimeSeconds()>0.5) {
                             r.SpecimenWallGrab();
-                            if(actionTimer.getElapsedTimeSeconds() > 2) {
+                            if(actionTimer.getElapsedTimeSeconds() > 1) {
                                 r.SpecimenWallUp();
                                 follower.followPath(Score1);
                                 r.SpecimenPreScore();
@@ -197,13 +196,13 @@ public class FiveSpec extends LinearOpMode {
                 case Pickup2:
                     if(!follower.isBusy()){
                         resetActionTimer();
-                        if(actionTimer.getElapsedTimeSeconds() > 1.5){
+                        if(actionTimer.getElapsedTimeSeconds() > 0.75){
                             r.SpecimenLatch();
-                            if(actionTimer.getElapsedTimeSeconds() > 2.5){
+                            if(actionTimer.getElapsedTimeSeconds() > 1.25){
                                 r.SpecimenLatchOpen();
-                                if(actionTimer.getElapsedTimeSeconds()>3.5) {
+                                if(actionTimer.getElapsedTimeSeconds()>2) {
                                     r.SpecimenExtDown();
-                                    if(actionTimer.getElapsedTimeSeconds() > 4){
+                                    if(actionTimer.getElapsedTimeSeconds() > 2.5){
                                         r.SpecimenWall();
                                         follower.followPath(Pickup2);
                                         setPathState(PathStates.Score2);
@@ -219,9 +218,9 @@ public class FiveSpec extends LinearOpMode {
                     if(!follower.isBusy()){
                         resetActionTimer();
 
-                        if(actionTimer.getElapsedTimeSeconds()>1) {
+                        if(actionTimer.getElapsedTimeSeconds()>0.5) {
                             r.SpecimenWallGrab();
-                            if(actionTimer.getElapsedTimeSeconds() > 2) {
+                            if(actionTimer.getElapsedTimeSeconds() > 1) {
                                 r.SpecimenWallUp();
                                 follower.followPath(Score2);
                                 r.SpecimenPreScore();
@@ -258,9 +257,9 @@ public class FiveSpec extends LinearOpMode {
                     if(!follower.isBusy()){
                         resetActionTimer();
 
-                        if(actionTimer.getElapsedTimeSeconds()>1) {
+                        if(actionTimer.getElapsedTimeSeconds()>0.5) {
                             r.SpecimenWallGrab();
-                            if(actionTimer.getElapsedTimeSeconds() > 2) {
+                            if(actionTimer.getElapsedTimeSeconds() > 1) {
                                 r.SpecimenWallUp();
                                 follower.followPath(Score3);
                                 r.SpecimenPreScore();
@@ -306,15 +305,29 @@ public class FiveSpec extends LinearOpMode {
                                 setPathState(PathStates.Park);
                             }
                         } else {
-                            r.LoiterIn();
+                            r.SpecimenWall();
                         }
                     }
                     break;
 
                 case Park:
                     if(!follower.isBusy()){
-                        follower.followPath(Park);
-                        setPathState(PathStates.End);
+                        resetActionTimer();
+                        if(actionTimer.getElapsedTimeSeconds() > 1.5){
+                            r.SpecimenLatch();
+                            if(actionTimer.getElapsedTimeSeconds() > 2.5){
+                                r.SpecimenLatchOpen();
+                                if(actionTimer.getElapsedTimeSeconds()>3.5) {
+                                    r.SpecimenExtDown();
+                                    if(actionTimer.getElapsedTimeSeconds() > 4){
+                                        r.LoiterIn();
+                                        follower.followPath(Park);
+                                        setPathState(PathStates.End);
+                                    }
+
+                                }
+                            }
+                        }
                     }
                     break;
 
@@ -333,7 +346,7 @@ public class FiveSpec extends LinearOpMode {
                     .addPath(
                             new BezierLine(
                                     new Point(7.000, 54.000, Point.CARTESIAN),
-                                    new Point(25.000, 62.000, Point.CARTESIAN)
+                                    new Point(25.000, 61.000, Point.CARTESIAN)
                             )
                     )
                     .setConstantHeadingInterpolation(Math.toRadians(0))
@@ -343,7 +356,7 @@ public class FiveSpec extends LinearOpMode {
             PrePush1 = follower.pathBuilder()
                     .addPath(
                             new BezierCurve(
-                                    new Point(14.000, 62.000, Point.CARTESIAN),
+                                    new Point(25.000, 61.000, Point.CARTESIAN),
                                     new Point(29.419, 22.452, Point.CARTESIAN),
                                     new Point(58.323, 52.129, Point.CARTESIAN),
                                     new Point(58.000, 25.000, Point.CARTESIAN)
@@ -410,7 +423,7 @@ public class FiveSpec extends LinearOpMode {
                     .addPath(
                             new BezierLine(
                                     new Point(19.750, 8.000, Point.CARTESIAN),
-                                    new Point(19.000, 8.000, Point.CARTESIAN)
+                                    new Point(21.000, 8.000, Point.CARTESIAN)
                             )
                     )
                     .setConstantHeadingInterpolation(Math.toRadians(180))
@@ -419,21 +432,22 @@ public class FiveSpec extends LinearOpMode {
             Score1 = follower.pathBuilder()
                     .addPath(
                             new BezierCurve(
-                                    new Point(19.000, 8.000, Point.CARTESIAN),
-                                    new Point(23.706122448979592, 57.6, Point.CARTESIAN),
-                                    new Point(44.000, 67.000, Point.CARTESIAN)
+                                    new Point(21.000, 8.000, Point.CARTESIAN),
+                                    new Point(12.903, 62.000, Point.CARTESIAN),
+                                    new Point(44.000, 69.000, Point.CARTESIAN)
                             )
                     )
                     .setConstantHeadingInterpolation(Math.toRadians(180))
-                    .setZeroPowerAccelerationMultiplier(0.25)
+                    .setZeroPowerAccelerationMultiplier(0.1)
                     .build();
 
             Pickup2 = follower.pathBuilder()
                     .addPath(
                             new BezierCurve(
-                                    new Point(44.000, 67.000, Point.CARTESIAN),
-                                    new Point(12.903, 62.000, Point.CARTESIAN),
-                                    new Point(19.000, 30.000, Point.CARTESIAN)
+                                    new Point(44.000, 69.000, Point.CARTESIAN),
+                                    new Point(24.000, 62.000, Point.CARTESIAN),
+                                    new Point(55.000,35.000, Point.CARTESIAN),
+                                    new Point(21.000, 30.000, Point.CARTESIAN)
                             )
                     )
                     .setConstantHeadingInterpolation(Math.toRadians(180))
@@ -442,21 +456,22 @@ public class FiveSpec extends LinearOpMode {
             Score2 = follower.pathBuilder()
                     .addPath(
                             new BezierCurve(
-                                    new Point(19.000, 30.000, Point.CARTESIAN),
+                                    new Point(21.000, 30.000, Point.CARTESIAN),
                                     new Point(12.903, 62.000, Point.CARTESIAN),
-                                    new Point(44.000, 70.000, Point.CARTESIAN)
+                                    new Point(44.000, 73.000, Point.CARTESIAN)
                             )
                     )
                     .setConstantHeadingInterpolation(Math.toRadians(180))
-                    .setZeroPowerAccelerationMultiplier(0.25)
+                    .setZeroPowerAccelerationMultiplier(0.5)
                     .build();
 
             Pickup3 = follower.pathBuilder()
                     .addPath(
                             new BezierCurve(
-                                    new Point(44.000, 70.000, Point.CARTESIAN),
-                                    new Point(12.903, 62.000, Point.CARTESIAN),
-                                    new Point(19.000, 30.000, Point.CARTESIAN)
+                                    new Point(44.000, 73.000, Point.CARTESIAN),
+                                    new Point(24.000, 62.000, Point.CARTESIAN),
+                                    new Point(55.000,35.000, Point.CARTESIAN),
+                                    new Point(21.000, 30.000, Point.CARTESIAN)
                             )
                     )
                     .setConstantHeadingInterpolation(Math.toRadians(180))
@@ -465,20 +480,22 @@ public class FiveSpec extends LinearOpMode {
             Score3 = follower.pathBuilder()
                     .addPath(
                             new BezierCurve(
-                                    new Point(19.000, 30.000, Point.CARTESIAN),
+                                    new Point(21.000, 30.000, Point.CARTESIAN),
                                     new Point(12.903, 62.000, Point.CARTESIAN),
-                                    new Point(44.000, 73.000, Point.CARTESIAN)
+                                    new Point(44.000, 77.000, Point.CARTESIAN)
                             )
                     )
                     .setConstantHeadingInterpolation(Math.toRadians(180))
+                    .setZeroPowerAccelerationMultiplier(0.1)
                     .build();
 
             Pickup4 = follower.pathBuilder()
                     .addPath(
                             new BezierCurve(
-                                    new Point(44.000, 73.000, Point.CARTESIAN),
-                                    new Point(12.903, 62.000, Point.CARTESIAN),
-                                    new Point(19.000, 30.000, Point.CARTESIAN)
+                                    new Point(44.000, 77.000, Point.CARTESIAN),
+                                    new Point(24.000, 62.000, Point.CARTESIAN),
+                                    new Point(55.000,35.000, Point.CARTESIAN),
+                                    new Point(21.000, 30.000, Point.CARTESIAN)
                             )
                     )
                     .setConstantHeadingInterpolation(Math.toRadians(180))
@@ -487,18 +504,19 @@ public class FiveSpec extends LinearOpMode {
             Score4 = follower.pathBuilder()
                     .addPath(
                             new BezierCurve(
-                                    new Point(19.000, 30.000, Point.CARTESIAN),
+                                    new Point(21.000, 30.000, Point.CARTESIAN),
                                     new Point(12.903, 62.000, Point.CARTESIAN),
-                                    new Point(44.000, 76.000, Point.CARTESIAN)
+                                    new Point(44.000, 80.000, Point.CARTESIAN)
                             )
                     )
                     .setConstantHeadingInterpolation(Math.toRadians(180))
+                    .setZeroPowerAccelerationMultiplier(0.1)
                     .build();
             Park = follower.pathBuilder()
                     .addPath(
                             new BezierLine(
-                                    new Point(44.000, 76.000, Point.CARTESIAN),
-                                    new Point(15.000, 30.000, Point.CARTESIAN)
+                                    new Point(44.000, 80.000, Point.CARTESIAN),
+                                    new Point(22.000, 30.000, Point.CARTESIAN)
                             )
                     )
                     .setConstantHeadingInterpolation(Math.toRadians(180))

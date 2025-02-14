@@ -5,11 +5,11 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.LED;
 import com.sfdev.assembly.state.StateMachine;
 
-import config.teleop.Boxtube;
-import config.teleop.Drivetrain;
-import config.teleop.EndEffector;
-import config.teleop.TeleRobot;
-import config.teleop.StateMachineGenerator;
+import config.Subsystem.Boxtube;
+import config.Subsystem.Drivetrain;
+import config.Subsystem.EndEffector;
+import config.Subsystem.TeleRobot;
+import config.Subsystem.StateMachineGenerator;
 
 @TeleOp(name = "MainTele")
 public class MainTele extends LinearOpMode {
@@ -58,7 +58,11 @@ public class MainTele extends LinearOpMode {
 
             if (gamepad1.right_bumper) {
                 drivetrain.TeleopControl(gamepad1.left_stick_y * 0.7, gamepad1.left_stick_x * 0.7, gamepad1.right_stick_x / 2.0);
-            } else {
+            }
+            else if(boxtube.PivotisMoving()) {
+                drivetrain.TeleopControl(gamepad1.left_stick_y*0.5, gamepad1.left_stick_x, gamepad1.right_stick_x);
+            }
+            else{
                 drivetrain.TeleopControl(gamepad1.left_stick_y, gamepad1.left_stick_x, gamepad1.right_stick_x);
             }
 

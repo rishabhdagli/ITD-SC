@@ -1,4 +1,4 @@
-package config.teleop;
+package config.Subsystem;
 
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.HardwareMap;
@@ -14,7 +14,18 @@ public class TeleRobot {
     double basketExtension = 30500;
     double specScoreExtension = 20000;
 
-    final int pivotBackPos = 1175;
+    double currentExtension;
+
+    boolean wasPressedL;
+    boolean wasPressedR;
+
+    boolean minExtendSubPressed;
+    boolean midExtendSubPressed;
+
+    boolean lowExtendSubPressed;
+    boolean maxExtendSubPressed;
+
+    final int pivotBackPos = 1147;
 
     final int pivotHorizontal = 0;
 
@@ -35,7 +46,7 @@ public class TeleRobot {
     }
 
     public void ClawOpen() {
-        endEffector.claw(0.75);
+        endEffector.claw(0.55);
     }
 
     public void ClawClose() {
@@ -54,9 +65,50 @@ public class TeleRobot {
     public void SampleHover(){
         boxtube.PivotMove(pivotHorizontal);
         boxtube.ExtensionMove(midExtension);
-        endEffector.setEndEffector(10, -115);
+        endEffector.setEndEffector(30, -120);
         endEffector.turret(0.47);
         ClawOpen();
+
+        if(gamepad.dpad_down){
+            minExtendSubPressed = true;
+            currentExtension = minExtension;
+        }
+        if(gamepad.dpad_left){
+            midExtendSubPressed = true;
+            currentExtension = midExtension;
+        }
+        if(gamepad.dpad_up){
+            maxExtendSubPressed = true;
+            currentExtension = fullExtension;
+        }
+        if(!gamepad.dpad_down && minExtendSubPressed){
+            minExtendSubPressed  = false;
+        }
+        if(!gamepad.dpad_left && lowExtendSubPressed){
+            lowExtendSubPressed = false;
+        }
+        if(!gamepad.dpad_right && midExtendSubPressed){
+            midExtendSubPressed = false;
+        }
+        if(!gamepad.dpad_down && maxExtendSubPressed){
+            maxExtendSubPressed = false;
+        }
+
+        if (gamepad.left_bumper) {
+            wasPressedL = true;
+        }
+        if (gamepad.right_bumper) {
+            wasPressedR = true;
+        }
+
+        if(!gamepad.left_bumper && wasPressedL){
+            endEffector.hand(endEffector.handPos() + 0.05);
+            wasPressedL = false;
+        }
+        if(!gamepad.right_bumper && wasPressedR){
+            endEffector.hand(endEffector.handPos() - 0.05);
+            wasPressedR = false;
+        }
 
         //Add stuff to move extension + hand stuff using new .copy() method
     }
@@ -64,7 +116,7 @@ public class TeleRobot {
     public void SampleGrab() {
         boxtube.PivotMove(pivotHorizontal);
         endEffector.turret(0.47);
-        endEffector.setEndEffector(-25,-75);
+        endEffector.setEndEffector(0,-80);
         ClawOpen();
     }
 
@@ -90,7 +142,7 @@ public class TeleRobot {
     public void BasketExtension(){ // Ready to score
         boxtube.PivotMove(pivotBackPos);
         boxtube.ExtensionMove(basketExtension);
-        endEffector.setEndEffector(-10,20); //Needs fixing
+        endEffector.setEndEffector(-10,50); //Needs fixing
         endEffector.hand(0.48);
         endEffector.turret(0.47);
         ClawClose();
