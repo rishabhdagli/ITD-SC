@@ -17,8 +17,8 @@ import config.Subsystem.EndEffector;
 import pedroPathing.constants.FConstants;
 import pedroPathing.constants.LConstants;
 
-@Autonomous(name = "5 Specimen")
-public class FiveSpec extends LinearOpMode {
+@Autonomous(name = "Extending 5 Specimen")
+public class ExtendingFiveSpec extends LinearOpMode {
     AutoRobot r;
 
     Boxtube boxtube;
@@ -35,21 +35,21 @@ public class FiveSpec extends LinearOpMode {
 
 
     PathChain Preload,
-    PrePush1,
-    PrePush2,
-    PrePush3,
-    Push1,
-    Push2,
-    Push3,
-    Pickup1,
-    Pickup2,
-    Pickup3,
-    Pickup4,
-    Score1,
-    Score2,
-    Score3,
-    Score4,
-    Park;
+            PrePush1,
+            PrePush2,
+            PrePush3,
+            Push1,
+            Push2,
+            Push3,
+            Pickup1,
+            Pickup2,
+            Pickup3,
+            Pickup4,
+            Score1,
+            Score2,
+            Score3,
+            Score4,
+            Park;
 
     enum PathStates {
         Preload, PrePush1, PrePush2, PrePush3, Push1, Push2, Push3, Pickup1, Pickup2, Pickup3, Pickup4, Score1, Score2, Score3, Score4, Park, End, WAIT1
@@ -281,7 +281,7 @@ public class FiveSpec extends LinearOpMode {
                                 if(actionTimer.getElapsedTimeSeconds()>3.5) {
                                     r.SpecimenExtDown();
                                     if(actionTimer.getElapsedTimeSeconds() > 4){
-                                        r.SpecimenWall();
+                                        r.SpecimenExtendedWall();
                                         follower.followPath(Pickup4);
                                         setPathState(PathStates.Score4);
                                     }
@@ -297,15 +297,20 @@ public class FiveSpec extends LinearOpMode {
                         resetActionTimer();
 
                         if(actionTimer.getElapsedTimeSeconds()>1) {
-                            r.SpecimenWallGrab();
+                            r.SpecimenExtendedWallGrab();
                             if(actionTimer.getElapsedTimeSeconds() > 2) {
-                                r.SpecimenWallUp();
-                                follower.followPath(Score4);
-                                r.SpecimenPreScore();
-                                setPathState(PathStates.Park);
+                                r.SpecimenExtendedWallUp();
+                                if(actionTimer.getElapsedTimeSeconds() > 2.25){
+                                    r.SpecimenExtDown();
+                                    if(actionTimer.getElapsedTimeSeconds() > 2.5){
+                                        follower.followPath(Score4);
+                                        r.SpecimenPreScore();
+                                        setPathState(PathStates.Park);
+                                    }
+                                }
                             }
                         } else {
-                            r.SpecimenWall();
+                            r.SpecimenExtendedWall();
                         }
                     }
                     break;
@@ -324,7 +329,6 @@ public class FiveSpec extends LinearOpMode {
                                         follower.followPath(Park);
                                         setPathState(PathStates.End);
                                     }
-
                                 }
                             }
                         }
@@ -342,184 +346,184 @@ public class FiveSpec extends LinearOpMode {
     }
     public void buildPaths() {
 
-            Preload = follower.pathBuilder()
-                    .addPath(
-                            new BezierLine(
-                                    new Point(7.000, 54.000, Point.CARTESIAN),
-                                    new Point(25.000, 61.000, Point.CARTESIAN)
-                            )
-                    )
-                    .setConstantHeadingInterpolation(Math.toRadians(0))
-                    .setZeroPowerAccelerationMultiplier(.75)
-                    .build();
+        Preload = follower.pathBuilder()
+                .addPath(
+                        new BezierLine(
+                                new Point(7.000, 54.000, Point.CARTESIAN),
+                                new Point(25.000, 61.000, Point.CARTESIAN)
+                        )
+                )
+                .setConstantHeadingInterpolation(Math.toRadians(0))
+                .setZeroPowerAccelerationMultiplier(.75)
+                .build();
 
-            PrePush1 = follower.pathBuilder()
-                    .addPath(
-                            new BezierCurve(
-                                    new Point(25.000, 61.000, Point.CARTESIAN),
-                                    new Point(29.419, 22.452, Point.CARTESIAN),
-                                    new Point(58.323, 52.129, Point.CARTESIAN),
-                                    new Point(58.000, 25.000, Point.CARTESIAN)
-                            )
-                    )
-                    .setLinearHeadingInterpolation(Math.toRadians(0), Math.toRadians(180))
-                    .build();
+        PrePush1 = follower.pathBuilder()
+                .addPath(
+                        new BezierCurve(
+                                new Point(25.000, 61.000, Point.CARTESIAN),
+                                new Point(29.419, 22.452, Point.CARTESIAN),
+                                new Point(58.323, 52.129, Point.CARTESIAN),
+                                new Point(58.000, 25.000, Point.CARTESIAN)
+                        )
+                )
+                .setLinearHeadingInterpolation(Math.toRadians(0), Math.toRadians(180))
+                .build();
 
-            Push1 = follower.pathBuilder()
-                    .addPath(
-                            new BezierLine(
-                                    new Point(58.000, 25.000, Point.CARTESIAN),
-                                    new Point(22.000, 25.000, Point.CARTESIAN)
-                            )
-                    )
-                    .setConstantHeadingInterpolation(Math.toRadians(180))
-                    .build();
+        Push1 = follower.pathBuilder()
+                .addPath(
+                        new BezierLine(
+                                new Point(58.000, 25.000, Point.CARTESIAN),
+                                new Point(22.000, 25.000, Point.CARTESIAN)
+                        )
+                )
+                .setConstantHeadingInterpolation(Math.toRadians(180))
+                .build();
 
-            PrePush2 = follower.pathBuilder()
-                    .addPath(
-                            new BezierCurve(
-                                    new Point(22.000, 25.000, Point.CARTESIAN),
-                                    new Point(59.613, 26.323, Point.CARTESIAN),
-                                    new Point(55.226, 27.613, Point.CARTESIAN),
-                                    new Point(57.000, 16.000, Point.CARTESIAN)
-                            )
-                    )
-                    .setConstantHeadingInterpolation(Math.toRadians(180))
-                    .build();
+        PrePush2 = follower.pathBuilder()
+                .addPath(
+                        new BezierCurve(
+                                new Point(22.000, 25.000, Point.CARTESIAN),
+                                new Point(59.613, 26.323, Point.CARTESIAN),
+                                new Point(55.226, 27.613, Point.CARTESIAN),
+                                new Point(57.000, 16.000, Point.CARTESIAN)
+                        )
+                )
+                .setConstantHeadingInterpolation(Math.toRadians(180))
+                .build();
 
-            Push2 = follower.pathBuilder()
-                    .addPath(
-                            new BezierLine(
-                                    new Point(57.000, 16.000, Point.CARTESIAN),
-                                    new Point(22.000, 13.000, Point.CARTESIAN)
-                            )
-                    )
-                    .setConstantHeadingInterpolation(Math.toRadians(180))
-                    .build();
+        Push2 = follower.pathBuilder()
+                .addPath(
+                        new BezierLine(
+                                new Point(57.000, 16.000, Point.CARTESIAN),
+                                new Point(22.000, 13.000, Point.CARTESIAN)
+                        )
+                )
+                .setConstantHeadingInterpolation(Math.toRadians(180))
+                .build();
 
-            PrePush3 = follower.pathBuilder()
-                    .addPath(
-                            new BezierCurve(
-                                    new Point(22.000, 13.000, Point.CARTESIAN),
-                                    new Point(32.000, 11.871, Point.CARTESIAN),
-                                    new Point(59.100, 18.050, Point.CARTESIAN),
-                                    new Point(57, 8.000, Point.CARTESIAN)
-                            )
-                    )
-                    .setConstantHeadingInterpolation(Math.toRadians(180))
-                    .build();
+        PrePush3 = follower.pathBuilder()
+                .addPath(
+                        new BezierCurve(
+                                new Point(22.000, 13.000, Point.CARTESIAN),
+                                new Point(32.000, 11.871, Point.CARTESIAN),
+                                new Point(59.100, 18.050, Point.CARTESIAN),
+                                new Point(57, 8.000, Point.CARTESIAN)
+                        )
+                )
+                .setConstantHeadingInterpolation(Math.toRadians(180))
+                .build();
 
-            Push3 = follower.pathBuilder()
-                    .addPath(
-                            new BezierLine(
-                                    new Point(57, 8.000, Point.CARTESIAN),
-                                    new Point(19.750, 8.000, Point.CARTESIAN)
-                            )
-                    )
-                    .setConstantHeadingInterpolation(Math.toRadians(180))
-                    .build();
+        Push3 = follower.pathBuilder()
+                .addPath(
+                        new BezierLine(
+                                new Point(57, 8.000, Point.CARTESIAN),
+                                new Point(19.750, 8.000, Point.CARTESIAN)
+                        )
+                )
+                .setConstantHeadingInterpolation(Math.toRadians(180))
+                .build();
 
-            Pickup1 = follower.pathBuilder()
-                    .addPath(
-                            new BezierLine(
-                                    new Point(19.750, 8.000, Point.CARTESIAN),
-                                    new Point(21.000, 8.000, Point.CARTESIAN)
-                            )
-                    )
-                    .setConstantHeadingInterpolation(Math.toRadians(180))
-                    .build();
+        Pickup1 = follower.pathBuilder()
+                .addPath(
+                        new BezierLine(
+                                new Point(19.750, 8.000, Point.CARTESIAN),
+                                new Point(21.000, 8.000, Point.CARTESIAN)
+                        )
+                )
+                .setConstantHeadingInterpolation(Math.toRadians(180))
+                .build();
 
-            Score1 = follower.pathBuilder()
-                    .addPath(
-                            new BezierCurve(
-                                    new Point(21.000, 8.000, Point.CARTESIAN),
-                                    new Point(12.903, 62.000, Point.CARTESIAN),
-                                    new Point(44.000, 69.000, Point.CARTESIAN)
-                            )
-                    )
-                    .setConstantHeadingInterpolation(Math.toRadians(180))
-                    .setZeroPowerAccelerationMultiplier(0.1)
-                    .build();
+        Score1 = follower.pathBuilder()
+                .addPath(
+                        new BezierCurve(
+                                new Point(21.000, 8.000, Point.CARTESIAN),
+                                new Point(12.903, 62.000, Point.CARTESIAN),
+                                new Point(44.000, 69.000, Point.CARTESIAN)
+                        )
+                )
+                .setConstantHeadingInterpolation(Math.toRadians(180))
+                .setZeroPowerAccelerationMultiplier(0.1)
+                .build();
 
-            Pickup2 = follower.pathBuilder()
-                    .addPath(
-                            new BezierCurve(
-                                    new Point(44.000, 69.000, Point.CARTESIAN),
-                                    new Point(24.000, 62.000, Point.CARTESIAN),
-                                    new Point(55.000,35.000, Point.CARTESIAN),
-                                    new Point(21.000, 30.000, Point.CARTESIAN)
-                            )
-                    )
-                    .setConstantHeadingInterpolation(Math.toRadians(180))
-                    .build();
+        Pickup2 = follower.pathBuilder()
+                .addPath(
+                        new BezierCurve(
+                                new Point(44.000, 69.000, Point.CARTESIAN),
+                                new Point(24.000, 62.000, Point.CARTESIAN),
+                                new Point(55.000,35.000, Point.CARTESIAN),
+                                new Point(21.000, 30.000, Point.CARTESIAN)
+                        )
+                )
+                .setConstantHeadingInterpolation(Math.toRadians(180))
+                .build();
 
-            Score2 = follower.pathBuilder()
-                    .addPath(
-                            new BezierCurve(
-                                    new Point(21.000, 30.000, Point.CARTESIAN),
-                                    new Point(12.903, 62.000, Point.CARTESIAN),
-                                    new Point(44.000, 73.000, Point.CARTESIAN)
-                            )
-                    )
-                    .setConstantHeadingInterpolation(Math.toRadians(180))
-                    .setZeroPowerAccelerationMultiplier(0.5)
-                    .build();
+        Score2 = follower.pathBuilder()
+                .addPath(
+                        new BezierCurve(
+                                new Point(21.000, 30.000, Point.CARTESIAN),
+                                new Point(12.903, 62.000, Point.CARTESIAN),
+                                new Point(44.000, 73.000, Point.CARTESIAN)
+                        )
+                )
+                .setConstantHeadingInterpolation(Math.toRadians(180))
+                .setZeroPowerAccelerationMultiplier(0.5)
+                .build();
 
-            Pickup3 = follower.pathBuilder()
-                    .addPath(
-                            new BezierCurve(
-                                    new Point(44.000, 73.000, Point.CARTESIAN),
-                                    new Point(24.000, 62.000, Point.CARTESIAN),
-                                    new Point(55.000,35.000, Point.CARTESIAN),
-                                    new Point(21.000, 30.000, Point.CARTESIAN)
-                            )
-                    )
-                    .setConstantHeadingInterpolation(Math.toRadians(180))
-                    .build();
+        Pickup3 = follower.pathBuilder()
+                .addPath(
+                        new BezierCurve(
+                                new Point(44.000, 73.000, Point.CARTESIAN),
+                                new Point(24.000, 62.000, Point.CARTESIAN),
+                                new Point(55.000,35.000, Point.CARTESIAN),
+                                new Point(21.000, 30.000, Point.CARTESIAN)
+                        )
+                )
+                .setConstantHeadingInterpolation(Math.toRadians(180))
+                .build();
 
-            Score3 = follower.pathBuilder()
-                    .addPath(
-                            new BezierCurve(
-                                    new Point(21.000, 30.000, Point.CARTESIAN),
-                                    new Point(12.903, 62.000, Point.CARTESIAN),
-                                    new Point(44.000, 77.000, Point.CARTESIAN)
-                            )
-                    )
-                    .setConstantHeadingInterpolation(Math.toRadians(180))
-                    .setZeroPowerAccelerationMultiplier(0.1)
-                    .build();
+        Score3 = follower.pathBuilder()
+                .addPath(
+                        new BezierCurve(
+                                new Point(21.000, 30.000, Point.CARTESIAN),
+                                new Point(12.903, 62.000, Point.CARTESIAN),
+                                new Point(44.000, 77.000, Point.CARTESIAN)
+                        )
+                )
+                .setConstantHeadingInterpolation(Math.toRadians(180))
+                .setZeroPowerAccelerationMultiplier(0.1)
+                .build();
 
-            Pickup4 = follower.pathBuilder()
-                    .addPath(
-                            new BezierCurve(
-                                    new Point(44.000, 77.000, Point.CARTESIAN),
-                                    new Point(24.000, 62.000, Point.CARTESIAN),
-                                    new Point(55.000,35.000, Point.CARTESIAN),
-                                    new Point(21.000, 30.000, Point.CARTESIAN)
-                            )
-                    )
-                    .setConstantHeadingInterpolation(Math.toRadians(180))
-                    .build();
+        Pickup4 = follower.pathBuilder()
+                .addPath(
+                        new BezierCurve(
+                                new Point(44.000, 77.000, Point.CARTESIAN),
+                                new Point(24.000, 62.000, Point.CARTESIAN),
+                                new Point(55.000,35.000, Point.CARTESIAN),
+                                new Point(21.000, 30.000, Point.CARTESIAN)
+                        )
+                )
+                .setConstantHeadingInterpolation(Math.toRadians(180))
+                .build();
 
-            Score4 = follower.pathBuilder()
-                    .addPath(
-                            new BezierCurve(
-                                    new Point(21.000, 30.000, Point.CARTESIAN),
-                                    new Point(12.903, 62.000, Point.CARTESIAN),
-                                    new Point(44.000, 80.000, Point.CARTESIAN)
-                            )
-                    )
-                    .setConstantHeadingInterpolation(Math.toRadians(180))
-                    .setZeroPowerAccelerationMultiplier(0.1)
-                    .build();
-            Park = follower.pathBuilder()
-                    .addPath(
-                            new BezierLine(
-                                    new Point(44.000, 80.000, Point.CARTESIAN),
-                                    new Point(22.000, 30.000, Point.CARTESIAN)
-                            )
-                    )
-                    .setConstantHeadingInterpolation(Math.toRadians(180))
-                    .build();
-        }
+        Score4 = follower.pathBuilder()
+                .addPath(
+                        new BezierCurve(
+                                new Point(21.000, 30.000, Point.CARTESIAN),
+                                new Point(12.903, 62.000, Point.CARTESIAN),
+                                new Point(44.000, 80.000, Point.CARTESIAN)
+                        )
+                )
+                .setConstantHeadingInterpolation(Math.toRadians(180))
+                .setZeroPowerAccelerationMultiplier(0.1)
+                .build();
+        Park = follower.pathBuilder()
+                .addPath(
+                        new BezierLine(
+                                new Point(44.000, 80.000, Point.CARTESIAN),
+                                new Point(22.000, 30.000, Point.CARTESIAN)
+                        )
+                )
+                .setConstantHeadingInterpolation(Math.toRadians(180))
+                .build();
+    }
 }

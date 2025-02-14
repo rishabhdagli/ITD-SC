@@ -13,15 +13,11 @@ public class TeleRobot {
     double fullExtension = 20000;
     double basketExtension = 30500;
     double specScoreExtension = 20000;
-
     double currentExtension;
-
     boolean wasPressedL;
     boolean wasPressedR;
-
     boolean minExtendSubPressed;
     boolean midExtendSubPressed;
-
     boolean lowExtendSubPressed;
     boolean maxExtendSubPressed;
 
@@ -64,7 +60,7 @@ public class TeleRobot {
 
     public void SampleHover(){
         boxtube.PivotMove(pivotHorizontal);
-        boxtube.ExtensionMove(midExtension);
+        boxtube.ExtensionMove(currentExtension);
         endEffector.setEndEffector(30, -120);
         endEffector.turret(0.47);
         ClawOpen();
@@ -175,20 +171,20 @@ public class TeleRobot {
 
 
     public void SpecimenWall() {
-        boxtube.ExtensionMove(10000); // half extension
+        boxtube.ExtensionMove(midExtension); // half extension
         boxtube.PivotMove(pivotHorizontal); // half pivot
         endEffector.hand(0.48);
-        endEffector.setEndEffector(80, -80);
+        endEffector.setEndEffector(90, -90);
         endEffector.turret(0.47);
         ClawOpen();
 
     }
 
     public void SpecimenWallGrab() {
-        boxtube.ExtensionMove(10000);
+        boxtube.ExtensionMove(midExtension);
         boxtube.PivotMove(pivotHorizontal);
         endEffector.hand(0.48);
-        endEffector.setEndEffector(80,-80);
+        endEffector.setEndEffector(90,-90);
         endEffector.turret(0.47);
         ClawClose();
     }
@@ -207,7 +203,7 @@ public class TeleRobot {
         endEffector.turret(0.47);
         endEffector.hand(0.48);
         boxtube.PivotMove(pivotSpecSpos);
-        endEffector.setEndEffector(100,-45);
+        endEffector.setEndEffector(45,50);
     }
 
     public void SpecimenLatch() {

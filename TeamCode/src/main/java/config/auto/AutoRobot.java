@@ -21,6 +21,8 @@ public class AutoRobot {
     public EndEffector endEffector;
     double specPreScore = 2000;
     double specScore = 15250;
+
+    double specGrabExt = 10000;
     double sampleScore = 31500;
     double samplePickupExt = 2000;
     double pivotHorizontal = 0;
@@ -149,6 +151,34 @@ public class AutoRobot {
     public void SpecimenExtDown()
     {
         boxtube.setExt(0);
+    }
+
+    public void SpecimenExtendedWall(){
+        boxtube.setPivot(pivotHorizontal);
+        boxtube.setExt(specGrabExt);
+        endEffector.hand(0.48);
+        endEffector.setEndEffector(90,-90);
+        endEffector.turret(0.47);
+        ClawOpen();
+    }
+
+    public void SpecimenExtendedWallGrab() {
+        boxtube.setPivot(pivotHorizontal);
+        boxtube.setExt(specGrabExt);
+        endEffector.hand(0.48);
+        endEffector.setEndEffector(90,-90);
+        endEffector.turret(0.47);
+        ClawClose();
+    }
+
+
+    public void SpecimenExtendedWallUp(){
+        boxtube.setPivot(pivotHorizontal);
+        boxtube.setExt(specGrabExt);
+        endEffector.hand(0.48);
+        endEffector.turret(0.47);
+        endEffector.setEndEffector(100, -40);
+        ClawClose();
     }
     public void SpecimenLatchOpen(){
         endEffector.turret(0.47);

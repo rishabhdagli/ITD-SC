@@ -1,5 +1,8 @@
 package opmode;
 
+import com.pedropathing.follower.Follower;
+import com.pedropathing.localization.Pose;
+import com.pedropathing.pathgen.Point;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.LED;
@@ -17,7 +20,7 @@ public class MainTele extends LinearOpMode {
     public Drivetrain drivetrain;
     public TeleRobot teleRobot;
     public Boxtube boxtube;
-
+    public Follower follower;
     public EndEffector endEffector;
     boolean sampleMode = true, check = false;
     double MonkeyExpressFlashBang = 0;
@@ -31,6 +34,9 @@ public class MainTele extends LinearOpMode {
         teleRobot = new TeleRobot(hardwareMap, telemetry, gamepad2);
         drivetrain = new Drivetrain(hardwareMap, telemetry);
 
+        follower = new Follower(hardwareMap);
+
+        follower.setStartingPose(new Pose(22.000, 30.000, Point.CARTESIAN));
 
         redLED = hardwareMap.get(LED.class, "red");
         greenLED = hardwareMap.get(LED.class, "green");
@@ -125,6 +131,12 @@ public class MainTele extends LinearOpMode {
                 telemetry.addData("State: ", specimenMachine.getStateString());
             }
             else{telemetry.addData("State: ", sampleMachine.getStateString());}
+
+            telemetry.addData("X pose: ", follower.getPose().getX());
+            telemetry.addData("Y pose: ", follower.getPose().getY());
+            telemetry.addData("Heading pose: ", follower.getPose().getHeading());
+
+            follower.update();
 
             telemetry.update();
 
