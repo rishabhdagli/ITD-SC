@@ -14,7 +14,6 @@ import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 @Config
-@Disabled
 @TeleOp(name = "Tester Class")
 public class Tester extends LinearOpMode {
 

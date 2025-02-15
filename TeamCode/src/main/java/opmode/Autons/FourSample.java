@@ -65,17 +65,17 @@ public class FourSample extends LinearOpMode {
         Constants.setConstants(FConstants.class, LConstants.class);
         follower = new Follower(hardwareMap);
         buildPaths();
-        r = new AutoRobot(hardwareMap, telemetry, new Pose(7.000, 114.000));
+        r = new AutoRobot(hardwareMap, telemetry, new Pose(7.000, 104.000));
         boxtube = r.boxtube;
         endEffector = r.endEffector;
         r.t.addData("init", true);
         r.t.update();
 
-//        while(opModeInInit()){
-//            boxtube.updatePiv();
-//            boxtube.updateExt();
-//            r.InitPosition();
-//        }
+        while(opModeInInit()){
+            boxtube.updatePiv();
+            boxtube.updateExt();
+            r.InitPosition();
+        }
 
         waitForStart();
 
@@ -89,7 +89,7 @@ public class FourSample extends LinearOpMode {
             follower.update();
             telemetry.addData("State", currentPathState);
             telemetry.update();
-
+            boxtube.changekP(0.005);
             switch (currentPathState) {
 
                 case Preload:
@@ -98,123 +98,137 @@ public class FourSample extends LinearOpMode {
                     break;
 
                 case PickupOne:
-                    if(!follower.isBusy()){
-
-
+                    if (!follower.isBusy()) {
+                        resetActionTimer();
+                        if( actionTimer.getElapsedTimeSeconds() < 1.5) {
+                            r.PivotBack();
+                        }
+                        else if( actionTimer.getElapsedTimeSeconds() < 2.5)
+                        {
+                            r.BasketExtension();
+                        }
+                        else if(actionTimer.getElapsedTimeSeconds() < 3){
+                            r.ClawOpen();
+                        }
+                        else if(actionTimer.getElapsedTimeSeconds() < 3.5) {
+                            r.BasketReturn();
+                        }
+                        else if(actionTimer.getElapsedTimeSeconds() > 3.5){
+                            r.Loiter();
                             follower.followPath(Pickup1);
                             setPathState(PathStates.ScoreOne);
-
-
-//                        resetActionTimer();
-
-//                        r.PivotBack();
-
-//                        if(actionTimer.getElapsedTimeSeconds() > 1.5){
-//                            r.BasketExtension();
-//                            if(actionTimer.getElapsedTimeSeconds() > 2.5){
-//                                r.ClawOpen();
-//                                if(actionTimer.getElapsedTimeSeconds() > 3){
-//                                    r.BasketReturn();
-//                                    if(actionTimer.getElapsedTimeSeconds() > 3.5){
-//                                        r.Loiter();
-//                                        follower.followPath(Pickup1);
-//                                        setPathState(PathStates.ScoreOne);
-//                                    }
-//                                }
-//                            }
-//                        }
-
+                            }
                     }
                     break;
 
                 case ScoreOne:
-                    if(!follower.isBusy()) {
+                    if (!follower.isBusy()) {
+                        resetActionTimer();
 
-
-
-
-                            follower.followPath(Score1);
+                        if(actionTimer.getElapsedTimeSeconds() < 2.5) {
+                            r.SampleHoverExt(12000, 0.52, 0.48);
+                            r.ClawOpen();
+                        }
+                        else if(actionTimer.getElapsedTimeSeconds() < 2.7) {
+                           r.SampleGrab();
+                        }
+                        else if(actionTimer.getElapsedTimeSeconds() < 3.3) {
+                            r.ClawClose();
+                        }
+                        else if(actionTimer.getElapsedTimeSeconds() < 4){
+                            r.LoiterSample();
+                        }
+                        else if(actionTimer.getElapsedTimeSeconds() > 4){
+                            follower.followPath(Score2);
                             setPathState(PathStates.PickupTwo);
-
-
-//                        resetActionTimer();
-//
-//                        if(actionTimer.getElapsedTimeSeconds() > 1){
-//                            r.SampleHover();
-//                            if(actionTimer.getElapsedTimeSeconds() > 1.5){
-//                                r.SampleGrab();
-//                                if(actionTimer.getElapsedTimeSeconds() > 2){
-//                                    r.LoiterSample();
-//                                    if(actionTimer.getElapsedTimeSeconds() > 2.5){
-//                                        follower.followPath(Score1);
-//                                        setPathState(PathStates.PickupTwo);
-//                                    }
-//                                }
-//                            }
-//                        } else {
-//                            r.Loiter();
-//                        }
-
+                        }
+                        else{r.Loiter();}
                     }
                     break;
 
                 case PickupTwo:
-                    if(!follower.isBusy()) {
-
-
+                    if (!follower.isBusy()) {
+                        resetActionTimer();
+                        if( actionTimer.getElapsedTimeSeconds() < 1.5) {
+                            r.PivotBack();
+                        }
+                        else if( actionTimer.getElapsedTimeSeconds() < 2.5)
+                        {
+                            r.BasketExtension();
+                        }
+                        else if(actionTimer.getElapsedTimeSeconds() < 3){
+                            r.ClawOpen();
+                        }
+                        else if(actionTimer.getElapsedTimeSeconds() < 3.5) {
+                            r.BasketReturn();
+                        }
+                        else if(actionTimer.getElapsedTimeSeconds() > 3.5){
+                            r.Loiter();
                             follower.followPath(Pickup2);
                             setPathState(PathStates.ScoreTwo);
-
-//                        if(actionTimer.getElapsedTimeSeconds() > 1){
-//                            r.PivotBack();
-//                            if(actionTimer.getElapsedTimeSeconds() > 2){
-//                                r.BasketExtension();
-//                                if(actionTimer.getElapsedTimeSeconds() > 3){
-//                                    r.ClawOpen();
-//                                    if(actionTimer.getElapsedTimeSeconds() > 3.5){
-//                                        r.BasketReturn();
-//                                        if(actionTimer.getElapsedTimeSeconds() > 4) {
-//                                            r.Loiter();
-//                                            follower.followPath(Pickup2);
-//                                            setPathState(PathStates.ScoreTwo);
-//                                        }
-//                                    }
-//                                }
-//                            }
-//                        }
-
-
-                    }
-                    break;
-
-                case ScoreTwo:
-                    if(!follower.isBusy()) {
-                        resetActionTimer();
-
-                        if(actionTimer.getElapsedTimeSeconds() > 1){
-                            follower.followPath(Score2);
-                            setPathState(PathStates.PickupThree);
                         }
 
                     }
                     break;
 
+                case ScoreTwo:
+                    if(!follower.isBusy()){
+                    resetActionTimer();
+                    if(actionTimer.getElapsedTimeSeconds() < 2.5) {
+                        r.SampleHoverExt(12000, 0.53, 0.48);
+                        r.ClawOpen();
+                    }
+                    else if(actionTimer.getElapsedTimeSeconds() < 2.7) {
+                        r.SampleGrab();
+                    }
+                    else if(actionTimer.getElapsedTimeSeconds() < 3.3) {
+                        r.ClawClose();
+                    }
+                    else if(actionTimer.getElapsedTimeSeconds() < 4){
+                        r.LoiterSample();
+                    }
+                    else if(actionTimer.getElapsedTimeSeconds() > 4){
+                        follower.followPath(Score2);
+                        setPathState(PathStates.PickupThree);
+                    }
+                    else{r.Loiter();}
+                    }
+                    break;
+
                 case PickupThree:
-                    if(!follower.isBusy()) {
-                        follower.followPath(Pickup3);
-                        setPathState(PathStates.ScoreThree);
+                    if (!follower.isBusy()) {
+                        resetActionTimer();
+                        if( actionTimer.getElapsedTimeSeconds() < 1.5) {
+                            r.PivotBack();
+                        }
+                        else if( actionTimer.getElapsedTimeSeconds() < 2.5)
+                        {
+                            r.BasketExtension();
+                        }
+                        else if(actionTimer.getElapsedTimeSeconds() < 3){
+                            r.ClawOpen();
+                        }
+                        else if(actionTimer.getElapsedTimeSeconds() < 3.5) {
+                            r.BasketReturn();
+                        }
+                        else if(actionTimer.getElapsedTimeSeconds() > 3.5){
+                            r.Loiter();
+                            follower.followPath(Pickup3);
+                            setPathState(PathStates.ScoreThree);
+                        }
+
                     }
                     break;
 
                 case ScoreThree:
-                    if(!follower.isBusy()) {
-                        follower.followPath(Score3);
+                    if (!follower.isBusy()) {
+                        follower.followPath(Score2);
                         setPathState(PathStates.Park);
                     }
                     break;
 
                 case Park:
-                    if(!follower.isBusy()) {
+                    if (!follower.isBusy()) {
                         follower.followPath(Park);
                         setPathState(PathStates.End);
                     }
@@ -235,42 +249,42 @@ public class FourSample extends LinearOpMode {
         PreloadScore = follower.pathBuilder()
                 .addPath(
                         new BezierCurve(
-                                new Point(7.000, 102.000, Point.CARTESIAN),
-                                new Point(20.000, 115.000, Point.CARTESIAN),
-                                new Point(15.000, 135.000, Point.CARTESIAN)
+                                new Point(7.000, 104.000, Point.CARTESIAN),
+                                new Point(21.676, 104.177, Point.CARTESIAN),
+                                new Point(14.000, 129.500, Point.CARTESIAN)
                         )
                 )
-                .setLinearHeadingInterpolation(Math.toRadians(0), Math.toRadians(-45))
+                .setLinearHeadingInterpolation(Math.toRadians(-90), Math.toRadians(-45))
                 .setZeroPowerAccelerationMultiplier(0.25)
                 .build();
 
         Pickup1 = follower.pathBuilder()
                 .addPath(
                         new BezierLine(
-                                new Point(15.000, 135.000, Point.CARTESIAN),
-                                new Point(25.000, 130.000, Point.CARTESIAN)
+                                new Point(15.500, 128.200, Point.CARTESIAN),
+                                new Point(23.750, 131.000, Point.CARTESIAN)
                         )
                 )
-                .setLinearHeadingInterpolation(Math.toRadians(-45), Math.toRadians(0))
+                .setLinearHeadingInterpolation(Math.toRadians(-45), Math.toRadians(-20))
                 .setZeroPowerAccelerationMultiplier(0.25)
                 .build();
-
+//
         Score1 = follower.pathBuilder()
                 .addPath(
                         new BezierLine(
-                                new Point(25.000, 130.000, Point.CARTESIAN),
-                                new Point(15.000, 135.000, Point.CARTESIAN)
+                                new Point(23.750, 131.000, Point.CARTESIAN),
+                                new Point(15.500, 128.200, Point.CARTESIAN)
                         )
                 )
-                .setLinearHeadingInterpolation(Math.toRadians(0), Math.toRadians(-45))
+                .setLinearHeadingInterpolation(Math.toRadians(-20), Math.toRadians(-45))
                 .setZeroPowerAccelerationMultiplier(0.25)
                 .build();
 
         Pickup2 = follower.pathBuilder()
                 .addPath(
                         new BezierLine(
-                                new Point(15.000, 135.000, Point.CARTESIAN),
-                                new Point(25.000, 145.000, Point.CARTESIAN)
+                                new Point(15.500, 128.200, Point.CARTESIAN),
+                                new Point(23.750, 131.000, Point.CARTESIAN)
                         )
                 )
                 .setLinearHeadingInterpolation(Math.toRadians(-45), Math.toRadians(0))
@@ -280,8 +294,8 @@ public class FourSample extends LinearOpMode {
         Score2 = follower.pathBuilder()
                 .addPath(
                         new BezierLine(
-                                new Point(25.000, 145.000, Point.CARTESIAN),
-                                new Point(15.000, 135.000, Point.CARTESIAN)
+                                new Point(23.750, 131.000, Point.CARTESIAN),
+                                new Point(15.500, 128.200, Point.CARTESIAN)
                         )
                 )
                 .setLinearHeadingInterpolation(Math.toRadians(0), Math.toRadians(-45))
@@ -291,31 +305,32 @@ public class FourSample extends LinearOpMode {
         Pickup3 = follower.pathBuilder()
                 .addPath(
                         new BezierLine(
-                                new Point(17.000, 125.000, Point.CARTESIAN),
-                                new Point(25.000, 135.000, Point.CARTESIAN)
+                                new Point(15.500, 128.200, Point.CARTESIAN),
+                                new Point(23.750, 131.000, Point.CARTESIAN)
                         )
                 )
-                .setLinearHeadingInterpolation(Math.toRadians(-45), Math.toRadians(15))
+                .setLinearHeadingInterpolation(Math.toRadians(-45), Math.toRadians(30))
                 .setZeroPowerAccelerationMultiplier(0.25)
                 .build();
-
+//
         Score3 = follower.pathBuilder()
                 .addPath(
                         new BezierLine(
-                                new Point(25.000, 135.000, Point.CARTESIAN),
-                                new Point(17.000, 125.000, Point.CARTESIAN)
+                                new Point(23.750, 131.000, Point.CARTESIAN),
+                                new Point(15.500, 128.200, Point.CARTESIAN)
                         )
                 )
-                .setLinearHeadingInterpolation(Math.toRadians(15), Math.toRadians(-45))
+                .setLinearHeadingInterpolation(Math.toRadians(30), Math.toRadians(-45))
                 .setZeroPowerAccelerationMultiplier(0.25)
                 .build();
 
         Park = follower.pathBuilder()
                 .addPath(
                         new BezierCurve(
-                                new Point(17.000, 125.000, Point.CARTESIAN),
-                                new Point(65.241, 112.457, Point.CARTESIAN),
-                                new Point(60.000, 94.000, Point.CARTESIAN)
+                                new Point(15.500, 128.200, Point.CARTESIAN),
+                                new Point(31.253, 111.907, Point.CARTESIAN),
+                                new Point(63.179, 118.460, Point.CARTESIAN),
+                                new Point(59.750, 92.000, Point.CARTESIAN)
                         )
                 )
                 .setLinearHeadingInterpolation(Math.toRadians(-45), Math.toRadians(90))

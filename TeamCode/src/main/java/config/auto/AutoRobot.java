@@ -23,7 +23,7 @@ public class AutoRobot {
     double specScore = 15250;
 
     double specGrabExt = 10000;
-    double sampleScore = 31500;
+    double sampleScore = 30500;
     double samplePickupExt = 2000;
     double pivotHorizontal = 0;
     double pivotSpecScore = 850;
@@ -159,16 +159,23 @@ public class AutoRobot {
     public void SampleHover(){
         boxtube.setPivot(pivotHorizontal);
         boxtube.setExt(samplePickupExt);
-        endEffector.setEndEffector(10, -115);
-        endEffector.turret(0.47);
+        endEffector.setEndEffector(30, -120);
+        endEffector.turret(0.5);
         ClawOpen();
     }
 
     public void SampleGrab() {
         boxtube.setPivot(pivotHorizontal);
-        endEffector.turret(0.47);
-        endEffector.setEndEffector(-25,-75);
+        endEffector.setEndEffector(0,-80);
         ClawOpen();
+    }
+
+    public void SampleHoverExt(double ext, double turret, double hand){
+        boxtube.setExt(ext);
+        boxtube.setPivot(pivotHorizontal);
+        endEffector.setEndEffector(30, -120);
+        endEffector.turret(turret);
+        endEffector.hand(hand);
     }
 
     public void LoiterSample() {
@@ -193,7 +200,7 @@ public class AutoRobot {
     public void BasketExtension(){ // Ready to score
         boxtube.setPivot(pivotBackPos);
         boxtube.setExt(sampleScore);
-        endEffector.setEndEffector(-10,20); //Needs fixing
+        endEffector.setEndEffector(-10,60); //Needs fixing
         endEffector.hand(0.48);
         endEffector.turret(0.47);
         ClawClose();
