@@ -6,6 +6,7 @@ import com.pedropathing.pathgen.Point;
 import com.pedropathing.util.Constants;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.LED;
 import com.sfdev.assembly.state.StateMachine;
 
@@ -48,8 +49,6 @@ public class MainTele extends LinearOpMode {
 
         StateMachine sampleMachine = StateMachineGenerator.GenerateSampleMachine(gamepad2, teleRobot);
         StateMachine specimenMachine = StateMachineGenerator.GenerateSpecimenMachine(gamepad2, teleRobot);
-
-
         waitForStart();
         sampleMachine.start();
 

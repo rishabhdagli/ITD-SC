@@ -14,7 +14,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 @Config
-@TeleOp(name = "Tester Class")
+@TeleOp(name = "Servo and Port Condensed")
 public class Tester extends LinearOpMode {
 
     //FTCDASH send what ever config stuff before the runopmode starts. Only intilize is before.

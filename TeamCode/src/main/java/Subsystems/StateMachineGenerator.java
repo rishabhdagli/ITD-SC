@@ -10,7 +10,6 @@ public class StateMachineGenerator {
     public static StateMachine GenerateSpecimenMachine(Gamepad g, TeleRobot r) {
         return new StateMachineBuilder()
 
-
                 .state(States.SpecimenWall) // Position to grab from the wall
                 .onEnter(r::SpecimenWall)
                 .loop(r::SpecimenWall)
