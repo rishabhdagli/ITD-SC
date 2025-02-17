@@ -11,9 +11,9 @@ import com.pedropathing.util.Timer;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
-import config.auto.AutoRobot;
-import config.Subsystem.Boxtube;
-import config.Subsystem.EndEffector;
+import Subsystems.AutoRobot;
+import Subsystems.Boxtube;
+import Subsystems.EndEffector;
 import pedroPathing.constants.FConstants;
 import pedroPathing.constants.LConstants;
 
@@ -65,7 +65,7 @@ public class FourSample extends LinearOpMode {
         Constants.setConstants(FConstants.class, LConstants.class);
         follower = new Follower(hardwareMap);
         buildPaths();
-        r = new AutoRobot(hardwareMap, telemetry, new Pose(7.000, 104.000));
+        r = new AutoRobot(hardwareMap, new Pose(7.000, 104.000));
         boxtube = r.boxtube;
         endEffector = r.endEffector;
         r.t.addData("init", true);

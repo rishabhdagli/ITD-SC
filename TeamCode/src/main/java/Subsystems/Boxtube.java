@@ -1,4 +1,4 @@
-package config.Subsystem;
+package Subsystems;
 
 import com.qualcomm.robotcore.hardware.AnalogInput;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -21,8 +21,6 @@ public class Boxtube{
     final int MaxExtension = 31500;
 
     public DcMotorEx Pivot, BT1, BT2, BT3;
-    public DcMotorEx PivotEnc;
-    //    public AnalogInput PivotEnc, ExtensionEnc;
 
     public double offsetAngle,  KpExt = 0.0005, ExtPwr;
 
@@ -32,9 +30,7 @@ public class Boxtube{
             ExtensionKp,ExtensionKd,lasterror;
 
 
-    public Boxtube(HardwareMap hardwareMap, Telemetry t) {
-        this.h = hardwareMap;
-        this.t = t;
+    public Boxtube(HardwareMap hardwareMap) {
         // Initialize motors with proper names
         Pivot = hardwareMap.get(DcMotorEx.class, "pivotENC");
         BT1 = hardwareMap.get(DcMotorEx.class, "Boxtube1ENC");
@@ -101,7 +97,6 @@ public class Boxtube{
         double currentPivot = pivotoffset + (-Pivot.getCurrentPosition());
         double error = targetPos - currentPivot;
 
-
         if (error >  0 ) {
             double power = PivotkP * error + PivotKd*(error - lasterror)/timer.seconds() +   FF * Math.cos(period * Pivot.getCurrentPosition());
             Pivot.setPower(power);
@@ -131,6 +126,8 @@ public class Boxtube{
         ExtensionMove(targetExt);
     }
 
+
+    //for slowing when moving
     public boolean PivotisMoving() {
         //change to if moving slow when down
        if(Pivot.getPower() > 0.3){
@@ -140,6 +137,7 @@ public class Boxtube{
            return false;
        }
     }
+
 
     public void ExtensionMove(double extensionTargetPos){
         double currentBoxtube = Boxtubeoffset = (-BT1.getCurrentPosition());

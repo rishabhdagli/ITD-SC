@@ -1,4 +1,4 @@
-package config.Subsystem;
+package Subsystems;
 
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.HardwareMap;
@@ -8,6 +8,7 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 public class TeleRobot {
     Boxtube boxtube;
     EndEffector endEffector;
+    Drivetrain drive;
     double minExtension = 2000;
     double midExtension = 10000;
     double fullExtension = 20000;
@@ -27,18 +28,25 @@ public class TeleRobot {
 
     final int pivotSpecSpos = 700;
 
-    public Telemetry t;
 
-    Gamepad gamepad;
+    Gamepad gamepadOperator,gamepadDriver;
 
 
-    public TeleRobot(HardwareMap hardwareMap, Telemetry t, Gamepad g2){
-        this.t = t;
+    public TeleRobot(HardwareMap hardwareMap,Gamepad g1, Gamepad g2){
 
-        boxtube = new Boxtube(hardwareMap,t);
-        endEffector = new EndEffector(hardwareMap, t);
+        drive = new Drivetrain(hardwareMap);
+        boxtube = new Boxtube(hardwareMap);
+        endEffector = new EndEffector(hardwareMap);
 
-        gamepad = g2;
+        gamepadOperator = g2;
+        gamepadDriver = g1;
+    }
+
+    public void TeleControl (double yMultiplier,double xMultiplier,double rxMultiplier){
+        drive.TeleopControl(
+                yMultiplier*gamepadDriver.left_stick_y,
+                xMultiplier*gamepadDriver.left_stick_x,
+                rxMultiplier*gamepadDriver.right_stick_x);
     }
 
     public void ClawOpen() {
@@ -65,43 +73,43 @@ public class TeleRobot {
         endEffector.turret(0.47);
         ClawOpen();
 
-        if(gamepad.dpad_down){
+        if(gamepadOperator.dpad_down){
             minExtendSubPressed = true;
             currentExtension = minExtension;
         }
-        if(gamepad.dpad_left){
+        if(gamepadOperator.dpad_left){
             midExtendSubPressed = true;
             currentExtension = midExtension;
         }
-        if(gamepad.dpad_up){
+        if(gamepadOperator.dpad_up){
             maxExtendSubPressed = true;
             currentExtension = fullExtension;
         }
-        if(!gamepad.dpad_down && minExtendSubPressed){
+        if(!gamepadOperator.dpad_down && minExtendSubPressed){
             minExtendSubPressed  = false;
         }
-        if(!gamepad.dpad_left && lowExtendSubPressed){
+        if(!gamepadOperator.dpad_left && lowExtendSubPressed){
             lowExtendSubPressed = false;
         }
-        if(!gamepad.dpad_right && midExtendSubPressed){
+        if(!gamepadOperator.dpad_right && midExtendSubPressed){
             midExtendSubPressed = false;
         }
-        if(!gamepad.dpad_down && maxExtendSubPressed){
+        if(!gamepadOperator.dpad_down && maxExtendSubPressed){
             maxExtendSubPressed = false;
         }
 
-        if (gamepad.left_bumper) {
+        if (gamepadOperator.left_bumper) {
             wasPressedL = true;
         }
-        if (gamepad.right_bumper) {
+        if (gamepadOperator.right_bumper) {
             wasPressedR = true;
         }
 
-        if(!gamepad.left_bumper && wasPressedL){
+        if(!gamepadOperator.left_bumper && wasPressedL){
             endEffector.hand(endEffector.handPos() + 0.05);
             wasPressedL = false;
         }
-        if(!gamepad.right_bumper && wasPressedR){
+        if(!gamepadOperator.right_bumper && wasPressedR){
             endEffector.hand(endEffector.handPos() - 0.05);
             wasPressedR = false;
         }

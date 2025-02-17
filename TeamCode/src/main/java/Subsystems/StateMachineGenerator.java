@@ -1,4 +1,4 @@
-package config.Subsystem;
+package Subsystems;
 
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.sfdev.assembly.state.StateMachine;

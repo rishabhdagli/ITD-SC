@@ -9,22 +9,20 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.LED;
 import com.sfdev.assembly.state.StateMachine;
 
-import config.Subsystem.Boxtube;
-import config.Subsystem.Drivetrain;
-import config.Subsystem.EndEffector;
-import config.Subsystem.TeleRobot;
-import config.Subsystem.StateMachineGenerator;
+import Subsystems.Boxtube;
+import Subsystems.Drivetrain;
+import Subsystems.EndEffector;
+import Subsystems.TeleRobot;
+import Subsystems.StateMachineGenerator;
 import pedroPathing.constants.FConstants;
 import pedroPathing.constants.LConstants;
 
 @TeleOp(name = "MainTele")
 public class MainTele extends LinearOpMode {
 
-    public Drivetrain drivetrain;
     public TeleRobot teleRobot;
     public Boxtube boxtube;
     public Follower follower;
-    public EndEffector endEffector;
     boolean sampleMode = true, check = false;
     double MonkeyExpressFlashBang = 0;
 
@@ -32,10 +30,8 @@ public class MainTele extends LinearOpMode {
 
     @Override
     public void runOpMode() throws InterruptedException {
-        boxtube= new Boxtube(hardwareMap, telemetry);
-        endEffector = new EndEffector(hardwareMap, telemetry);
-        teleRobot = new TeleRobot(hardwareMap, telemetry, gamepad2);
-        drivetrain = new Drivetrain(hardwareMap, telemetry);
+        boxtube= new Boxtube(hardwareMap); //just for pivot check
+        teleRobot = new TeleRobot(hardwareMap, gamepad1,gamepad2);
 
         Constants.setConstants(FConstants.class, LConstants.class);
 
@@ -67,16 +63,10 @@ public class MainTele extends LinearOpMode {
             else{specimenMachine.update();}
 
 
-            if (gamepad1.right_bumper) {
-                drivetrain.TeleopControl(gamepad1.left_stick_y * 0.7, gamepad1.left_stick_x * 0.7, gamepad1.right_stick_x / 2.0);
-            }
-            else if(boxtube.PivotisMoving()) {
-                drivetrain.TeleopControl(gamepad1.left_stick_y*0.5, gamepad1.left_stick_x, gamepad1.right_stick_x);
-            }
-            else{
-                drivetrain.TeleopControl(gamepad1.left_stick_y, gamepad1.left_stick_x, gamepad1.right_stick_x);
-            }
-
+            //hopefully this works
+            if (gamepad1.right_bumper) {teleRobot.TeleControl(0.7,0.7,0.5);}
+            else if(boxtube.PivotisMoving()) {teleRobot.TeleControl(0.7,1,1);}
+            else{teleRobot.TeleControl(1,1,1);}
 
 
             String state = sampleMachine.getStateString();

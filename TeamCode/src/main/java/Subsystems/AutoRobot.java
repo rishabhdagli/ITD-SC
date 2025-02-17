@@ -1,4 +1,4 @@
-package config.auto;
+package Subsystems;
 
 import com.pedropathing.follower.Follower;
 import com.pedropathing.localization.Pose;
@@ -9,8 +9,6 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 
-import config.Subsystem.Boxtube;
-import config.Subsystem.EndEffector;
 import pedroPathing.constants.FConstants;
 import pedroPathing.constants.LConstants;
 
@@ -35,18 +33,12 @@ public class AutoRobot {
 
     Gamepad gamepad;
 
-    public AutoRobot(HardwareMap h, Telemetry t, Pose startPose) {
-        this.t = t;
-
-//        LF = h.get(DcMotorEx.class,"leftFront");
-//        LR = h.get(DcMotorEx.class,"leftBack");
-//        RF = h.get(DcMotorEx.class,"rightFront");
-//        RR = h.get(DcMotorEx.class,"rightBack");
+    public AutoRobot(HardwareMap h, Pose startPose) {
 
         Constants.setConstants(FConstants.class, LConstants.class);
 
-        boxtube = new Boxtube(h, t);
-        endEffector = new EndEffector(h, t);
+        boxtube = new Boxtube(h);
+        endEffector = new EndEffector(h);
         follower = new Follower(h);
 
         follower.setStartingPose(startPose);
@@ -64,6 +56,8 @@ public class AutoRobot {
         endEffector.claw(1);
     }
 
+
+    //for legality
     public void InitPosition(){
         endEffector.setEndEffector(100, -110);
         endEffector.turret(0.2);
@@ -72,6 +66,8 @@ public class AutoRobot {
         boxtube.setExt(0);
         ClawClose();
     }
+
+
 
     public void Loiter(){
         endEffector.hand(0.48);
@@ -90,6 +86,9 @@ public class AutoRobot {
         boxtube.setExt(0);
     }
 
+
+
+    //Specimin Methods here
     public void SpecimenPreLoad() {
         endEffector.hand(0.48);
         endEffector.setEndEffector(0,-15);

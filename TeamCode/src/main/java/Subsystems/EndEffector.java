@@ -1,4 +1,4 @@
-package config.Subsystem;
+package Subsystems;
 
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.HardwareMap;
@@ -9,13 +9,8 @@ public class EndEffector {
 
     public Servo Wrist, Arm, Turret, Hand, Claw;
 
-    HardwareMap h;
 
-    Telemetry t;
-
-    public EndEffector(HardwareMap hardwareMap, Telemetry t) {
-        this.h = hardwareMap;
-        this.t = t;
+    public EndEffector(HardwareMap hardwareMap) {
 
         Wrist = hardwareMap.get(Servo.class, "Servo6");
         Arm = hardwareMap.get(Servo.class, "Servo7");
