@@ -17,7 +17,6 @@ import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 @Config
-@Disabled
 @TeleOp(name = "Tester - Expanded")
 public class TesterExpanded extends LinearOpMode {
 
@@ -60,7 +59,7 @@ public class TesterExpanded extends LinearOpMode {
     @Override
     public void runOpMode() {
 
-        follower = new Follower(hardwareMap);
+//        follower = new Follower(hardwareMap);
         //do that constants thing
         FtcDashboard dashboard = FtcDashboard.getInstance();
         MultipleTelemetry tele = new MultipleTelemetry(telemetry, dashboard.getTelemetry());

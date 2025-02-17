@@ -28,7 +28,7 @@ public class Boxtube{
 
     ElapsedTime timer;
 
-    double PivotDownKp = 0.002, PivotDownKd = 0.001, PivotkP = 0.007, PivotKd = 0.0008,Tick90 = 1147,FF = 0.09,period = (2*Math.PI)/(Tick90*4),
+    double PivotDownKp = 0.003, PivotDownKd = 0.00046, PivotkP = 0.003, PivotKd = 0.0004,Tick90 = 1178,FF = 0.09,period = (2*Math.PI)/(Tick90*4),
             ExtensionKp,ExtensionKd,lasterror;
 
 
@@ -97,6 +97,14 @@ public class Boxtube{
     public void updatePiv() {
         PivotMove(targetPiv);
     }
+    public int getExtpos(){
+        return BT1.getCurrentPosition();
+    }
+    public int getPivpos(){
+        return Pivot.getCurrentPosition();
+    }
+
+
     public void PivotMove(double targetPos) {
         double currentPivot = pivotoffset + (-Pivot.getCurrentPosition());
         double error = targetPos - currentPivot;

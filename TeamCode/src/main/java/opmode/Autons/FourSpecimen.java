@@ -310,7 +310,7 @@ public class FourSpecimen extends LinearOpMode {
                                 if(actionTimer.getElapsedTimeSeconds()>1.3) {
                                     r.SpecimenExtDown();
                                     if(actionTimer.getElapsedTimeSeconds() > 1.35){
-                                        r.LoiterIn();
+                                        r.SampleHover();
                                         follower.followPath(Park);
                                         setPathState(PathStates.End);
                                     }
@@ -439,7 +439,7 @@ public class FourSpecimen extends LinearOpMode {
                             )
                     )
                     .setConstantHeadingInterpolation(Math.toRadians(180))
-                    .setZeroPowerAccelerationMultiplier(1.25)
+                    .setZeroPowerAccelerationMultiplier(0.75)
                     .build();
 
             Score2 = follower.pathBuilder()

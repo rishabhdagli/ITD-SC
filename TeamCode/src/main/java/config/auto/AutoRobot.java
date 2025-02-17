@@ -26,9 +26,9 @@ public class AutoRobot {
     double sampleScore = 30500;
     double samplePickupExt = 2000;
     double pivotHorizontal = 0;
-    double pivotSpecScore = 850;
-    double pivotPreLoad = 500;
-    double pivotBackPos = 1147;
+    double pivotSpecScore = 900;
+    double pivotPreLoad = 550;
+    double pivotBackPos = 1200;
 
     public Telemetry t;
     public Follower follower;
@@ -82,10 +82,10 @@ public class AutoRobot {
         ClawClose();
     }
 
-    public void LoiterIn(){
+    public void LoiterIn() {
         endEffector.hand(0.48);
         endEffector.turret(0.47);
-        endEffector.setEndEffector(110,-20);
+        endEffector.setEndEffector(110, -20);
         boxtube.setPivot(0);
         boxtube.setExt(0);
     }
@@ -166,7 +166,7 @@ public class AutoRobot {
 
     public void SampleGrab() {
         boxtube.setPivot(pivotHorizontal);
-        endEffector.setEndEffector(0,-80);
+        endEffector.setEndEffector(-15,-55);
         ClawOpen();
     }
 
@@ -200,10 +200,18 @@ public class AutoRobot {
     public void BasketExtension(){ // Ready to score
         boxtube.setPivot(pivotBackPos);
         boxtube.setExt(sampleScore);
-        endEffector.setEndEffector(-10,60); //Needs fixing
+        endEffector.setEndEffector(0,65); //Needs fixing
         endEffector.hand(0.48);
         endEffector.turret(0.47);
         ClawClose();
+    }
+
+    public void AutonReZero(){
+        boxtube.setExt(0);
+        boxtube.setPivot(pivotHorizontal);
+        endEffector.setEndEffector(30, -120);
+        endEffector.turret(0.47);
+        endEffector.hand(0.48);
     }
 
     public void BasketReturn(){
@@ -211,7 +219,7 @@ public class AutoRobot {
         endEffector.hand(0.48);
         endEffector.turret(0.47);
         boxtube.setExt(samplePickupExt);
-        boxtube.setPivot(pivotBackPos - 200);
+        boxtube.setPivot(pivotBackPos - 500);
         ClawOpen();
     }
 }
