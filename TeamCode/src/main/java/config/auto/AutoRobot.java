@@ -118,15 +118,15 @@ public class AutoRobot {
 
     public void SpecimenWall(){
         boxtube.setPivot(pivotHorizontal);
-        endEffector.hand(0.48);
-        endEffector.setEndEffector(60,-45);
+        endEffector.hand(0.16);
+        endEffector.setEndEffector(75,-50);
         endEffector.turret(0.47);
         ClawOpen();
     }
 
     public void SpecimenWallGrab() {
-        endEffector.hand(0.48);
-        endEffector.setEndEffector(60,-45);
+        endEffector.hand(0.16);
+        endEffector.setEndEffector(75,-50);
         endEffector.turret(0.47);
         ClawClose();
     }
@@ -134,7 +134,7 @@ public class AutoRobot {
     public void SpecimenPreScore() {
         boxtube.setExt(specPreScore);
         endEffector.turret(0.47);
-        endEffector.hand(0.48);
+        endEffector.hand(0.16);
         endEffector.setEndEffector(45,70);
         ClawClose();
     }
