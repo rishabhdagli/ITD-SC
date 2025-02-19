@@ -1,4 +1,4 @@
-package opmode.Testers;
+package opmode.Tunners;
 
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.config.Config;
