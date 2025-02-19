@@ -47,8 +47,8 @@ public class MainTele extends LinearOpMode {
         greenLED2 = hardwareMap.get(LED.class, "green2");
 
 
-        StateMachine sampleMachine = StateMachineGenerator.GenerateSampleMachine(gamepad2, teleRobot);
-        StateMachine specimenMachine = StateMachineGenerator.GenerateSpecimenMachine(gamepad2, teleRobot);
+        StateMachine sampleMachine = StateMachineGenerator.GenerateSampleMachine(gamepad2,gamepad1, teleRobot);
+        StateMachine specimenMachine = StateMachineGenerator.GenerateSpecimenMachine(gamepad2,gamepad1, teleRobot);
         waitForStart();
         sampleMachine.start();
 

@@ -24,12 +24,25 @@ public class AutoAlignTuner extends LinearOpMode{
 
     Servo wrist,arm1,arm2,hand,claw,turret;
 
-    public static double Wrist,Arms,Hand,Claw,Turret=0.5;
+    public static double Wrist,Arms,Hand,Claw;
 
     public static int State = 0;
 
+    public static class TurretParams{ public double Turret=0.5,MStandard = 0,BStandard=0,TurretAngle= 90;}
+
+    public static class HandParams{ public double Hand=0.5,MStandard = 0,BStandard=0,HandAngle = 90;}
+
+    public void Arm(double pos){
+        arm1.setPosition(pos);
+        arm2.setPosition(pos);
+    }
+
+
     @Override
     public void runOpMode() throws InterruptedException {
+
+        TurretParams tp = new TurretParams();
+        HandParams hp = new HandParams();
 
         wrist = hardwareMap.get(Servo.class, "Servo6"); //wrist
         arm1 = hardwareMap.get(Servo.class, "Servo7"); //arm
@@ -60,15 +73,40 @@ public class AutoAlignTuner extends LinearOpMode{
 
 
         while (opModeInInit()){
+            wrist.setPosition(Wrist);
+            Arm(Arms);
+            claw.setPosition(Claw);
 switch (State){
+    //Turrent Interplot
     case 1:
         tele.addLine("Turret Interpolation: Make sure turret is straight or close else re-zero");
-        turret.setPosition(Turret);
-
+        tele.addLine("(0 degrees is 3oclock)" +
+                " Change MStanard and BStandard in turret based on interPLUT " +
+                "(x is angle y is turret position) on desmos");
+        tele.addLine("Switch to state 2 to continue Hand Interpolation");
+        turret.setPosition(tp.Turret);
+        break;
+        //Hand Interpolation
+        case 2:
+        tele.addLine("Hand Interpolation: Pick the side where the servo is at set it to 12oClock");
+        tele.addLine("(0 degrees is 3oclock)" +
+                " Change MStanard and BStanard in hand based on interPLUT" +
+                "(x is angle y is hand position) on desmos");
+        tele.addLine("Switch to 3 inverse kinematics");
+            hand.setPosition(hp.Hand);
+            //Inverse Kinematics check
+    case 3:
+        tele.addLine("Move turret Angle and Hand Angle (check if turret angle change hand pos)");
+        turret.setPosition(tp.MStandard*(tp.TurretAngle)+tp.BStandard);
+        hand.setPosition(hp.MStandard*(hp.HandAngle - tp.TurretAngle) + hp.BStandard);
+        tele.addLine("Switch to 3 inverse kinematics");
+        break;
+    case 4:
         break;
 
     default:
-       tele.addLine("Pls switch to state 1 to continue");
+       tele.addLine("Pls switch to state 1 to continue with the Interpolation setup else continue (play) to vision Setup" +
+               "Also make sure the servos don't break");
 }
 tele.update();
         }
@@ -77,18 +115,8 @@ tele.update();
 
 
         while (opModeIsActive()) {
-            lastg.copy(gamepad1);
-            turret.setPosition(0.47);
-            arm.setPosition(0.566);
-            wrist.setPosition(0.6521);
-            claw.setPosition(0.7);
-            double offsetAngle = -272.72727 * (hand.getPosition()) + 226.36364;
-            if(!gamepad1.a && lastg.a) {
-                hand.setPosition(-0.00366666667 * (pipeline.getDetectedAngle() - offsetAngle) + 0.83);
-            }
 
-            telemetry.addData("Angle", pipeline.getDetectedAngle());
-            telemetry.update();
+
         }
     }
 
