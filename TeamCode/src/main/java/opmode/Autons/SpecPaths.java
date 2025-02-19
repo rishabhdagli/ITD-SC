@@ -11,14 +11,14 @@ import com.pedropathing.util.Timer;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
-import Subsystems.AutoRobot;
-import Subsystems.Boxtube;
-import Subsystems.EndEffector;
+import config.Subsystem.Boxtube;
+import config.Subsystem.EndEffector;
+import config.auto.AutoRobot;
 import pedroPathing.constants.FConstants;
 import pedroPathing.constants.LConstants;
 
-@Autonomous(name = "4 Specimen")
-public class FourSpecimen extends LinearOpMode {
+@Autonomous(name = "5 Spec Paths only")
+public class SpecPaths extends LinearOpMode {
     AutoRobot r;
 
     Boxtube boxtube;
@@ -76,9 +76,11 @@ public class FourSpecimen extends LinearOpMode {
         Constants.setConstants(FConstants.class, LConstants.class);
         follower = new Follower(hardwareMap);
         buildPaths();
-        r = new AutoRobot(hardwareMap, new Pose(7.000, 54.000));
+        r = new AutoRobot(hardwareMap, telemetry, new Pose(7.000, 54.000));
         boxtube = r.boxtube;
         endEffector = r.endEffector;
+        r.t.addData("init", true);
+        r.t.update();
 
         while(opModeInInit()){
             boxtube.updatePiv();
@@ -103,25 +105,20 @@ public class FourSpecimen extends LinearOpMode {
 
                 case Preload:
                     follower.followPath(Preload);
-
-                    resetActionTimer();
-
-                    r.Loiter();
-                    r.SpecimenPreLoad();
+//                    resetActionTimer();
+//                    r.Loiter();
+//                    r.SpecimenPreLoad();
                     setPathState(PathStates.PrePush1);
                     break;
 
                 case PrePush1:
                     if (!follower.isBusy()) {
-
                         resetActionTimer();
-
-                        r.PreloadSpecExt();
-
+//                        r.PreloadSpecExt();
                         if(actionTimer.getElapsedTimeSeconds() > 0.5){
-                            r.SpecimenPreLoadScore();
+//                            r.SpecimenPreLoadScore();
                             if(actionTimer.getElapsedTimeSeconds() > 1){
-                                r.LoiterIn();
+//                                r.LoiterIn();
                                 follower.followPath(PrePush1);
                                 setPathState(PathStates.Push1);
                             }
@@ -174,33 +171,32 @@ public class FourSpecimen extends LinearOpMode {
 
                 case Score1:
                     if(!follower.isBusy()){
-
                         resetActionTimer();
                         if(actionTimer.getElapsedTimeSeconds()>0.05) {
                             r.SpecimenWallGrab();
                             if(actionTimer.getElapsedTimeSeconds() > 0.1) {
-                                r.SpecimenPreScore();
+//                                r.SpecimenPreScore();
                                 if(actionTimer.getElapsedTimeSeconds() > 0.35){
                                     follower.followPath(Score1);
                                     setPathState(PathStates.Pickup2);
                                 }
                             }
                         } else {
-                            r.SpecimenWall();
+//                            r.SpecimenWall();
                         }
                     }
                     break;
 
                 case Pickup2:
                     if(!follower.isBusy()){
-                        r.PivotUpSpec();
+//                        r.PivotUpSpec();
                         resetActionTimer();
                         if(actionTimer.getElapsedTimeSeconds() > 0.7){
-                            r.SpecimenLatch();
+//                            r.SpecimenLatch();
                                 if(actionTimer.getElapsedTimeSeconds()>1.3) {
-                                    r.SpecimenExtDown();
+//                                    r.SpecimenExtDown();
                                     if(actionTimer.getElapsedTimeSeconds() > 1.35){
-                                        r.SpecimenWall();
+//                                        r.SpecimenWall();
                                         follower.followPath(Pickup2);
                                         setPathState(PathStates.Score2);
                                 }
@@ -213,30 +209,30 @@ public class FourSpecimen extends LinearOpMode {
                     if(!follower.isBusy()){
                         resetActionTimer();
                         if(actionTimer.getElapsedTimeSeconds()>0.05) {
-                            r.SpecimenWallGrab();
+//                            r.SpecimenWallGrab();
                             if(actionTimer.getElapsedTimeSeconds() > 0.1) {
-                                r.SpecimenPreScore();
+//                                r.SpecimenPreScore();
                                 if(actionTimer.getElapsedTimeSeconds() > 0.35){
                                     follower.followPath(Score2);
                                     setPathState(PathStates.Pickup3);
                                     }
                             }
                         } else {
-                            r.SpecimenWall();
+//                            r.SpecimenWall();
                         }
                     }
                     break;
 
                 case Pickup3:
                     if(!follower.isBusy()) {
-                        r.PivotUpSpec();
+//                        r.PivotUpSpec();
                         resetActionTimer();
                         if(actionTimer.getElapsedTimeSeconds() > 0.7){
-                            r.SpecimenLatch();
+//                            r.SpecimenLatch();
                                 if(actionTimer.getElapsedTimeSeconds()>1.3) {
-                                    r.SpecimenExtDown();
+//                                    r.SpecimenExtDown();
                                     if(actionTimer.getElapsedTimeSeconds() > 1.35){
-                                        r.SpecimenWall();
+//                                        r.SpecimenWall();
                                         follower.followPath(Pickup3);
                                         setPathState(PathStates.Score3);
                                 }
@@ -249,15 +245,15 @@ public class FourSpecimen extends LinearOpMode {
                     if(!follower.isBusy()){
                         resetActionTimer();
                         if(actionTimer.getElapsedTimeSeconds()>0.05) {
-                            r.SpecimenWallGrab();
+//                            r.SpecimenWallGrab();
                             if (actionTimer.getElapsedTimeSeconds() > 0.1) {
-                                r.SpecimenPreScore();
+//                                r.SpecimenPreScore();
                                 if (actionTimer.getElapsedTimeSeconds() > 0.35) {
                                     follower.followPath(Score3);
                                     setPathState(PathStates.Pickup4);
                                 }
                             } else {
-                                r.SpecimenWall();
+//                                r.SpecimenWall();
                             }
                         }
                     }
@@ -265,14 +261,14 @@ public class FourSpecimen extends LinearOpMode {
 
                 case Pickup4:
                     if(!follower.isBusy()){
-                        r.PivotUpSpec();
+//                        r.PivotUpSpec();
                         resetActionTimer();
                         if(actionTimer.getElapsedTimeSeconds() > 0.7){
-                            r.SpecimenLatch();
+//                            r.SpecimenLatch();
                                 if(actionTimer.getElapsedTimeSeconds()>1.3) {
-                                    r.SpecimenExtDown();
+//                                    r.SpecimenExtDown();
                                     if(actionTimer.getElapsedTimeSeconds() > 1.35){
-                                        r.SpecimenWall();
+//                                        r.SpecimenWall();
                                         follower.followPath(Pickup4);
                                         setPathState(PathStates.Score4);
                                 }
@@ -283,34 +279,34 @@ public class FourSpecimen extends LinearOpMode {
 
                 case Score4:
                     if(!follower.isBusy()){
-                        resetActionTimer();
+//                        resetActionTimer();
                         if(actionTimer.getElapsedTimeSeconds()>0.05) {
-                            r.SpecimenWallGrab();
+//                            r.SpecimenWallGrab();
                             if(actionTimer.getElapsedTimeSeconds() > 0.1) {
-                                r.SpecimenPreScore();
+//                                r.SpecimenPreScore();
                                 if(actionTimer.getElapsedTimeSeconds() > 0.35){
                                     follower.followPath(Score4);
                                     setPathState(PathStates.Park);
                                 }
                             }
                         } else {
-                            r.SpecimenWall();
+//                            r.SpecimenWall();
                         }
                     }
                     break;
 
                 case Park:
                     if(!follower.isBusy()){
-                        r.PivotUpSpec();
+//                        r.PivotUpSpec();
                         resetActionTimer();
                         if(actionTimer.getElapsedTimeSeconds() > 0.7){
-                            r.SpecimenLatch();
+//                            r.SpecimenLatch();
                                 if(actionTimer.getElapsedTimeSeconds()>1.3) {
-                                    r.SpecimenExtDown();
+//                                    r.SpecimenExtDown();
                                     if(actionTimer.getElapsedTimeSeconds() > 1.35){
-                                        r.SampleHover();
+//                                        r.SampleHover();
                                         follower.followPath(Park);
-                                        setPathState(PathStates.End);
+//                                        setPathState(PathStates.End);
                                     }
                             }
                         }

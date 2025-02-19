@@ -13,8 +13,8 @@ public class TeleRobot {
     double midExtension = 10000;
     double fullExtension = 20000;
     double basketExtension = 30500;
-    double specScoreExtension = 20000;
-    double currentExtension;
+    double specScoreExtension = 15250;
+    double currentExtension =  midExtension;
     boolean wasPressedL;
     boolean wasPressedR;
     boolean minExtendSubPressed;
@@ -22,11 +22,11 @@ public class TeleRobot {
     boolean lowExtendSubPressed;
     boolean maxExtendSubPressed;
 
-    final int pivotBackPos = 1147;
+    final int pivotBackPos = 1200;
 
     final int pivotHorizontal = 0;
 
-    final int pivotSpecSpos = 700;
+    final int pivotSpecSpos = 900;
 
 
     Gamepad gamepadOperator,gamepadDriver;
@@ -54,7 +54,7 @@ public class TeleRobot {
     }
 
     public void ClawClose() {
-        endEffector.claw(0.9);
+        endEffector.claw(1);
     }
 
     public void Loiter() {
@@ -120,7 +120,7 @@ public class TeleRobot {
     public void SampleGrab() {
         boxtube.PivotMove(pivotHorizontal);
         endEffector.turret(0.47);
-        endEffector.setEndEffector(0,-80);
+        endEffector.setEndEffector(-15,-55);
         ClawOpen();
     }
 
@@ -142,11 +142,33 @@ public class TeleRobot {
         endEffector.turret(0.47);
         ClawClose();
     }
+    public void HangUp(){
+        boxtube.PivotMove(1147);//tbd
+        endEffector.setEndEffector(30,-120); //Needs fixing
+        endEffector.hand(0.48);
+        endEffector.turret(0.47);
+        ClawClose();
+        if(boxtube.getPivpos() < -900){
+            boxtube.ExtensionMove(14000); //tbd
+
+        }
+    }
+    public void HangDown(){
+        boxtube.ExtensionMove(0); //tbd
+        endEffector.setEndEffector(30,-120); //Needs fixing
+        endEffector.hand(0.48);
+        endEffector.turret(0.47);
+        ClawClose();
+        if(boxtube.getExtpos() > -10000){
+            boxtube.PivotMove(0);//tbd
+
+        }
+    }
 
     public void BasketExtension(){ // Ready to score
         boxtube.PivotMove(pivotBackPos);
         boxtube.ExtensionMove(basketExtension);
-        endEffector.setEndEffector(-10,50); //Needs fixing
+        endEffector.setEndEffector(0,65); //Needs fixing
         endEffector.hand(0.48);
         endEffector.turret(0.47);
         ClawClose();
@@ -157,7 +179,7 @@ public class TeleRobot {
         endEffector.hand(0.48);
         endEffector.turret(0.47);
         boxtube.ExtensionMove(minExtension);
-        boxtube.PivotMove(pivotBackPos - 200);
+        boxtube.PivotMove(pivotBackPos - 500);
         ClawOpen();
     }
 
@@ -179,26 +201,26 @@ public class TeleRobot {
 
 
     public void SpecimenWall() {
-        boxtube.ExtensionMove(midExtension); // half extension
-        boxtube.PivotMove(pivotHorizontal); // half pivot
+        boxtube.ExtensionMove(minExtension); // half extension
+        boxtube.setPivot(pivotHorizontal);
         endEffector.hand(0.48);
-        endEffector.setEndEffector(90, -90);
+        endEffector.setEndEffector(60,-45);
         endEffector.turret(0.47);
         ClawOpen();
 
     }
 
     public void SpecimenWallGrab() {
-        boxtube.ExtensionMove(midExtension);
+        boxtube.ExtensionMove(minExtension);
         boxtube.PivotMove(pivotHorizontal);
         endEffector.hand(0.48);
-        endEffector.setEndEffector(90,-90);
+        endEffector.setEndEffector(60,-45);
         endEffector.turret(0.47);
         ClawClose();
     }
 
     public void SpecimenWallUp(){
-        boxtube.ExtensionMove(10000);
+        boxtube.ExtensionMove(minExtension);
         boxtube.PivotMove(pivotHorizontal);
         endEffector.hand(0.48);
         endEffector.turret(0.47);
@@ -207,7 +229,7 @@ public class TeleRobot {
     }
 
     public void SpecimenPreScore() {
-        boxtube.ExtensionMove(minExtension);
+        boxtube.ExtensionMove(0);
         endEffector.turret(0.47);
         endEffector.hand(0.48);
         boxtube.PivotMove(pivotSpecSpos);
