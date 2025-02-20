@@ -68,7 +68,7 @@ public class FourSampleSchduled extends LinearOpMode {
 
     @Override
     public void runOpMode() throws InterruptedException {
-
+        PickupOne = new Event();
 
 
         // Task 2: At 1.5 seconds, run BasketExtension().
@@ -111,7 +111,6 @@ public class FourSampleSchduled extends LinearOpMode {
         r = new AutoRobot(hardwareMap, new Pose(7.000, 104.000));
         boxtube = r.boxtube;
         endEffector = r.endEffector;
-        r.t.addData("init", true);
         r.t.update();
 
         while(opModeInInit()){

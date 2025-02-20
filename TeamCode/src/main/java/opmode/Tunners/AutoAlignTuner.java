@@ -24,32 +24,52 @@ public class AutoAlignTuner extends LinearOpMode{
 
     Servo wrist,arm1,arm2,hand,claw,turret;
 
-    public static double Wrist,Arms,Hand,Claw;
+    public static double Wrist=0.7,Arms=0.6,Claw =0.8;
 
     public static int State = 0;
 
-    public static class TurretParams{ public double Turret=0.5,MStandard = 0,BStandard=0,TurretAngle= 90;}
+    private int prevState = 0;
 
-    public static class HandParams{ public double Hand=0.5,MStandard = 0,BStandard=0,HandAngle = 90;}
+    public static class TurretParams{ public double Turret=0.5,MStandard = 0.003,BStandard=0.2,TurretAngle= 90;}
+
+    public static class HandParams{ public double Hand=0.5,MStandard = 0.0035,BStandard=0.185,HandAngle = 90;}
 
     public void Arm(double pos){
         arm1.setPosition(pos);
-        arm2.setPosition(pos);
+        //arm2.setPosition(pos);
     }
+    //0.003667 , 0.185
+    //0.0038889, 0.15
+    public double ServoRegulizer(double x) {
+        return (x > 1) ? (((int)(x * 100)) % 100) / 100.0 : x;
+    }
+
+    public static TurretParams tp = new TurretParams();
+   public static HandParams hp = new HandParams();
 
 
     @Override
     public void runOpMode() throws InterruptedException {
+         dash = FtcDashboard.getInstance();
+         tele = new MultipleTelemetry(telemetry, dash.getTelemetry());
 
-        TurretParams tp = new TurretParams();
-        HandParams hp = new HandParams();
+
+
+
+        //for new bot
+
+//        wrist = hardwareMap.get(Servo.class, "Servo6"); //wrist
+//        arm1 = hardwareMap.get(Servo.class, "Servo7"); //arm
+//        arm2 = hardwareMap.get(Servo.class, "Servo8"); //arm
+//        hand = hardwareMap.get(Servo.class, "Servo9"); //hand
+//        claw = hardwareMap.get(Servo.class, "Servo10");//claw
+//        turret = hardwareMap.get(Servo.class, "Servo11");//turret
 
         wrist = hardwareMap.get(Servo.class, "Servo6"); //wrist
         arm1 = hardwareMap.get(Servo.class, "Servo7"); //arm
-        arm2 = hardwareMap.get(Servo.class, "Servo8"); //arm
-        hand = hardwareMap.get(Servo.class, "Servo9"); //hand
-        claw = hardwareMap.get(Servo.class, "Servo10");//claw
-        turret = hardwareMap.get(Servo.class, "Servo11");//turret
+        hand = hardwareMap.get(Servo.class, "Servo8"); //hand
+        claw = hardwareMap.get(Servo.class, "Servo9");//claw
+        turret = hardwareMap.get(Servo.class, "Servo10");//turret
 
         // Initialize the pipeline
         pipeline = new CrushSampleAnglePipeline();
@@ -94,30 +114,63 @@ switch (State){
                 "(x is angle y is hand position) on desmos");
         tele.addLine("Switch to 3 inverse kinematics");
             hand.setPosition(hp.Hand);
+            break;
             //Inverse Kinematics check
     case 3:
         tele.addLine("Move turret Angle and Hand Angle (check if turret angle change hand pos)");
-        turret.setPosition(tp.MStandard*(tp.TurretAngle)+tp.BStandard);
-        hand.setPosition(hp.MStandard*(hp.HandAngle - tp.TurretAngle) + hp.BStandard);
-        tele.addLine("Switch to 3 inverse kinematics");
-        break;
-    case 4:
+        turret.setPosition(ServoRegulizer(tp.MStandard*(tp.TurretAngle)+tp.BStandard));
+        hand.setPosition(ServoRegulizer(hp.MStandard*(hp.HandAngle - tp.TurretAngle+90) + hp.BStandard));
+        tele.addLine("Click play");
         break;
 
     default:
        tele.addLine("Pls switch to state 1 to continue with the Interpolation setup else continue (play) to vision Setup" +
                "Also make sure the servos don't break");
+       break;
 }
 tele.update();
-        }
+        } //init loop
 
         waitForStart();
+        State = 0;
 
 
         while (opModeIsActive()) {
+            wrist.setPosition(Wrist);
+            Arm(Arms);
+            claw.setPosition(Claw);
 
+            turret.setPosition(ServoRegulizer(tp.MStandard*(tp.TurretAngle)+tp.BStandard));
+            hand.setPosition(ServoRegulizer(hp.MStandard*(hp.HandAngle - tp.TurretAngle+90) + hp.BStandard));
+            switch (State){
+                //Turrent Interplot
+                case 1:
+                  tele.addData("pipeline angle: ",pipeline.getDetectedAngle());
+                  tele.addLine("Switch states to move hand one Time");
+                    hp.HandAngle = 0;
+                    prevState = 0;
 
-        }
+                    break;
+                //Hand Interpolation
+                case 2:
+                    if(prevState == 0){
+                        hp.HandAngle = (180-pipeline.getDetectedAngle());
+                        prevState = 1;
+                    }
+                    break;
+
+                case 3:
+
+                    break;
+
+                default:
+                    tele.addLine("Vision Setup. Switch to state 1 for pixel to Angle");
+                    break;
+            }
+
+            tele.update();
+
+        }//opmode is active
     }
 
 }
