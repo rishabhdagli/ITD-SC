@@ -18,6 +18,10 @@ public Event(){
     EventList = new LinkedList<>();
 }
 
+public void Reset(){
+    timer.reset();
+}
+
 public void update(){
     //keep going through chain while list has Timed Actions and previous action is finsihed
     while(!EventList.isEmpty() && EventList.getFirst().time <= timer.seconds()){

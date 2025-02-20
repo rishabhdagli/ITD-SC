@@ -221,7 +221,7 @@ public class SpecPathsSweep extends LinearOpMode {
 //                            r.SpecimenWallGrab();
                             if(actionTimer.getElapsedTimeSeconds() > 0.1) {
 //                                r.SpecimenPreScore();
-                                if(actionTimer.getElapsedTimeSeconds() > 0.35){
+                                if(actionTimer.getElapsedTimeSeconds() > 1){
                                     follower.followPath(Score2);
                                     setPathState(PathStates.Pickup3);
                                     }
@@ -257,7 +257,7 @@ public class SpecPathsSweep extends LinearOpMode {
 //                            r.SpecimenWallGrab();
                             if (actionTimer.getElapsedTimeSeconds() > 0.1) {
 //                                r.SpecimenPreScore();
-                                if (actionTimer.getElapsedTimeSeconds() > 0.35) {
+                                if (actionTimer.getElapsedTimeSeconds() > 1) {
                                     follower.followPath(Score3);
                                     setPathState(PathStates.Pickup4);
                                 }
@@ -293,7 +293,7 @@ public class SpecPathsSweep extends LinearOpMode {
 //                            r.SpecimenWallGrab();
                             if(actionTimer.getElapsedTimeSeconds() > 0.1) {
 //                                r.SpecimenPreScore();
-                                if(actionTimer.getElapsedTimeSeconds() > 0.35){
+                                if(actionTimer.getElapsedTimeSeconds() > 1){
                                     follower.followPath(Score4);
                                     setPathState(PathStates.Park);
                                 }

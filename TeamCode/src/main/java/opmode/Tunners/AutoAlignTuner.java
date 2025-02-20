@@ -13,15 +13,20 @@ import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.vision.VisionPortal;
 
 import opmode.Vision.CrushSampleAnglePipeline;
+import opmode.Vision.CrushSampleAnglePipelineTurretTrial;
 
 @Config
 @TeleOp(name="Auto Align Tuner (for 6 sevos) assuming offset")
 public class AutoAlignTuner extends LinearOpMode{
-    private CrushSampleAnglePipeline pipeline;
+    private CrushSampleAnglePipelineTurretTrial pipeline;
     private VisionPortal VP;
     private FtcDashboard dash;
     private MultipleTelemetry tele;
 
+
+    //aryan
+    //charat
+    //
     Servo wrist,arm1,arm2,hand,claw,turret;
 
     public static double Wrist=0.7,Arms=0.6,Claw =0.8;
@@ -46,6 +51,19 @@ public class AutoAlignTuner extends LinearOpMode{
 
     public static TurretParams tp = new TurretParams();
    public static HandParams hp = new HandParams();
+
+   public double HandPerpendicularRegulaizer(double x){
+       if(0<=x && x<=180){
+           return x;
+       }
+       else if(x < 0){
+           return  x+180;
+       }
+       else {
+           return  x - 180;
+       }
+   }
+
 
 
     @Override
@@ -72,7 +90,7 @@ public class AutoAlignTuner extends LinearOpMode{
         turret = hardwareMap.get(Servo.class, "Servo10");//turret
 
         // Initialize the pipeline
-        pipeline = new CrushSampleAnglePipeline();
+        pipeline = new CrushSampleAnglePipelineTurretTrial();
         dash = FtcDashboard.getInstance();
         dash.getInstance().startCameraStream(pipeline,0);
         // Create the VisionPortal with the pipeline
@@ -146,7 +164,7 @@ tele.update();
                 //Turrent Interplot
                 case 1:
                   tele.addData("pipeline angle: ",pipeline.getDetectedAngle());
-                  tele.addLine("Switch states to move hand one Time");
+                  tele.addLine("Switch states to 2 to move hand and place sample under");
                     hp.HandAngle = 0;
                     prevState = 0;
 
@@ -154,14 +172,24 @@ tele.update();
                 //Hand Interpolation
                 case 2:
                     if(prevState == 0){
-                        hp.HandAngle = (180-pipeline.getDetectedAngle());
+                        tele.addLine("Switch back to test or move on to turret");
+                        //the 90 accoutns for the reverse 0 and the perpendicular
+                        hp.HandAngle = HandPerpendicularRegulaizer(pipeline.getDetectedAngle() +90);
                         prevState = 1;
                     }
                     break;
 
                 case 3:
-
+                    tele.addLine("Interpolate the camera to the turret.(use many points)");
+                    tele.addLine("switch at boxtube at pos 0");
+                    tele.addData("Middle point", pipeline.getMiddleLineX());
                     break;
+                case 4:
+                    tele.addLine("Interpolate the camera to the turret.(use many points)");
+                    tele.addLine("switch at boxtube at pos 0");
+                    tele.addData("Middle point", pipeline.getMiddleLineY());
+                    break;
+
 
                 default:
                     tele.addLine("Vision Setup. Switch to state 1 for pixel to Angle");

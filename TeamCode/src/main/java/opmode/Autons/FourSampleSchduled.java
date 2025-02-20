@@ -111,7 +111,7 @@ public class FourSampleSchduled extends LinearOpMode {
         r = new AutoRobot(hardwareMap, new Pose(7.000, 104.000));
         boxtube = r.boxtube;
         endEffector = r.endEffector;
-        r.t.update();
+
 
         while(opModeInInit()){
             boxtube.updatePiv();
@@ -137,6 +137,7 @@ public class FourSampleSchduled extends LinearOpMode {
                 case Preload:
                     follower.followPath(PreloadScore);
                     setPathState(PathStates.PickupOne);
+                    PickupOne.Reset();
                     break;
 
                 case PickupOne:

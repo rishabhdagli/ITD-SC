@@ -1,8 +1,10 @@
 package ActionScheduler;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.Servo;
 
+@TeleOp(name = "Action tester")
 public class TrialActionSchedulingCode extends LinearOpMode {
     Event ArmDown;
     Task moveWrist,MoveClaw,movehand;
