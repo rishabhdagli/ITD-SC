@@ -9,9 +9,11 @@ import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
+
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.vision.VisionPortal;
 
+import Subsystems.Boxtube;
 import opmode.Vision.CrushSampleAnglePipeline;
 import opmode.Vision.CrushSampleAnglePipelineTurretTrial;
 
@@ -22,6 +24,8 @@ public class AutoAlignTuner extends LinearOpMode{
     private VisionPortal VP;
     private FtcDashboard dash;
     private MultipleTelemetry tele;
+
+    private Boxtube boxtube;
 
 
     //aryan
@@ -35,7 +39,9 @@ public class AutoAlignTuner extends LinearOpMode{
 
     private int prevState = 0;
 
-    public static class TurretParams{ public double Turret=0.5,MStandard = 0.003,BStandard=0.2,TurretAngle= 90;}
+    public static class TurretParams{ public double Turret=0.5,MStandard = 0.003,BStandard=0.2,TurretAngle= 90,
+        AGain = 0, BGain = 0, CGain = 0, error,ServoGain = 0;
+    }
 
     public static class HandParams{ public double Hand=0.5,MStandard = 0.0035,BStandard=0.185,HandAngle = 90;}
 
@@ -68,6 +74,7 @@ public class AutoAlignTuner extends LinearOpMode{
 
     @Override
     public void runOpMode() throws InterruptedException {
+       boxtube = new Boxtube(hardwareMap);
          dash = FtcDashboard.getInstance();
          tele = new MultipleTelemetry(telemetry, dash.getTelemetry());
 
@@ -164,11 +171,11 @@ tele.update();
                 //Turrent Interplot
                 case 1:
                   tele.addData("pipeline angle: ",pipeline.getDetectedAngle());
+                    tele.addLine("This part allows you to test the intepolation and once you swith the hand will auto align outside grab");
                   tele.addLine("Switch states to 2 to move hand and place sample under");
                     hp.HandAngle = 0;
                     prevState = 0;
                     hand.setPosition(ServoRegulizer(hp.MStandard*(hp.HandAngle - tp.TurretAngle+90) + hp.BStandard));
-
                     break;
                 //Hand Interpolation
                 case 2:
@@ -182,16 +189,35 @@ tele.update();
                     break;
 
                 case 3:
-                    tele.addLine("Interpolate the camera to the turret.(use many points) make sure the Y value is the same");
-                    tele.addLine("switch at boxtube at pos 0");
-                    tele.addData("Middle point X", pipeline.getMiddleLineX());
-                    tele.addData("Middle point Y", pipeline.getMiddleLineY());
+                    tele.addLine("quadratic or LInear gain interpolator 3 points x(error pixels) y(servo gain)");
+                    tele.addData("Middle Line X", pipeline.getMiddleLineX());
+                     tp.error  =  320 - pipeline.getMiddleLineX();
+                     if(tp.error > 0){
+                          turret.setPosition(tp.ServoGain + turret.getPosition());
+                     }
+                     else if (tp.error <0){
+                         turret.setPosition(turret.getPosition() - tp.ServoGain);
+                     }
                     hp.HandAngle = 90;
+
+
                     break;
                 case 4:
-                    tele.addLine("Interpolate the camera to the turret.(use many points)");
-                    tele.addLine("switch at boxtube at pos 0");
+                    tele.addLine("Test by moving the sample around");
+                    tp.ServoGain = tp.AGain*(tp.error*tp.error) + tp.BGain*(tp.error) + tp.CGain;
+                    tele.addData("Middle Line X", pipeline.getMiddleLineX());
+                    tp.error  =  320 - pipeline.getMiddleLineX();
+                    tele.addData("Error",tp.error );
 
+                    if(tp.error > 0){
+                        turret.setPosition(tp.ServoGain + turret.getPosition());
+                    }
+                    else if (tp.error <0){
+                        turret.setPosition(turret.getPosition() - tp.ServoGain);
+                    }
+                    break;
+                case 5:
+                    tp.ServoGain = t
                     break;
 
 
