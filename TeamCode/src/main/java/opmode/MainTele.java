@@ -31,7 +31,7 @@ public class MainTele extends LinearOpMode {
 
     @Override
     public void runOpMode() throws InterruptedException {
-        boxtube= new Boxtube(hardwareMap); //just for pivot check
+        boxtube= new Boxtube(hardwareMap,1); //just for pivot check
         teleRobot = new TeleRobot(hardwareMap, gamepad1,gamepad2);
 
         Constants.setConstants(FConstants.class, LConstants.class);

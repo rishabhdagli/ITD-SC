@@ -159,7 +159,7 @@ tele.update();
             claw.setPosition(Claw);
 
             turret.setPosition(ServoRegulizer(tp.MStandard*(tp.TurretAngle)+tp.BStandard));
-            hand.setPosition(ServoRegulizer(hp.MStandard*(hp.HandAngle - tp.TurretAngle+90) + hp.BStandard));
+
             switch (State){
                 //Turrent Interplot
                 case 1:
@@ -167,6 +167,7 @@ tele.update();
                   tele.addLine("Switch states to 2 to move hand and place sample under");
                     hp.HandAngle = 0;
                     prevState = 0;
+                    hand.setPosition(ServoRegulizer(hp.MStandard*(hp.HandAngle - tp.TurretAngle+90) + hp.BStandard));
 
                     break;
                 //Hand Interpolation
@@ -175,19 +176,22 @@ tele.update();
                         tele.addLine("Switch back to test or move on to turret");
                         //the 90 accoutns for the reverse 0 and the perpendicular
                         hp.HandAngle = HandPerpendicularRegulaizer(pipeline.getDetectedAngle() +90);
+                        hand.setPosition(ServoRegulizer(hp.MStandard*(hp.HandAngle - tp.TurretAngle+90) + hp.BStandard));
                         prevState = 1;
                     }
                     break;
 
                 case 3:
-                    tele.addLine("Interpolate the camera to the turret.(use many points)");
+                    tele.addLine("Interpolate the camera to the turret.(use many points) make sure the Y value is the same");
                     tele.addLine("switch at boxtube at pos 0");
-                    tele.addData("Middle point", pipeline.getMiddleLineX());
+                    tele.addData("Middle point X", pipeline.getMiddleLineX());
+                    tele.addData("Middle point Y", pipeline.getMiddleLineY());
+                    hp.HandAngle = 90;
                     break;
                 case 4:
                     tele.addLine("Interpolate the camera to the turret.(use many points)");
                     tele.addLine("switch at boxtube at pos 0");
-                    tele.addData("Middle point", pipeline.getMiddleLineY());
+
                     break;
 
 

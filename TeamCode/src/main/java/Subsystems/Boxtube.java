@@ -29,7 +29,47 @@ public class Boxtube{
     double PivotDownKp = 0.0008, PivotDownKd = 0.00011, PivotkP = 0.002, PivotKd = 0.0001,Tick90 = 1086,FF = 0.088,period = (2*Math.PI)/(Tick90*4),
             ExtensionKp,ExtensionKd,lasterror;
 
+    public Boxtube(HardwareMap hardwareMap,int x) {
+        // Initialize motors with proper names
+        Pivot = hardwareMap.get(DcMotorEx.class, "pivotENC");
+        BT1 = hardwareMap.get(DcMotorEx.class, "Boxtube1ENC");
+        BT2 = hardwareMap.get(DcMotorEx.class, "Boxtube2odoleft");
+        BT3 = hardwareMap.get(DcMotorEx.class, "Boxtube3odoright");
 
+        //PivotEnc = hardwareMap.get(DcMotorEx.class, "Pivot");
+
+        // Set to run without encoders
+        Pivot.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        BT1.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        BT2.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        BT3.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+
+        // Set zero power behavior
+        Pivot.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        BT1.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        BT2.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        BT3.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+
+        // Correct motor directions if needed
+        Pivot.setDirection(DcMotorSimple.Direction.FORWARD);
+
+        //theese are good
+        BT1.setDirection(DcMotorSimple.Direction.REVERSE);
+        BT2.setDirection(DcMotorSimple.Direction.REVERSE);
+        BT3.setDirection(DcMotorSimple.Direction.REVERSE);
+
+        timer = new ElapsedTime(ElapsedTime.Resolution.SECONDS);
+        timer.startTime();
+
+        PivotAbs = hardwareMap.get(AnalogInput.class, "pivotAbs");
+        boxtubeAbs = hardwareMap.get(AnalogInput.class, "boxtubeAbs");
+
+        pivotoffset = 0;
+        //-1233.33333*(PivotAbs.getVoltage()) + 482.233333;
+        Boxtubeoffset = 0;
+        //1243.083*(boxtubeAbs.getVoltage()) - 2292.24506;
+
+    }
     public Boxtube(HardwareMap hardwareMap) {
         // Initialize motors with proper names
         Pivot = hardwareMap.get(DcMotorEx.class, "pivotENC");
@@ -77,6 +117,7 @@ public class Boxtube{
                 //1243.083*(boxtubeAbs.getVoltage()) - 2292.24506;
 
     }
+
 
     public void update(){
         updatePiv();

@@ -80,8 +80,8 @@ public class SpecPathsSweep extends LinearOpMode {
         r = new AutoRobot(hardwareMap, new Pose(7.000, 54.000));
         boxtube = r.boxtube;
         endEffector = r.endEffector;
-        r.t.addData("init", true);
-        r.t.update();
+//        r.t.addData("init", true);
+//        r.t.update();
 
         while(opModeInInit()){
             boxtube.updatePiv();
@@ -147,6 +147,7 @@ public class SpecPathsSweep extends LinearOpMode {
 
                 case Push2:
                     if(!follower.isBusy()){
+                        resetActionTimer();
                         if(actionTimer.getElapsedTimeSeconds()>1){
                             follower.followPath(Push2);
                         setPathState(PathStates.PrePush3);}
@@ -155,6 +156,7 @@ public class SpecPathsSweep extends LinearOpMode {
 
                 case PrePush3:
                     if(!follower.isBusy()){
+                        resetActionTimer();
                         if(actionTimer.getElapsedTimeSeconds()>1){
                             follower.followPath(PrePush3);
                         setPathState(PathStates.Push3);}
@@ -163,6 +165,7 @@ public class SpecPathsSweep extends LinearOpMode {
 
                 case Push3:
                     if(!follower.isBusy()){
+                        resetActionTimer();
                         if(actionTimer.getElapsedTimeSeconds()>1){
                             follower.followPath(Push3);
                             r.SpecimenWall();
@@ -172,6 +175,7 @@ public class SpecPathsSweep extends LinearOpMode {
                     
                 case Pickup1:
                     if(!follower.isBusy()){
+                        resetActionTimer();
                         if(actionTimer.getElapsedTimeSeconds()>1){
                             follower.followPath(Pickup1);
                         setPathState(PathStates.Score1);}
@@ -183,15 +187,10 @@ public class SpecPathsSweep extends LinearOpMode {
                         resetActionTimer();
                         if(actionTimer.getElapsedTimeSeconds()>0.05) {
                             r.SpecimenWallGrab();
-                            if(actionTimer.getElapsedTimeSeconds() > 0.1) {
-//                                r.SpecimenPreScore();
-                                if(actionTimer.getElapsedTimeSeconds() > 0.35){
+                        }
+                        if(actionTimer.getElapsedTimeSeconds() > 1){
                                     follower.followPath(Score1);
                                     setPathState(PathStates.Pickup2);
-                                }
-                            }
-                        } else {
-//                            r.SpecimenWall();
                         }
                     }
                     break;
@@ -349,17 +348,17 @@ public class SpecPathsSweep extends LinearOpMode {
                     .addPath(
                             new BezierCurve(
                                     new Point(25.000, 61.000, Point.CARTESIAN),
-                                    new Point(30.500, 36.000, Point.CARTESIAN)
+                                    new Point(30.500, 45.000, Point.CARTESIAN)
                             )
                     )
-                    .setLinearHeadingInterpolation(Math.toRadians(0), Math.toRadians(-30))
+                    .setLinearHeadingInterpolation(Math.toRadians(0), Math.toRadians(-25))
                     .build();
 
             Push1 = follower.pathBuilder()
                     .addPath(
                             new BezierLine(
-                                    new Point(30.500, 36.000, Point.CARTESIAN),
-                                    new Point(27.000, 33.500, Point.CARTESIAN)
+                                    new Point(30.500, 45.000, Point.CARTESIAN),
+                                    new Point(27.000, 45.00, Point.CARTESIAN)
                             )
                     )
                     .setLinearHeadingInterpolation(Math.toRadians(-30), Math.toRadians(-120))
@@ -368,8 +367,8 @@ public class SpecPathsSweep extends LinearOpMode {
             PrePush2 = follower.pathBuilder()
                     .addPath(
                             new BezierCurve(
-                                    new Point(27.000, 33.500, Point.CARTESIAN),
-                                    new Point(31.250, 29.000, Point.CARTESIAN)
+                                    new Point(27.000, 45.00, Point.CARTESIAN),
+                                    new Point(31.250, 36.50, Point.CARTESIAN)
                             )
                     )
                     .setLinearHeadingInterpolation(Math.toRadians(-120), Math.toRadians(-30))
@@ -378,8 +377,8 @@ public class SpecPathsSweep extends LinearOpMode {
             Push2 = follower.pathBuilder()
                     .addPath(
                             new BezierLine(
-                                    new Point(57.000, 16.000, Point.CARTESIAN),
-                                    new Point(30.000, 13.000, Point.CARTESIAN)
+                                    new Point(31.250, 36.500, Point.CARTESIAN),
+                                    new Point(27, 36.500, Point.CARTESIAN)
                             )
                     )
                     .setLinearHeadingInterpolation(Math.toRadians(-30), Math.toRadians(-120))
@@ -388,8 +387,8 @@ public class SpecPathsSweep extends LinearOpMode {
             PrePush3 = follower.pathBuilder()
                     .addPath(
                             new BezierLine(
-                                    new Point(31.250, 29.000, Point.CARTESIAN),
-                                    new Point(26.000, 26.000, Point.CARTESIAN)
+                                    new Point(27, 36.500, Point.CARTESIAN),
+                                    new Point(26.000, 30.000, Point.CARTESIAN)
                             )
                     )
                     .setLinearHeadingInterpolation(Math.toRadians(-120), Math.toRadians(-45))
@@ -397,9 +396,11 @@ public class SpecPathsSweep extends LinearOpMode {
 
             Push3 = follower.pathBuilder()
                     .addPath(
-                            new BezierLine(
-                                    new Point(26.000, 26.000, Point.CARTESIAN),
-                                    new Point(31.589, 20.331, Point.CARTESIAN)
+                            new BezierCurve(
+                                    new Point(31.589, 20.331, Point.CARTESIAN),
+                                    new Point(37.806, 38.982, Point.CARTESIAN),
+                                    new Point(20.331, 16.803, Point.CARTESIAN),
+                                    new Point(20.000, 23.860, Point.CARTESIAN)
                             )
                     )
                     .setLinearHeadingInterpolation(Math.toRadians(-45), Math.toRadians(-180))
@@ -407,11 +408,9 @@ public class SpecPathsSweep extends LinearOpMode {
 
             Pickup1 = follower.pathBuilder()
                     .addPath(
-                            new BezierCurve(
-                                    new Point(31.589, 20.331, Point.CARTESIAN),
-                                    new Point(37.806, 38.982, Point.CARTESIAN),
-                                    new Point(20.331, 16.803, Point.CARTESIAN),
-                                    new Point(12.266, 23.860, Point.CARTESIAN)
+                            new BezierLine(
+                                    new Point(12.266, 23.860, Point.CARTESIAN),
+                                    new Point(12.000, 23.000, Point.CARTESIAN)
                             )
                     )
                     .setConstantHeadingInterpolation(Math.toRadians(-180))
