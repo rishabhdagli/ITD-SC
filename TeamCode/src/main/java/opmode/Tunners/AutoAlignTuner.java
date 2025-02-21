@@ -39,6 +39,8 @@ public class AutoAlignTuner extends LinearOpMode{
 
     private int prevState = 0;
 
+    public static class BoxtubeParam{ public double KpExtention = 0, ErrorY = 0, middleLine = 240;
+    }
     public static class TurretParams{ public double Turret=0.5,MStandard = 0.003,BStandard=0.2,TurretAngle= 90,
         AGain = 0, BGain = 0, CGain = 0, error,ServoGain = 0;
     }
@@ -57,6 +59,7 @@ public class AutoAlignTuner extends LinearOpMode{
 
     public static TurretParams tp = new TurretParams();
    public static HandParams hp = new HandParams();
+   public static BoxtubeParam bp = new BoxtubeParam();
 
    public double HandPerpendicularRegulaizer(double x){
        if(0<=x && x<=180){
@@ -165,7 +168,7 @@ tele.update();
             Arm(Arms);
             claw.setPosition(Claw);
 
-            turret.setPosition(ServoRegulizer(tp.MStandard*(tp.TurretAngle)+tp.BStandard));
+
 
             switch (State){
                 //Turrent Interplot
@@ -176,6 +179,7 @@ tele.update();
                     hp.HandAngle = 0;
                     prevState = 0;
                     hand.setPosition(ServoRegulizer(hp.MStandard*(hp.HandAngle - tp.TurretAngle+90) + hp.BStandard));
+                    turret.setPosition(ServoRegulizer(tp.MStandard*(tp.TurretAngle)+tp.BStandard));
                     break;
                 //Hand Interpolation
                 case 2:
@@ -184,12 +188,13 @@ tele.update();
                         //the 90 accoutns for the reverse 0 and the perpendicular
                         hp.HandAngle = HandPerpendicularRegulaizer(pipeline.getDetectedAngle() +90);
                         hand.setPosition(ServoRegulizer(hp.MStandard*(hp.HandAngle - tp.TurretAngle+90) + hp.BStandard));
+                        turret.setPosition(ServoRegulizer(tp.MStandard*(tp.TurretAngle)+tp.BStandard));
                         prevState = 1;
                     }
                     break;
 
                 case 3:
-                    tele.addLine("quadratic or LInear gain interpolator 3 points x(error pixels) y(servo gain)");
+                    tele.addLine("quadratic or Linear gain interpolator 3 points x(error pixels) y(servo gain)");
                     tele.addData("Middle Line X", pipeline.getMiddleLineX());
                      tp.error  =  320 - pipeline.getMiddleLineX();
                      if(tp.error > 0){
@@ -217,7 +222,64 @@ tele.update();
                     }
                     break;
                 case 5:
-                    tp.ServoGain = t
+                    tele.addLine("for moving the boxtube to align also make sure wrist and hand in a good pick up postion");
+                    tele.addData("Middle line ", bp.middleLine);
+                    bp.ErrorY =  pipeline.getMiddleLineY() - bp.middleLine;
+                    tele.addData("Pixel error", bp.ErrorY);
+                    tele.addData("Motor power", bp.KpExtention*bp.ErrorY);
+                    boxtube.ExtensionPower(bp.KpExtention*bp.ErrorY);
+                    break;
+                case 6:
+                    tele.addLine("Next position for for moving everything");
+                    boxtube.ExtensionPower(0);
+                    turret.setPosition(0.47);
+                    hand.setPosition(0.5);
+                    prevState = 0;
+                    break;
+                case 7:
+                    tele.addLine("for moving the boxtube to align also make sure wrist and hand in a good pick up postion");
+                    tele.addData("Middle line ", bp.middleLine);
+                    bp.ErrorY =  pipeline.getMiddleLineY() - bp.middleLine;
+                    tele.addData("Pixel error", bp.ErrorY);
+                    tele.addData("Motor power", bp.KpExtention*bp.ErrorY);
+                    boxtube.ExtensionPower(bp.KpExtention*bp.ErrorY);
+                    //turret stuff
+                    tele.addLine("Test by moving the sample around");
+                    tp.ServoGain = tp.AGain*(tp.error*tp.error) + tp.BGain*(tp.error) + tp.CGain;
+                    tele.addData("Middle Line X", pipeline.getMiddleLineX());
+                    tp.error  =  320 - pipeline.getMiddleLineX();
+
+                    tele.addData("Error",tp.error );
+
+                    if(tp.error > 0){
+                        turret.setPosition(tp.ServoGain + turret.getPosition());
+                    }
+                    else if (tp.error <0){
+                        turret.setPosition(turret.getPosition() - tp.ServoGain);
+                    }
+                    if(Math.abs(bp.ErrorY) < 50){
+                        //pick up position
+                        //wrist.setPosition();
+                        //Arms();
+                        tp.ServoGain = tp.AGain*(tp.error*tp.error) + tp.BGain*(tp.error) + tp.CGain;
+                        tele.addData("Middle Line X", pipeline.getMiddleLineX());
+                        tp.error  =  320 - pipeline.getMiddleLineX();
+                        tele.addData("Error",tp.error );
+
+                        if(tp.error > 0){
+                            turret.setPosition(tp.ServoGain + turret.getPosition());
+                        }
+                        else if (tp.error <0){
+                            turret.setPosition(turret.getPosition() - tp.ServoGain);
+                        }
+                    }
+                    if(prevState == 0 && Math.abs(bp.ErrorY)<10) {
+                        tp.TurretAngle= (turret.getPosition() - tp.BStandard) / tp.MStandard; //getting the angle
+                        //the 90 accoutns for the reverse 0 and the perpendicular
+                        hp.HandAngle = HandPerpendicularRegulaizer(pipeline.getDetectedAngle() +90);
+                        hand.setPosition(ServoRegulizer(hp.MStandard*(hp.HandAngle - tp.TurretAngle+90) + hp.BStandard));
+                        prevState = 1;
+                    }
                     break;
 
 
