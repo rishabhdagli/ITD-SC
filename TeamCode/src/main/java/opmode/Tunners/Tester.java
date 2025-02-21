@@ -12,6 +12,8 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
+import Subsystems.Boxtube;
+
 @Config
 @TeleOp(name = "Servo and Port Condensed")
 public class Tester extends LinearOpMode {
@@ -37,8 +39,8 @@ public class Tester extends LinearOpMode {
 
 
 
-    double PivotDownKp = 0.002, PivotDownKd = 0.001, PivotkP = 0.007, PivotKd = 0.0008,Tick90 = 1147,FF = 0.09,period = (2*Math.PI)/(Tick90*4),
-            ExtensionKp,ExtensionKd,lasterror,KpExt = 0.0005;
+    double PivotDownKp = Boxtube.PivotDownKp, PivotDownKd = Boxtube.PivotDownKd, PivotkP = Boxtube.PivotkP, PivotKd = Boxtube.PivotKd,Tick90 = Boxtube.Tick90,FF = Boxtube.FF, period = Boxtube.period,
+            ExtensionKp,ExtensionKd,lasterror,KpExt = Boxtube.KpExt;
 
     public static double targetPosPivot,extensionTargetPos;
 

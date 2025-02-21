@@ -22,12 +22,12 @@ public class Boxtube{
 
     public DcMotorEx Pivot, BT1, BT2, BT3;
 
-    public double offsetAngle,  KpExt = 0.0005, ExtPwr;
+    public double offsetAngle, ExtPwr;
 
     ElapsedTime timer;
 
-    double PivotDownKp = 0.0008, PivotDownKd = 0.00011, PivotkP = 0.002, PivotKd = 0.0001,Tick90 = 1086,FF = 0.088,period = (2*Math.PI)/(Tick90*4),
-            ExtensionKp,ExtensionKd,lasterror;
+    public static double PivotDownKp = 0.0008, PivotDownKd = 0.00011, PivotkP = 0.002, PivotKd = 0.0001,Tick90 = 1086,FF = 0.088,period = (2*Math.PI)/(Tick90*4),
+            ExtensionKp,ExtensionKd,lasterror, KpExt = 0.0005;
 
     public Boxtube(HardwareMap hardwareMap,int x) {
         // Initialize motors with proper names

@@ -11,7 +11,7 @@ public class TeleRobot {
     Drivetrain drive;
     double minExtension = 2000;
     double midExtension = 10000;
-    double fullExtension = 20000;
+    double fullExtension = 25000;
     double basketExtension = 30500;
     double specScoreExtension = 15250;
     double currentExtension =  midExtension;
@@ -22,7 +22,7 @@ public class TeleRobot {
     boolean lowExtendSubPressed;
     boolean maxExtendSubPressed;
 
-    final int pivotBackPos = 1200;
+    final int pivotBackPos = 1300;
 
     final int pivotHorizontal = 0;
 
@@ -35,7 +35,7 @@ public class TeleRobot {
     public TeleRobot(HardwareMap hardwareMap,Gamepad g1, Gamepad g2){
 
         drive = new Drivetrain(hardwareMap);
-        boxtube = new Boxtube(hardwareMap);
+        boxtube = new Boxtube(hardwareMap,1);
         endEffector = new EndEffector(hardwareMap);
 
         gamepadOperator = g2;

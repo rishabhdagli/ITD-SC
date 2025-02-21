@@ -341,44 +341,47 @@ public class SpecPathsSweep extends LinearOpMode {
                             )
                     )
                     .setLinearHeadingInterpolation(Math.toRadians(0), Math.toRadians(0))
-                    .setZeroPowerAccelerationMultiplier(.75)
+                    .setZeroPowerAccelerationMultiplier(0.5)
                     .build();
 
             PrePush1 = follower.pathBuilder()
                     .addPath(
                             new BezierCurve(
                                     new Point(25.000, 61.000, Point.CARTESIAN),
-                                    new Point(30.500, 45.000, Point.CARTESIAN)
+                                    new Point(34, 29.500, Point.CARTESIAN)
                             )
                     )
-                    .setLinearHeadingInterpolation(Math.toRadians(0), Math.toRadians(-25))
+                    .setLinearHeadingInterpolation(Math.toRadians(0), Math.toRadians(-35))
+                    .setZeroPowerAccelerationMultiplier(0.5)
                     .build();
 
             Push1 = follower.pathBuilder()
                     .addPath(
                             new BezierLine(
-                                    new Point(30.500, 45.000, Point.CARTESIAN),
-                                    new Point(27.000, 45.00, Point.CARTESIAN)
+                                    new Point(34.000, 29.500, Point.CARTESIAN),
+                                    new Point(34.010, 29.500, Point.CARTESIAN)
                             )
                     )
-                    .setLinearHeadingInterpolation(Math.toRadians(-30), Math.toRadians(-120))
+                    .setLinearHeadingInterpolation(Math.toRadians(-35), Math.toRadians(-120))
+                    .setZeroPowerAccelerationMultiplier(0.5)
                     .build();
 
             PrePush2 = follower.pathBuilder()
                     .addPath(
                             new BezierCurve(
-                                    new Point(27.000, 45.00, Point.CARTESIAN),
-                                    new Point(31.250, 36.50, Point.CARTESIAN)
+                                    new Point(34.010, 29.500, Point.CARTESIAN),
+                                    new Point(34.000, 29.500, Point.CARTESIAN)
                             )
                     )
-                    .setLinearHeadingInterpolation(Math.toRadians(-120), Math.toRadians(-30))
+                    .setLinearHeadingInterpolation(Math.toRadians(-120), Math.toRadians(-45))
+                    .setZeroPowerAccelerationMultiplier(0.5)
                     .build();
 
             Push2 = follower.pathBuilder()
                     .addPath(
                             new BezierLine(
-                                    new Point(31.250, 36.500, Point.CARTESIAN),
-                                    new Point(27, 36.500, Point.CARTESIAN)
+                                    new Point(34.000, 29.500, Point.CARTESIAN),
+                                    new Point(34.010, 29.500, Point.CARTESIAN)
                             )
                     )
                     .setLinearHeadingInterpolation(Math.toRadians(-30), Math.toRadians(-120))
@@ -386,31 +389,33 @@ public class SpecPathsSweep extends LinearOpMode {
 
             PrePush3 = follower.pathBuilder()
                     .addPath(
-                            new BezierLine(
-                                    new Point(27, 36.500, Point.CARTESIAN),
-                                    new Point(26.000, 30.000, Point.CARTESIAN)
+                            new BezierCurve(
+                                    new Point(34.000, 29.500, Point.CARTESIAN),
+                                    new Point(40.939, 21.660, Point.CARTESIAN),
+                                    new Point(71.405, 17.851, Point.CARTESIAN),
+                                    new Point(57.000, 9.000, Point.CARTESIAN)
                             )
                     )
                     .setLinearHeadingInterpolation(Math.toRadians(-120), Math.toRadians(-45))
+                    .setZeroPowerAccelerationMultiplier(0.5)
                     .build();
 
             Push3 = follower.pathBuilder()
                     .addPath(
-                            new BezierCurve(
-                                    new Point(31.589, 20.331, Point.CARTESIAN),
-                                    new Point(37.806, 38.982, Point.CARTESIAN),
-                                    new Point(20.331, 16.803, Point.CARTESIAN),
-                                    new Point(20.000, 23.860, Point.CARTESIAN)
+                            new BezierLine(
+                                    new Point(57.000, 9.000, Point.CARTESIAN),
+                                    new Point(19.500, 9.000, Point.CARTESIAN)
                             )
                     )
                     .setLinearHeadingInterpolation(Math.toRadians(-45), Math.toRadians(-180))
+                    .setZeroPowerAccelerationMultiplier(0.5)
                     .build();
 
             Pickup1 = follower.pathBuilder()
                     .addPath(
                             new BezierLine(
-                                    new Point(12.266, 23.860, Point.CARTESIAN),
-                                    new Point(12.000, 23.000, Point.CARTESIAN)
+                                    new Point(19.500, 9.000, Point.CARTESIAN),
+                                    new Point(19.75, 9.000, Point.CARTESIAN)
                             )
                     )
                     .setConstantHeadingInterpolation(Math.toRadians(-180))
@@ -420,13 +425,13 @@ public class SpecPathsSweep extends LinearOpMode {
             Score1 = follower.pathBuilder()
                     .addPath(
                             new BezierCurve(
-                                    new Point(12.266, 23.860, Point.CARTESIAN),
+                                    new Point(19.750, 9.000, Point.CARTESIAN),
                                     new Point(32.093, 70.572, Point.CARTESIAN),
                                     new Point(40.831, 64.859, Point.CARTESIAN)
                             )
                     )
                     .setConstantHeadingInterpolation(Math.toRadians(-180))
-                    .setZeroPowerAccelerationMultiplier(1.75)
+                    .setZeroPowerAccelerationMultiplier(1.5)
                     .build();
 
             Pickup2 = follower.pathBuilder()

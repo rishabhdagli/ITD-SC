@@ -13,6 +13,8 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
+import Subsystems.Boxtube;
+
 @Config
 @TeleOp(name = "Servo and Port Expanded")
 public class TesterExpanded extends LinearOpMode {
@@ -40,13 +42,13 @@ public class TesterExpanded extends LinearOpMode {
 
 
     public static class BoxtubePivot {
-        public double PivotDownKp = 0.003, PivotDownKd = 0, PivotkP = 0.003, PivotKd = 0, Tick90 = 1000, FF = 0.05, period = (2 * Math.PI) / (Tick90 * 4),
+        public double PivotDownKp = Boxtube.PivotDownKp, PivotDownKd = Boxtube.PivotDownKd, PivotkP = Boxtube.PivotkP, PivotKd = Boxtube.PivotKd,Tick90 = Boxtube.Tick90,FF = Boxtube.FF, period = Boxtube.period,
                 ExtensionKp, ExtensionKd, lasterror, targetPosPivot, hangkP = 0, offsetPivotTicks, offsetTubeTicks;
     }
 
 
     private Servo servo0,servo1, servo2, servo3, servo4,  servo5, servo6, servo7, servo8, servo9, servo10, servo11;
-    public static double extensionTargetPos, KpExt = 0.0005;
+    public static double extensionTargetPos, KpExt = Boxtube.KpExt;
     double wristTicks, armTicks;
 
     public static ServoControl servoControl = new ServoControl();

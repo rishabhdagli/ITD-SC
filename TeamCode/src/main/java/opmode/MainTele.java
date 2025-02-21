@@ -23,7 +23,7 @@ public class MainTele extends LinearOpMode {
 
     public TeleRobot teleRobot;
     public Boxtube boxtube;
-    public Follower follower;
+   // public Follower follower;
     boolean sampleMode = true, check = false;
     double MonkeyExpressFlashBang = 0;
 
@@ -34,11 +34,11 @@ public class MainTele extends LinearOpMode {
         boxtube= new Boxtube(hardwareMap,1); //just for pivot check
         teleRobot = new TeleRobot(hardwareMap, gamepad1,gamepad2);
 
-        Constants.setConstants(FConstants.class, LConstants.class);
-
-        follower = new Follower(hardwareMap);
-
-        follower.setStartingPose(new Pose(22.000, 30.000, Point.CARTESIAN));
+//        Constants.setConstants(FConstants.class, LConstants.class);
+//
+//        follower = new Follower(hardwareMap);
+//
+//        follower.setStartingPose(new Pose(22.000, 30.000, Point.CARTESIAN));
 
         redLED = hardwareMap.get(LED.class, "red");
         greenLED = hardwareMap.get(LED.class, "green");
@@ -63,9 +63,10 @@ public class MainTele extends LinearOpMode {
 
 
             //hopefully this works
-            if (gamepad1.right_bumper) {teleRobot.TeleControl(0.7,0.7,0.5);}
+            if(Math.abs(gamepad1.left_trigger) > 0) {teleRobot.TeleControl(0.7 + (gamepad1.left_trigger*0.3),1,0.7);}
+            else if (Math.abs(gamepad1.right_trigger) > 0) {teleRobot.TeleControl((0.7-gamepad1.right_trigger*0.7),1,0.7);}
             else if(boxtube.PivotisMoving()) {teleRobot.TeleControl(0.7,1,1);}
-            else{teleRobot.TeleControl(1,1,1);}
+            else{teleRobot.TeleControl(0.7,1,0.7);}
 
 
             String state = sampleMachine.getStateString();
@@ -126,11 +127,11 @@ public class MainTele extends LinearOpMode {
             }
             else{telemetry.addData("State: ", sampleMachine.getStateString());}
 
-            telemetry.addData("X pose: ", follower.getPose().getX());
-            telemetry.addData("Y pose: ", follower.getPose().getY());
-            telemetry.addData("Heading pose: ", follower.getPose().getHeading());
-
-            follower.update();
+//            telemetry.addData("X pose: ", follower.getPose().getX());
+//            telemetry.addData("Y pose: ", follower.getPose().getY());
+//            telemetry.addData("Heading pose: ", follower.getPose().getHeading());
+//
+//            follower.update();
 
             telemetry.update();
 
