@@ -160,7 +160,7 @@ public class FourSpecimen extends LinearOpMode {
                 case Push3:
                     if(!follower.isBusy()){
                         follower.followPath(Push3);
-                        r.SpecimenWall();
+                        r.SpecimenWallForSamplePush();
                         setPathState(PathStates.Pickup1);
                     }
                     break;
@@ -174,7 +174,6 @@ public class FourSpecimen extends LinearOpMode {
 
                 case Score1:
                     if(!follower.isBusy()){
-
                         resetActionTimer();
                         if(actionTimer.getElapsedTimeSeconds()>0.05) {
                             r.SpecimenWallGrab();
@@ -192,14 +191,14 @@ public class FourSpecimen extends LinearOpMode {
                     break;
 
                 case Pickup2:
+                    r.PivotUpSpec();
                     if(!follower.isBusy()){
-                        r.PivotUpSpec();
                         resetActionTimer();
-                        if(actionTimer.getElapsedTimeSeconds() > 0.7){
+                        if(actionTimer.getElapsedTimeSeconds() > 0.3){
                             r.SpecimenLatch();
-                                if(actionTimer.getElapsedTimeSeconds()>1.3) {
+                                if(actionTimer.getElapsedTimeSeconds()>0.9) {
                                     r.SpecimenExtDown();
-                                    if(actionTimer.getElapsedTimeSeconds() > 1.35){
+                                    if(actionTimer.getElapsedTimeSeconds() > 0.95){
                                         r.SpecimenWall();
                                         follower.followPath(Pickup2);
                                         setPathState(PathStates.Score2);
@@ -228,14 +227,14 @@ public class FourSpecimen extends LinearOpMode {
                     break;
 
                 case Pickup3:
+                    r.PivotUpSpec(); //pivot after moving boxtube in
                     if(!follower.isBusy()) {
-                        r.PivotUpSpec();
                         resetActionTimer();
-                        if(actionTimer.getElapsedTimeSeconds() > 0.7){
+                        if(actionTimer.getElapsedTimeSeconds() > 0.4){
                             r.SpecimenLatch();
-                                if(actionTimer.getElapsedTimeSeconds()>1.3) {
+                                if(actionTimer.getElapsedTimeSeconds()>0.8) {
                                     r.SpecimenExtDown();
-                                    if(actionTimer.getElapsedTimeSeconds() > 1.35){
+                                    if(actionTimer.getElapsedTimeSeconds() > 0.95){
                                         r.SpecimenWall();
                                         follower.followPath(Pickup3);
                                         setPathState(PathStates.Score3);
@@ -264,14 +263,14 @@ public class FourSpecimen extends LinearOpMode {
                     break;
 
                 case Pickup4:
+                    r.PivotUpSpec();
                     if(!follower.isBusy()){
-                        r.PivotUpSpec();
                         resetActionTimer();
-                        if(actionTimer.getElapsedTimeSeconds() > 0.7){
+                        if(actionTimer.getElapsedTimeSeconds() > 0.3){
                             r.SpecimenLatch();
-                                if(actionTimer.getElapsedTimeSeconds()>1.3) {
+                                if(actionTimer.getElapsedTimeSeconds()>0.9) {
                                     r.SpecimenExtDown();
-                                    if(actionTimer.getElapsedTimeSeconds() > 1.35){
+                                    if(actionTimer.getElapsedTimeSeconds() > 0.95){
                                         r.SpecimenWall();
                                         follower.followPath(Pickup4);
                                         setPathState(PathStates.Score4);
@@ -300,8 +299,8 @@ public class FourSpecimen extends LinearOpMode {
                     break;
 
                 case Park:
+                    r.PivotUpSpec();
                     if(!follower.isBusy()){
-                        r.PivotUpSpec();
                         resetActionTimer();
                         if(actionTimer.getElapsedTimeSeconds() > 0.7){
                             r.SpecimenLatch();
@@ -412,7 +411,7 @@ public class FourSpecimen extends LinearOpMode {
                             )
                     )
                     .setConstantHeadingInterpolation(Math.toRadians(180))
-                    .setZeroPowerAccelerationMultiplier(0.75)
+                    .setZeroPowerAccelerationMultiplier(2)
                     .build();
 
             Score1 = follower.pathBuilder()
@@ -420,57 +419,57 @@ public class FourSpecimen extends LinearOpMode {
                             new BezierCurve(
                                     new Point(19.500, 8.000, Point.CARTESIAN),
                                     new Point(12.903, 62.000, Point.CARTESIAN),
-                                    new Point(44.750, 69.000, Point.CARTESIAN)
+                                    new Point(43.25, 69.000, Point.CARTESIAN)
                             )
                     )
                     .setConstantHeadingInterpolation(Math.toRadians(180))
-                    .setZeroPowerAccelerationMultiplier(1.75)
+                    .setZeroPowerAccelerationMultiplier(2)
                     .build();
 
             Pickup2 = follower.pathBuilder()
                     .addPath(
                             new BezierCurve(
-                                    new Point(44.750, 69.000, Point.CARTESIAN),
+                                    new Point(43.250, 69.000, Point.CARTESIAN),
                                     new Point(24.000, 62.000, Point.CARTESIAN),
                                     new Point(55.000,35.000, Point.CARTESIAN),
-                                    new Point(19.500, 30.000, Point.CARTESIAN)
+                                    new Point(27.000, 27.500, Point.CARTESIAN)
                             )
                     )
                     .setConstantHeadingInterpolation(Math.toRadians(180))
-                    .setZeroPowerAccelerationMultiplier(0.75)
+                    .setZeroPowerAccelerationMultiplier(2)
                     .build();
 
             Score2 = follower.pathBuilder()
                     .addPath(
                             new BezierCurve(
-                                    new Point(19.500, 30.000, Point.CARTESIAN),
+                                    new Point(27.000, 27.500, Point.CARTESIAN),
                                     new Point(12.903, 62.000, Point.CARTESIAN),
-                                    new Point(44.750, 73.000, Point.CARTESIAN)
+                                    new Point(43.250, 70.000, Point.CARTESIAN)
                             )
                     )
                     .setConstantHeadingInterpolation(Math.toRadians(180))
-                    .setZeroPowerAccelerationMultiplier(1.75)
+                    .setZeroPowerAccelerationMultiplier(2)
                     .build();
 
             Pickup3 = follower.pathBuilder()
                     .addPath(
                             new BezierCurve(
-                                    new Point(44.750, 73.000, Point.CARTESIAN),
+                                    new Point(43.250, 70.000, Point.CARTESIAN),
                                     new Point(24.000, 62.000, Point.CARTESIAN),
                                     new Point(55.000,35.000, Point.CARTESIAN),
-                                    new Point(19.500, 30.000, Point.CARTESIAN)
+                                    new Point(27.000, 27.500, Point.CARTESIAN)
                             )
                     )
                     .setConstantHeadingInterpolation(Math.toRadians(180))
-                    .setZeroPowerAccelerationMultiplier(1.25)
+                    .setZeroPowerAccelerationMultiplier(2)
                     .build();
 
             Score3 = follower.pathBuilder()
                     .addPath(
                             new BezierCurve(
-                                    new Point(19.500, 30.000, Point.CARTESIAN),
+                                    new Point(27.000, 27.500, Point.CARTESIAN),
                                     new Point(12.903, 62.000, Point.CARTESIAN),
-                                    new Point(44.750, 77.000, Point.CARTESIAN)
+                                    new Point(43.250, 73.000, Point.CARTESIAN)
                             )
                     )
                     .setConstantHeadingInterpolation(Math.toRadians(180))
@@ -480,10 +479,10 @@ public class FourSpecimen extends LinearOpMode {
             Pickup4 = follower.pathBuilder()
                     .addPath(
                             new BezierCurve(
-                                    new Point(44.750, 77.000, Point.CARTESIAN),
+                                    new Point(43.250, 73.000, Point.CARTESIAN),
                                     new Point(24.000, 62.000, Point.CARTESIAN),
                                     new Point(55.000,35.000, Point.CARTESIAN),
-                                    new Point(19.500, 30.000, Point.CARTESIAN)
+                                    new Point(27.000, 27.500, Point.CARTESIAN)
                             )
                     )
                     .setConstantHeadingInterpolation(Math.toRadians(180))
@@ -493,9 +492,9 @@ public class FourSpecimen extends LinearOpMode {
             Score4 = follower.pathBuilder()
                     .addPath(
                             new BezierCurve(
-                                    new Point(19.500, 30.000, Point.CARTESIAN),
+                                    new Point(27.000, 27.500, Point.CARTESIAN),
                                     new Point(12.903, 62.000, Point.CARTESIAN),
-                                    new Point(44.750, 80.000, Point.CARTESIAN)
+                                    new Point(43.250, 77.000, Point.CARTESIAN)
                             )
                     )
                     .setConstantHeadingInterpolation(Math.toRadians(180))
@@ -504,7 +503,7 @@ public class FourSpecimen extends LinearOpMode {
             Park = follower.pathBuilder()
                     .addPath(
                             new BezierLine(
-                                    new Point(44.750, 80.000, Point.CARTESIAN),
+                                    new Point(43.250, 77.000, Point.CARTESIAN),
                                     new Point(22.000, 30.000, Point.CARTESIAN)
                             )
                     )

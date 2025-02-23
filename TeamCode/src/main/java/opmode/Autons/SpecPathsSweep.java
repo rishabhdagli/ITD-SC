@@ -36,21 +36,21 @@ public class SpecPathsSweep extends LinearOpMode {
 
 
     PathChain Preload,
-    PrePush1,
-    PrePush2,
-    PrePush3,
-    Push1,
-    Push2,
-    Push3,
-    Pickup1,
-    Pickup2,
-    Pickup3,
-    Pickup4,
-    Score1,
-    Score2,
-    Score3,
-    Score4,
-    Park;
+            PrePush1,
+            PrePush2,
+            PrePush3,
+            Push1,
+            Push2,
+            Push3,
+            Pickup1,
+            Pickup2,
+            Pickup3,
+            Pickup4,
+            Score1,
+            Score2,
+            Score3,
+            Score4,
+            Park;
 
     enum PathStates {
         Preload, PrePush1, PrePush2, PrePush3, Push1, Push2, Push3, Pickup1, Pickup2, Pickup3, Pickup4, Score1, Score2, Score3, Score4, Park, End, WAIT1
@@ -131,8 +131,8 @@ public class SpecPathsSweep extends LinearOpMode {
                     if(!follower.isBusy()){
                         resetActionTimer();
                         if(actionTimer.getElapsedTimeSeconds() >1){
-                        follower.followPath(Push1);
-                        setPathState(PathStates.PrePush2);}
+                            follower.followPath(Push1);
+                            setPathState(PathStates.PrePush2);}
                     }
                     break;
 
@@ -140,8 +140,8 @@ public class SpecPathsSweep extends LinearOpMode {
                     if(!follower.isBusy()){
                         resetActionTimer();
                         if(actionTimer.getElapsedTimeSeconds()>1){
-                        follower.followPath(PrePush2);
-                        setPathState(PathStates.Push2);}
+                            follower.followPath(PrePush2);
+                            setPathState(PathStates.Push2);}
                     }
                     break;
 
@@ -150,7 +150,7 @@ public class SpecPathsSweep extends LinearOpMode {
                         resetActionTimer();
                         if(actionTimer.getElapsedTimeSeconds()>1){
                             follower.followPath(Push2);
-                        setPathState(PathStates.PrePush3);}
+                            setPathState(PathStates.PrePush3);}
                     }
                     break;
 
@@ -159,7 +159,7 @@ public class SpecPathsSweep extends LinearOpMode {
                         resetActionTimer();
                         if(actionTimer.getElapsedTimeSeconds()>1){
                             follower.followPath(PrePush3);
-                        setPathState(PathStates.Push3);}
+                            setPathState(PathStates.Push3);}
                     }
                     break;
 
@@ -172,13 +172,13 @@ public class SpecPathsSweep extends LinearOpMode {
                             setPathState(PathStates.Pickup1);}
                     }
                     break;
-                    
+
                 case Pickup1:
                     if(!follower.isBusy()){
                         resetActionTimer();
                         if(actionTimer.getElapsedTimeSeconds()>1){
                             follower.followPath(Pickup1);
-                        setPathState(PathStates.Score1);}
+                            setPathState(PathStates.Score1);}
                     }
                     break;
 
@@ -189,8 +189,8 @@ public class SpecPathsSweep extends LinearOpMode {
                             r.SpecimenWallGrab();
                         }
                         if(actionTimer.getElapsedTimeSeconds() > 1){
-                                    follower.followPath(Score1);
-                                    setPathState(PathStates.Pickup2);
+                            follower.followPath(Score1);
+                            setPathState(PathStates.Pickup2);
                         }
                     }
                     break;
@@ -201,12 +201,12 @@ public class SpecPathsSweep extends LinearOpMode {
                         resetActionTimer();
                         if(actionTimer.getElapsedTimeSeconds() > 0.7){
 //                            r.SpecimenLatch();
-                                if(actionTimer.getElapsedTimeSeconds()>1.3) {
+                            if(actionTimer.getElapsedTimeSeconds()>1.3) {
 //                                    r.SpecimenExtDown();
-                                    if(actionTimer.getElapsedTimeSeconds() > 1.35){
+                                if(actionTimer.getElapsedTimeSeconds() > 1.35){
 //                                        r.SpecimenWall();
-                                        follower.followPath(Pickup2);
-                                        setPathState(PathStates.Score2);
+                                    follower.followPath(Pickup2);
+                                    setPathState(PathStates.Score2);
                                 }
                             }
                         }
@@ -223,7 +223,7 @@ public class SpecPathsSweep extends LinearOpMode {
                                 if(actionTimer.getElapsedTimeSeconds() > 1){
                                     follower.followPath(Score2);
                                     setPathState(PathStates.Pickup3);
-                                    }
+                                }
                             }
                         } else {
 //                            r.SpecimenWall();
@@ -237,12 +237,12 @@ public class SpecPathsSweep extends LinearOpMode {
                         resetActionTimer();
                         if(actionTimer.getElapsedTimeSeconds() > 0.7){
 //                            r.SpecimenLatch();
-                                if(actionTimer.getElapsedTimeSeconds()>1.3) {
+                            if(actionTimer.getElapsedTimeSeconds()>1.3) {
 //                                    r.SpecimenExtDown();
-                                    if(actionTimer.getElapsedTimeSeconds() > 1.35){
+                                if(actionTimer.getElapsedTimeSeconds() > 1.35){
 //                                        r.SpecimenWall();
-                                        follower.followPath(Pickup3);
-                                        setPathState(PathStates.Score3);
+                                    follower.followPath(Pickup3);
+                                    setPathState(PathStates.Score3);
                                 }
                             }
                         }
@@ -273,12 +273,12 @@ public class SpecPathsSweep extends LinearOpMode {
                         resetActionTimer();
                         if(actionTimer.getElapsedTimeSeconds() > 0.7){
 //                            r.SpecimenLatch();
-                                if(actionTimer.getElapsedTimeSeconds()>1.3) {
+                            if(actionTimer.getElapsedTimeSeconds()>1.3) {
 //                                    r.SpecimenExtDown();
-                                    if(actionTimer.getElapsedTimeSeconds() > 1.35){
+                                if(actionTimer.getElapsedTimeSeconds() > 1.35){
 //                                        r.SpecimenWall();
-                                        follower.followPath(Pickup4);
-                                        setPathState(PathStates.Score4);
+                                    follower.followPath(Pickup4);
+                                    setPathState(PathStates.Score4);
                                 }
                             }
                         }
@@ -309,13 +309,13 @@ public class SpecPathsSweep extends LinearOpMode {
                         resetActionTimer();
                         if(actionTimer.getElapsedTimeSeconds() > 0.7){
 //                            r.SpecimenLatch();
-                                if(actionTimer.getElapsedTimeSeconds()>1.3) {
+                            if(actionTimer.getElapsedTimeSeconds()>1.3) {
 //                                    r.SpecimenExtDown();
-                                    if(actionTimer.getElapsedTimeSeconds() > 1.35){
+                                if(actionTimer.getElapsedTimeSeconds() > 1.35){
 //                                        r.SampleHover();
-                                        follower.followPath(Park);
+                                    follower.followPath(Park);
 //                                        setPathState(PathStates.End);
-                                    }
+                                }
                             }
                         }
                     }
@@ -333,118 +333,118 @@ public class SpecPathsSweep extends LinearOpMode {
 
     public void buildPaths() {
 
-            Preload = follower.pathBuilder()
-                    .addPath(
-                            new BezierLine(
-                                    new Point(7.000, 54.000, Point.CARTESIAN),
-                                    new Point(25.000, 61.000, Point.CARTESIAN)
-                            )
-                    )
-                    .setLinearHeadingInterpolation(Math.toRadians(0), Math.toRadians(0))
-                    .setZeroPowerAccelerationMultiplier(0.5)
-                    .build();
+        Preload = follower.pathBuilder()
+                .addPath(
+                        new BezierLine(
+                                new Point(7.000, 54.000, Point.CARTESIAN),
+                                new Point(25.000, 61.000, Point.CARTESIAN)
+                        )
+                )
+                .setLinearHeadingInterpolation(Math.toRadians(0), Math.toRadians(0))
+                .setZeroPowerAccelerationMultiplier(0.5)
+                .build();
 
-            PrePush1 = follower.pathBuilder()
-                    .addPath(
-                            new BezierCurve(
-                                    new Point(25.000, 61.000, Point.CARTESIAN),
-                                    new Point(34, 29.500, Point.CARTESIAN)
-                            )
-                    )
-                    .setLinearHeadingInterpolation(Math.toRadians(0), Math.toRadians(-35))
-                    .setZeroPowerAccelerationMultiplier(0.5)
-                    .build();
+        PrePush1 = follower.pathBuilder()
+                .addPath(
+                        new BezierCurve(
+                                new Point(25.000, 61.000, Point.CARTESIAN),
+                                new Point(30, 40, Point.CARTESIAN)
+                        )
+                )
+                .setLinearHeadingInterpolation(Math.toRadians(0), Math.toRadians(-35))
+                .setZeroPowerAccelerationMultiplier(0.75)
+                .build();
 
-            Push1 = follower.pathBuilder()
-                    .addPath(
-                            new BezierLine(
-                                    new Point(34.000, 29.500, Point.CARTESIAN),
-                                    new Point(34.010, 29.500, Point.CARTESIAN)
-                            )
-                    )
-                    .setLinearHeadingInterpolation(Math.toRadians(-35), Math.toRadians(-120))
-                    .setZeroPowerAccelerationMultiplier(0.5)
-                    .build();
+        Push1 = follower.pathBuilder()
+                .addPath(
+                        new BezierLine(
+                                new Point(30, 40, Point.CARTESIAN),
+                                new Point(30, 29.5, Point.CARTESIAN)
+                        )
+                )
+                .setLinearHeadingInterpolation(Math.toRadians(-35), Math.toRadians(-135))
+                .setZeroPowerAccelerationMultiplier(0.75)
+                .build();
 
-            PrePush2 = follower.pathBuilder()
-                    .addPath(
-                            new BezierCurve(
-                                    new Point(34.010, 29.500, Point.CARTESIAN),
-                                    new Point(34.000, 29.500, Point.CARTESIAN)
-                            )
-                    )
-                    .setLinearHeadingInterpolation(Math.toRadians(-120), Math.toRadians(-45))
-                    .setZeroPowerAccelerationMultiplier(0.5)
-                    .build();
+        PrePush2 = follower.pathBuilder()
+                .addPath(
+                        new BezierCurve(
+                                new Point(34.500, 29.500, Point.CARTESIAN),
+                                new Point(34.000, 29.500, Point.CARTESIAN)
+                        )
+                )
+                .setLinearHeadingInterpolation(Math.toRadians(-135), Math.toRadians(-45))
+                .setZeroPowerAccelerationMultiplier(0.5)
+                .build();
 
-            Push2 = follower.pathBuilder()
-                    .addPath(
-                            new BezierLine(
-                                    new Point(34.000, 29.500, Point.CARTESIAN),
-                                    new Point(34.010, 29.500, Point.CARTESIAN)
-                            )
-                    )
-                    .setLinearHeadingInterpolation(Math.toRadians(-30), Math.toRadians(-120))
-                    .build();
+        Push2 = follower.pathBuilder()
+                .addPath(
+                        new BezierLine(
+                                new Point(34.00, 29.500, Point.CARTESIAN),
+                                new Point(34.500, 29.500, Point.CARTESIAN)
+                        )
+                )
+                .setLinearHeadingInterpolation(Math.toRadians(-45), Math.toRadians(-135))
+                .build();
 
-            PrePush3 = follower.pathBuilder()
-                    .addPath(
-                            new BezierCurve(
-                                    new Point(34.000, 29.500, Point.CARTESIAN),
-                                    new Point(40.939, 21.660, Point.CARTESIAN),
-                                    new Point(71.405, 17.851, Point.CARTESIAN),
-                                    new Point(57.000, 9.000, Point.CARTESIAN)
-                            )
-                    )
-                    .setLinearHeadingInterpolation(Math.toRadians(-120), Math.toRadians(-45))
-                    .setZeroPowerAccelerationMultiplier(0.5)
-                    .build();
+        PrePush3 = follower.pathBuilder()
+                .addPath(
+                        new BezierCurve(
+                                new Point(34.500, 29.500, Point.CARTESIAN),
+                                new Point(40.939, 21.660, Point.CARTESIAN),
+                                new Point(71.405, 17.851, Point.CARTESIAN),
+                                new Point(57.000, 9.000, Point.CARTESIAN)
+                        )
+                )
+                .setLinearHeadingInterpolation(Math.toRadians(-120), Math.toRadians(180))
+                .setZeroPowerAccelerationMultiplier(0.5)
+                .build();
 
-            Push3 = follower.pathBuilder()
-                    .addPath(
-                            new BezierLine(
-                                    new Point(57.000, 9.000, Point.CARTESIAN),
-                                    new Point(19.500, 9.000, Point.CARTESIAN)
-                            )
-                    )
-                    .setLinearHeadingInterpolation(Math.toRadians(-45), Math.toRadians(-180))
-                    .setZeroPowerAccelerationMultiplier(0.5)
-                    .build();
+        Push3 = follower.pathBuilder()
+                .addPath(
+                        new BezierLine(
+                                new Point(57.000, 9.000, Point.CARTESIAN),
+                                new Point(19.500, 9.000, Point.CARTESIAN)
+                        )
+                )
+                .setConstantHeadingInterpolation(Math.toRadians(180))
+                .setZeroPowerAccelerationMultiplier(1)
+                .build();
 
-            Pickup1 = follower.pathBuilder()
-                    .addPath(
-                            new BezierLine(
-                                    new Point(19.500, 9.000, Point.CARTESIAN),
-                                    new Point(19.75, 9.000, Point.CARTESIAN)
-                            )
-                    )
-                    .setConstantHeadingInterpolation(Math.toRadians(-180))
-                    .setZeroPowerAccelerationMultiplier(0.75)
-                    .build();
+        Pickup1 = follower.pathBuilder()
+                .addPath(
+                        new BezierLine(
+                                new Point(19.500, 9.000, Point.CARTESIAN),
+                                new Point(19.75, 9.000, Point.CARTESIAN)
+                        )
+                )
+                .setConstantHeadingInterpolation(Math.toRadians(180))
+                .setZeroPowerAccelerationMultiplier(0.75)
+                .build();
 
-            Score1 = follower.pathBuilder()
-                    .addPath(
-                            new BezierCurve(
-                                    new Point(19.750, 9.000, Point.CARTESIAN),
-                                    new Point(32.093, 70.572, Point.CARTESIAN),
-                                    new Point(40.831, 64.859, Point.CARTESIAN)
-                            )
-                    )
-                    .setConstantHeadingInterpolation(Math.toRadians(-180))
-                    .setZeroPowerAccelerationMultiplier(1.5)
-                    .build();
+        Score1 = follower.pathBuilder()
+                .addPath(
+                        new BezierCurve(
+                                new Point(19.750, 9.000, Point.CARTESIAN),
+                                new Point(32.093, 70.572, Point.CARTESIAN),
+                                new Point(40.831, 64.859, Point.CARTESIAN)
+                        )
+                )
+                .setConstantHeadingInterpolation(Math.toRadians(-180))
+                .setZeroPowerAccelerationMultiplier(1.5)
+                .build();
 
-            Pickup2 = follower.pathBuilder()
-                    .addPath(
-                            new BezierCurve(
-                                    new Point(40.831, 64.859, Point.CARTESIAN),
-                                    new Point(32.093, 70.572, Point.CARTESIAN),
-                                    new Point(12.266, 23.860, Point.CARTESIAN)
-                            )
-                    )
-                    .setConstantHeadingInterpolation(Math.toRadians(-180))
-                    .setZeroPowerAccelerationMultiplier(0.75)
-                    .build();
+        Pickup2 = follower.pathBuilder()
+                .addPath(
+                        new BezierCurve(
+                                new Point(40.831, 64.859, Point.CARTESIAN),
+                                new Point(32.093, 70.572, Point.CARTESIAN),
+                                new Point(12.266, 23.860, Point.CARTESIAN)
+                        )
+                )
+                .setConstantHeadingInterpolation(Math.toRadians(-180))
+                .setZeroPowerAccelerationMultiplier(0.75)
+                .build();
         Score2 = follower.pathBuilder()
                 .addPath(
                         new BezierCurve(
@@ -565,14 +565,14 @@ public class SpecPathsSweep extends LinearOpMode {
 //                    .setConstantHeadingInterpolation(Math.toRadians(180))
 //                    .setZeroPowerAccelerationMultiplier(1.75)
 //                    .build();
-            Park = follower.pathBuilder()
-                    .addPath(
-                            new BezierLine(
-                                    new Point(44.750, 80.000, Point.CARTESIAN),
-                                    new Point(22.000, 30.000, Point.CARTESIAN)
-                            )
-                    )
-                    .setConstantHeadingInterpolation(Math.toRadians(180))
-                    .build();
-        }
+        Park = follower.pathBuilder()
+                .addPath(
+                        new BezierLine(
+                                new Point(44.750, 80.000, Point.CARTESIAN),
+                                new Point(22.000, 30.000, Point.CARTESIAN)
+                        )
+                )
+                .setConstantHeadingInterpolation(Math.toRadians(180))
+                .build();
+    }
 }

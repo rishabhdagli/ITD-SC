@@ -18,7 +18,7 @@ public class AutoRobot {
     public Boxtube boxtube;
     public EndEffector endEffector;
     double specPreScore = 0;
-    double specScore = 15250;
+    double specScore = 16000;
 
     double specGrabExt = 10000;
     double sampleScore = 30500;
@@ -90,7 +90,7 @@ public class AutoRobot {
 
     //Specimin Methods here
     public void SpecimenPreLoad() {
-        endEffector.hand(0.48);
+        endEffector.hand(0.16);
         endEffector.setEndEffector(0,-15);
         endEffector.turret(0.47);
         boxtube.setPivot(pivotPreLoad);
@@ -99,7 +99,7 @@ public class AutoRobot {
     }
 
     public void PreloadSpecExt(){
-        endEffector.hand(0.48);
+        endEffector.hand(0.16);
         endEffector.setEndEffector(0,-15);
         endEffector.turret(0.47);
         boxtube.setPivot(pivotPreLoad);
@@ -108,7 +108,7 @@ public class AutoRobot {
     };
 
     public void SpecimenPreLoadScore(){
-        endEffector.hand(0.48);
+        endEffector.hand(0.16);
         endEffector.setEndEffector(0,-15);
         endEffector.turret(0.47);
         boxtube.setPivot(50);
@@ -118,14 +118,24 @@ public class AutoRobot {
     public void SpecimenWall(){
         boxtube.setPivot(pivotHorizontal);
         endEffector.hand(0.16);
-        endEffector.setEndEffector(75,-50);
+        endEffector.setEndEffector(75,-60);
+        endEffector.turret(0.47);
+        ClawOpen();
+        if(boxtube.getPivpos() < 150){
+            boxtube.setExt(10000);
+        }
+    }
+    public void SpecimenWallForSamplePush(){
+        boxtube.setPivot(pivotHorizontal);
+        endEffector.hand(0.16);
+        endEffector.setEndEffector(75,-60);
         endEffector.turret(0.47);
         ClawOpen();
     }
 
     public void SpecimenWallGrab() {
         endEffector.hand(0.16);
-        endEffector.setEndEffector(75,-50);
+        endEffector.setEndEffector(75,-60);
         endEffector.turret(0.47);
         ClawClose();
     }
@@ -134,7 +144,7 @@ public class AutoRobot {
         boxtube.setExt(specPreScore);
         endEffector.turret(0.47);
         endEffector.hand(0.16);
-        endEffector.setEndEffector(45,70);
+        endEffector.setEndEffector(45,55);
         ClawClose();
     }
 
