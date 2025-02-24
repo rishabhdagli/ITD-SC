@@ -33,7 +33,7 @@ public class AutoAlignTuner extends LinearOpMode{
     //
     Servo wrist,arm1,arm2,hand,claw,turret;
 
-    public static double Wrist=0.7,Arms=0.6,Claw =0.8;
+    public static double Wrist=0.7,Arms=0.6,Claw =0.8,verticalCenterFrame = 320;
 
     public static int State = 0;
 
@@ -148,7 +148,26 @@ switch (State){
         tele.addLine("Move turret Angle and Hand Angle (check if turret angle change hand pos)");
         turret.setPosition(ServoRegulizer(tp.MStandard*(tp.TurretAngle)+tp.BStandard));
         hand.setPosition(ServoRegulizer(hp.MStandard*(hp.HandAngle - tp.TurretAngle+90) + hp.BStandard));
-        tele.addLine("Click play");
+        tele.addLine("Switch to test the pipeline");
+        break;
+    case 4:
+        tele.addData("pipeline angle: ",pipeline.getDetectedAngle());
+        tele.addLine("This part allows you to test the intepolation and once you switch the hand will auto align outside grab");
+        tele.addLine("Switch states to 5 to move hand and place sample under");
+        hp.HandAngle = 0;
+        prevState = 0;
+        hand.setPosition(ServoRegulizer(hp.MStandard*(hp.HandAngle - tp.TurretAngle+90) + hp.BStandard));
+        turret.setPosition(ServoRegulizer(tp.MStandard*(tp.TurretAngle)+tp.BStandard));
+        break;
+    case 5:
+        if(prevState == 0){
+            tele.addLine("Switch back to test or move on to turret");
+            //the 90 accoutns for the reverse 0 and the perpendicular
+            hp.HandAngle = HandPerpendicularRegulaizer(pipeline.getDetectedAngle() +90);
+            hand.setPosition(ServoRegulizer(hp.MStandard*(hp.HandAngle - tp.TurretAngle+90) + hp.BStandard));
+            turret.setPosition(ServoRegulizer(tp.MStandard*(tp.TurretAngle)+tp.BStandard));
+            prevState = 1;
+        }
         break;
 
     default:
@@ -162,7 +181,6 @@ tele.update();
         waitForStart();
         State = 0;
 
-
         while (opModeIsActive()) {
             wrist.setPosition(Wrist);
             Arm(Arms);
@@ -171,32 +189,11 @@ tele.update();
 
 
             switch (State){
-                //Turrent Interplot
+                //turret Interpolator
                 case 1:
-                  tele.addData("pipeline angle: ",pipeline.getDetectedAngle());
-                    tele.addLine("This part allows you to test the intepolation and once you swith the hand will auto align outside grab");
-                  tele.addLine("Switch states to 2 to move hand and place sample under");
-                    hp.HandAngle = 0;
-                    prevState = 0;
-                    hand.setPosition(ServoRegulizer(hp.MStandard*(hp.HandAngle - tp.TurretAngle+90) + hp.BStandard));
-                    turret.setPosition(ServoRegulizer(tp.MStandard*(tp.TurretAngle)+tp.BStandard));
-                    break;
-                //Hand Interpolation
-                case 2:
-                    if(prevState == 0){
-                        tele.addLine("Switch back to test or move on to turret");
-                        //the 90 accoutns for the reverse 0 and the perpendicular
-                        hp.HandAngle = HandPerpendicularRegulaizer(pipeline.getDetectedAngle() +90);
-                        hand.setPosition(ServoRegulizer(hp.MStandard*(hp.HandAngle - tp.TurretAngle+90) + hp.BStandard));
-                        turret.setPosition(ServoRegulizer(tp.MStandard*(tp.TurretAngle)+tp.BStandard));
-                        prevState = 1;
-                    }
-                    break;
-
-                case 3:
-                    tele.addLine("quadratic or Linear gain interpolator 3 points x(error pixels) y(servo gain)");
+                    tele.addLine("Quadratic or Linear gain interpolator 3 points x(error pixels) y(servo gain)");
                     tele.addData("Middle Line X", pipeline.getMiddleLineX());
-                     tp.error  =  320 - pipeline.getMiddleLineX();
+                     tp.error  =  verticalCenterFrame - pipeline.getMiddleLineX();
                      if(tp.error > 0){
                           turret.setPosition(tp.ServoGain + turret.getPosition());
                      }
@@ -207,7 +204,7 @@ tele.update();
 
 
                     break;
-                case 4:
+                case 2:
                     tele.addLine("Test by moving the sample around");
                     tp.ServoGain = tp.AGain*(tp.error*tp.error) + tp.BGain*(tp.error) + tp.CGain;
                     tele.addData("Middle Line X", pipeline.getMiddleLineX());
@@ -221,7 +218,7 @@ tele.update();
                         turret.setPosition(turret.getPosition() - tp.ServoGain);
                     }
                     break;
-                case 5:
+                case 3:
                     tele.addLine("for moving the boxtube to align also make sure wrist and hand in a good pick up postion");
                     tele.addData("Middle line ", bp.middleLine);
                     bp.ErrorY =  pipeline.getMiddleLineY() - bp.middleLine;
@@ -229,15 +226,15 @@ tele.update();
                     tele.addData("Motor power", bp.KpExtention*bp.ErrorY);
                     boxtube.ExtensionPower(bp.KpExtention*bp.ErrorY);
                     break;
-                case 6:
+                case 4:
                     tele.addLine("Next position for for moving everything");
                     boxtube.ExtensionPower(0);
                     turret.setPosition(0.47);
                     hand.setPosition(0.5);
                     prevState = 0;
                     break;
-                case 7:
-                    tele.addLine("for moving the boxtube to align also make sure wrist and hand in a good pick up postion");
+                case 5:
+                    tele.addLine("For moving the boxtube to align also make sure wrist and hand in a good pick up postion");
                     tele.addData("Middle line ", bp.middleLine);
                     bp.ErrorY =  pipeline.getMiddleLineY() - bp.middleLine;
                     tele.addData("Pixel error", bp.ErrorY);
