@@ -1,18 +1,34 @@
 package Subsystems;
 
+import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.hardwareMap;
+
 import com.pedropathing.follower.Follower;
 import com.pedropathing.localization.Pose;
 import com.pedropathing.util.Constants;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
+import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
+import org.firstinspires.ftc.vision.VisionPortal;
 
+import opmode.Vision.CrushSampleAnglePipelineTurretTrial;
 import pedroPathing.constants.FConstants;
 import pedroPathing.constants.LConstants;
 
 public class AutoRobot {
+
+    public static class TurretParams{ public double Turret=0.5,MStandard = 0.00311111,BStandard=0.19,TurretAngle= 90, AGain = 0.00000000106228, BGain = 0.00000144933, CGain = 0.000025861, error,ServoGain = 0;
+    }
+
+    public static class HandParams{ public double Hand=0.5,MStandard = 0.00377778,BStandard=0.16,HandAngle = 90;}
+
+    ElapsedTime timer;
+    boolean FirstTime = true;
+    private CrushSampleAnglePipelineTurretTrial pipeline;
+    private VisionPortal VP;
 
     public DcMotorEx LF,LR,RF,RR;
     public Boxtube boxtube;
@@ -42,6 +58,38 @@ public class AutoRobot {
         follower = new Follower(h);
 
         follower.setStartingPose(startPose);
+
+        timer = new ElapsedTime(ElapsedTime.Resolution.SECONDS);
+        pipeline = new CrushSampleAnglePipelineTurretTrial();
+        VP = VisionPortal.easyCreateWithDefaults(hardwareMap.get(WebcamName.class, "Webcam 1"), pipeline);
+
+    }
+
+    public void EndEffectorAlign(){
+        // Call this methods
+        // Detects a sample
+        //Aligns to the sample until turret error is low while the hand is using inverse kinematics
+        //Possible boxtube align
+        //Then the hand aligns
+        //then grab
+        if(FirstTime){
+            FirstTime = false;
+            timer.reset();
+        }
+        else{
+            if(timer.seconds() < 2){
+                //Put full tester here from AutoAlign test here
+            }
+            else if(timer.seconds() < 3){
+                //Put the part where the hand aligns
+            }
+            else if(timer.seconds() < 5){
+                //pick up actions
+            }
+
+        }
+
+
     }
     public void ChangePivotKP(double kp){
         boxtube.changekP(kp);
@@ -55,6 +103,10 @@ public class AutoRobot {
     public void ClawClose() {
         endEffector.claw(1);
     }
+
+
+
+
 
 
     //for legality

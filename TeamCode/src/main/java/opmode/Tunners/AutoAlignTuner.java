@@ -38,14 +38,15 @@ public class AutoAlignTuner extends LinearOpMode{
     public static int State = 0;
 
     private int prevState = 0;
+    private double prevServoGain = 0,MaxPixelError =0;
 
     public static class BoxtubeParam{ public double KpExtention = 0, ErrorY = 0, middleLine = 240;
     }
-    public static class TurretParams{ public double Turret=0.5,MStandard = 0.003,BStandard=0.2,TurretAngle= 90,
-        AGain = 0, BGain = 0, CGain = 0, error,ServoGain = 0;
+    public static class TurretParams{ public double Turret=0.5,MStandard = 0.00311111,BStandard=0.19,TurretAngle= 90,
+        AGain = 0.00000000106228, BGain = 0.00000144933, CGain = 0.000025861, error,ServoGain = 0;
     }
 
-    public static class HandParams{ public double Hand=0.5,MStandard = 0.0035,BStandard=0.185,HandAngle = 90;}
+    public static class HandParams{ public double Hand=0.5,MStandard = 0.00377778,BStandard=0.16,HandAngle = 90;}
 
     public void Arm(double pos){
         arm1.setPosition(pos);
@@ -161,9 +162,10 @@ switch (State){
         break;
     case 5:
         if(prevState == 0){
+            tele.addData("Hand Angle",hp.HandAngle);
             tele.addLine("Switch back to test or move on to turret");
             //the 90 accoutns for the reverse 0 and the perpendicular
-            hp.HandAngle = HandPerpendicularRegulaizer(pipeline.getDetectedAngle() +90);
+            hp.HandAngle = HandPerpendicularRegulaizer(pipeline.getDetectedAngle() + 90);
             hand.setPosition(ServoRegulizer(hp.MStandard*(hp.HandAngle - tp.TurretAngle+90) + hp.BStandard));
             turret.setPosition(ServoRegulizer(tp.MStandard*(tp.TurretAngle)+tp.BStandard));
             prevState = 1;
@@ -193,32 +195,56 @@ tele.update();
                 case 1:
                     tele.addLine("Quadratic or Linear gain interpolator 3 points x(error pixels) y(servo gain)");
                     tele.addData("Middle Line X", pipeline.getMiddleLineX());
+                    tele.addData("Max Error:",MaxPixelError);
                      tp.error  =  verticalCenterFrame - pipeline.getMiddleLineX();
                      if(tp.error > 0){
-                          turret.setPosition(tp.ServoGain + turret.getPosition());
+                          turret.setPosition(turret.getPosition() - tp.ServoGain);
                      }
                      else if (tp.error <0){
-                         turret.setPosition(turret.getPosition() - tp.ServoGain);
+                         turret.setPosition(turret.getPosition() + tp.ServoGain);
                      }
+                     if(tp.ServoGain != prevServoGain){
+                         MaxPixelError = 0;
+                         prevServoGain = tp.ServoGain;
+                     }
+                     MaxPixelError = Math.max(Math.abs(tp.error), MaxPixelError);
+
                     hp.HandAngle = 90;
 
 
                     break;
                 case 2:
                     tele.addLine("Test by moving the sample around");
-                    tp.ServoGain = tp.AGain*(tp.error*tp.error) + tp.BGain*(tp.error) + tp.CGain;
+                    tp.ServoGain = (tp.error>0)? (tp.AGain*(tp.error*tp.error) + tp.BGain*(tp.error) + tp.CGain):-1*(tp.AGain*(tp.error*tp.error) + tp.BGain*(tp.error) + tp.CGain);
                     tele.addData("Middle Line X", pipeline.getMiddleLineX());
                     tp.error  =  320 - pipeline.getMiddleLineX();
                     tele.addData("Error",tp.error );
 
                     if(tp.error > 0){
-                        turret.setPosition(tp.ServoGain + turret.getPosition());
+                        turret.setPosition(turret.getPosition() - tp.ServoGain);
                     }
                     else if (tp.error <0){
-                        turret.setPosition(turret.getPosition() - tp.ServoGain);
+                        turret.setPosition(turret.getPosition() + tp.ServoGain);
                     }
                     break;
                 case 3:
+                    tele.addLine("Full tester");
+                    tp.ServoGain = (tp.error>0)? (tp.AGain*(tp.error*tp.error) + tp.BGain*(tp.error) + tp.CGain):-1*(tp.AGain*(tp.error*tp.error) + tp.BGain*(tp.error) + tp.CGain);
+                    tele.addData("Middle Line X", pipeline.getMiddleLineX());
+                    tp.error  =  320 - pipeline.getMiddleLineX();
+                    tele.addData("Error",tp.error );
+
+                    if(tp.error > 0){
+                        turret.setPosition(turret.getPosition() - tp.ServoGain);
+                    }
+                    else if (tp.error <0){
+                        turret.setPosition(turret.getPosition() + tp.ServoGain);
+                    }
+                    tp.TurretAngle = (turret.getPosition() - tp.BStandard)/tp.MStandard;
+                    hp.HandAngle = HandPerpendicularRegulaizer(pipeline.getDetectedAngle());
+                    hand.setPosition(ServoRegulizer(hp.MStandard*(hp.HandAngle - tp.TurretAngle) + hp.BStandard));
+                    break;
+                case 4:
                     tele.addLine("for moving the boxtube to align also make sure wrist and hand in a good pick up postion");
                     tele.addData("Middle line ", bp.middleLine);
                     bp.ErrorY =  pipeline.getMiddleLineY() - bp.middleLine;
@@ -226,14 +252,14 @@ tele.update();
                     tele.addData("Motor power", bp.KpExtention*bp.ErrorY);
                     boxtube.ExtensionPower(bp.KpExtention*bp.ErrorY);
                     break;
-                case 4:
+                case 5:
                     tele.addLine("Next position for for moving everything");
                     boxtube.ExtensionPower(0);
                     turret.setPosition(0.47);
                     hand.setPosition(0.5);
                     prevState = 0;
                     break;
-                case 5:
+                case 6:
                     tele.addLine("For moving the boxtube to align also make sure wrist and hand in a good pick up postion");
                     tele.addData("Middle line ", bp.middleLine);
                     bp.ErrorY =  pipeline.getMiddleLineY() - bp.middleLine;
