@@ -32,7 +32,7 @@ public class Tester extends LinearOpMode {
     ElapsedTime timer;
 
     public static class ServoControl{
-        public double  wristAngle, armAngle, hand, claw, turret = 0.5;
+        public double wrist, arm, hand, claw, turret = 0.5;
 
     }
 
@@ -139,7 +139,9 @@ public class Tester extends LinearOpMode {
             servo8.setPosition(servoControl.hand);
             servo9.setPosition(servoControl.claw);
             servo10.setPosition(servoControl.turret);
-            // servo11.setPosition(pos11);
+
+            servo6.setPosition(servoControl.wrist);
+            servo7.setPosition(servoControl.arm); 
 
 //            tele.addData("Servo0 Position", servo0.getPosition());
 //            tele.addData("Servo1 Position", servo1.getPosition());
@@ -152,24 +154,6 @@ public class Tester extends LinearOpMode {
             tele.addData("Servo8 Position", servo8.getPosition());
             tele.addData("Servo9 Position", servo9.getPosition());
             tele.addData("Servo10 Position", servo10.getPosition());
-
-            // tele.addData("Servo11 Position", servo11.getPosition());
-
-            double armTicks = 0.0033333*(servoControl.armAngle) + 0.5;
-            //step 1(angle to tick)
-
-            //step 2 (ticks to offset angle)
-            double offsetAngle = 391.30435 * (armTicks) - 195.65217;
-            //Could be offsetAngle = armAngle *1.2
-
-            //step 3 (offset to wrist ofset)
-            double wirstTicks = -0.0031111*(servoControl.wristAngle+25+offsetAngle) + 0.5;
-
-            tele.addData("Wrist ticks", wirstTicks);
-            tele.addData("Arm ticks", armTicks);
-
-            servo6.setPosition(wirstTicks); //wrist servo
-            servo7.setPosition(armTicks); //arm servo
 
             double pivotCurrentPos = offsetPivotTicks + (-Pivot.getCurrentPosition());
             double boxtubeCurrentPos = offsetTubeTicks + (-BT1.getCurrentPosition());
