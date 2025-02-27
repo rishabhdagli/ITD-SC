@@ -11,7 +11,7 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
 @TeleOp(name = "Absolute encoder testing")
 @Config
-public class Enconder extends LinearOpMode {
+public class AbsoluteEnconder extends LinearOpMode {
 
     public static double m = 0,b=0;
 
