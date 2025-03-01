@@ -172,8 +172,7 @@ public class AutoAlignTunerForNeatNess extends LinearOpMode {
 
         waitForStart();
         state = 0; // Reset state after start
-
-        // Main loop
+        // Main loop: Following
         while (opModeIsActive()) {
             wrist.setPosition(Wrist);
             setArmPosition(Arms);
