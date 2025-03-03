@@ -43,7 +43,7 @@ public class AutoAlignTuner extends LinearOpMode{
     public static class BoxtubeParam{ public double KpExtention = 0, ErrorY = 0, middleLine = 240;
     }
     public static class TurretParams{ public double Turret=0.5,MStandard = 0.00311111,BStandard=0.19,TurretAngle= 90,
-        AGain = 0.00000000106228, BGain = 0.00000144933, CGain = 0.000025861, error,ServoGain = 0;
+        AGain = 0.00000000106228, BGain = 0.00000144933, CGain = 0.000025861, error,ServoGain = 0,thresholdPixelError = 10;
     }
 
     public static class HandParams{ public double Hand=0.5,MStandard = 0.00377778,BStandard=0.16,HandAngle = 90;}
@@ -81,9 +81,6 @@ public class AutoAlignTuner extends LinearOpMode{
        boxtube = new Boxtube(hardwareMap);
          dash = FtcDashboard.getInstance();
          tele = new MultipleTelemetry(telemetry, dash.getTelemetry());
-
-
-
 
         //for new bot
 
@@ -228,23 +225,6 @@ tele.update();
                     }
                     break;
                 case 3:
-                    tele.addLine("Full tester");
-                    tp.ServoGain = (tp.error>0)? (tp.AGain*(tp.error*tp.error) + tp.BGain*(tp.error) + tp.CGain):-1*(tp.AGain*(tp.error*tp.error) + tp.BGain*(tp.error) + tp.CGain);
-                    tele.addData("Middle Line X", pipeline.getMiddleLineX());
-                    tp.error  =  320 - pipeline.getMiddleLineX();
-                    tele.addData("Error",tp.error );
-
-                    if(tp.error > 0){
-                        turret.setPosition(turret.getPosition() - tp.ServoGain);
-                    }
-                    else if (tp.error <0){
-                        turret.setPosition(turret.getPosition() + tp.ServoGain);
-                    }
-                    tp.TurretAngle = (turret.getPosition() - tp.BStandard)/tp.MStandard;
-                    hp.HandAngle = HandPerpendicularRegulaizer(pipeline.getDetectedAngle());
-                    hand.setPosition(ServoRegulizer(hp.MStandard*(hp.HandAngle - tp.TurretAngle) + hp.BStandard));
-                    break;
-                case 4:
                     tele.addLine("for moving the boxtube to align also make sure wrist and hand in a good pick up postion");
                     tele.addData("Middle line ", bp.middleLine);
                     bp.ErrorY =  pipeline.getMiddleLineY() - bp.middleLine;
@@ -252,6 +232,29 @@ tele.update();
                     tele.addData("Motor power", bp.KpExtention*bp.ErrorY);
                     boxtube.ExtensionPower(bp.KpExtention*bp.ErrorY);
                     break;
+                case 4:
+                    tele.addLine("Full tester");
+                    tp.ServoGain = (tp.error>0)? (tp.AGain*(tp.error*tp.error) + tp.BGain*(tp.error) + tp.CGain):-1*(tp.AGain*(tp.error*tp.error) + tp.BGain*(tp.error) + tp.CGain);
+                    tele.addData("Middle Line X", pipeline.getMiddleLineX());
+                    tp.error  =  320 - pipeline.getMiddleLineX();
+                    tele.addData("Error",tp.error );
+                    bp.ErrorY =  pipeline.getMiddleLineY() - bp.middleLine;
+                    boxtube.ExtensionPower(bp.KpExtention*bp.ErrorY);
+
+                    if(tp.error > 0  && Math.abs(tp.error) > tp.thresholdPixelError){
+                        turret.setPosition(turret.getPosition() - tp.ServoGain);
+                    }
+                    else if (tp.error <0 && Math.abs(tp.error) > tp.thresholdPixelError){
+                        turret.setPosition(turret.getPosition() + tp.ServoGain);
+                    }
+                    else if(Math.abs(tp.error) < tp.thresholdPixelError){
+                        tp.TurretAngle = (turret.getPosition() - tp.BStandard)/tp.MStandard;
+                        hp.HandAngle = HandPerpendicularRegulaizer(pipeline.getDetectedAngle());
+                        hand.setPosition(ServoRegulizer(hp.MStandard*(hp.HandAngle - tp.TurretAngle) + hp.BStandard));
+                    }
+
+                    break;
+
                 case 5:
                     tele.addLine("Next position for for moving everything");
                     boxtube.ExtensionPower(0);
