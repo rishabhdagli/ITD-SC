@@ -1,5 +1,7 @@
 package opmode.Vision;
 
+import android.icu.text.CaseMap;
+
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
@@ -20,7 +22,7 @@ public class CrushSampleAutoAlign extends LinearOpMode{
     private FtcDashboard dash;
     private MultipleTelemetry tele;
 
-    public static double Angle,turner = 0;
+    public static double Angle,turner = 0, LowerBounds = 500, UpperBounds = 5000;
 
     Gamepad lastg;
 
@@ -58,8 +60,11 @@ public class CrushSampleAutoAlign extends LinearOpMode{
             if(!gamepad1.a && lastg.a) {
                 hand.setPosition(-0.00366666667 * (pipeline.getDetectedAngle() - offsetAngle) + 0.83);
             }
+            pipeline.setLowerBounds(LowerBounds);
+            pipeline.setUpperBounds(UpperBounds);
 
             telemetry.addData("Angle", pipeline.getDetectedAngle());
+            telemetry.addData("Sample Detected", pipeline.isSampleDetected());
             telemetry.update();
         }
     }

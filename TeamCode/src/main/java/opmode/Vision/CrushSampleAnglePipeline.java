@@ -33,6 +33,7 @@ public class CrushSampleAnglePipeline implements VisionProcessor, CameraStreamSo
     private List<MatOfPoint> contours = new ArrayList<>();
     private Mat hierarchy = new Mat();
     private double detectedAngle = 0.0;
+    private boolean sampleDetectedVar = false;
 
     private boolean detectRed = true;
     private boolean detectBlue = true;
@@ -45,6 +46,7 @@ public class CrushSampleAnglePipeline implements VisionProcessor, CameraStreamSo
     private final Scalar upperBlue = new Scalar(140, 255, 255);
     private final Scalar lowerYellow = new Scalar(20, 100, 100);
     private final Scalar upperYellow = new Scalar(30, 255, 255);
+    private double LowerBounds = 500, UpperBounds = 3500;
 
     @Override
     public void getFrameBitmap(Continuation<? extends Consumer<Bitmap>> continuation) {
@@ -109,7 +111,11 @@ public class CrushSampleAnglePipeline implements VisionProcessor, CameraStreamSo
             detectedAngle = calculateDominantAngle(processedMask, boundingBox);
         }
 
+        sampleDetectedVar = sampleDetected(boundingBox, LowerBounds, UpperBounds);
+
         Imgproc.putText(frame, "Angle: " + detectedAngle, new Point(50, 50), Imgproc.FONT_HERSHEY_SIMPLEX, 1, new Scalar(0, 255, 0), 2);
+        Imgproc.putText(frame, "Sample Detected: " + sampleDetectedVar, new Point(50, 100), Imgproc.FONT_HERSHEY_SIMPLEX, 1, new Scalar(0, 255, 0), 2);
+        Imgproc.putText(frame, "Area of Bounding Box: " + boundingBox.area(), new Point(50, 150), Imgproc.FONT_HERSHEY_SIMPLEX, 1, new Scalar(0, 255, 0), 2);
         Utils.matToBitmap(frame, bitmap);
         lastFrame.set(bitmap);
 
@@ -120,10 +126,9 @@ public class CrushSampleAnglePipeline implements VisionProcessor, CameraStreamSo
      * Calculates the dominant angle of lines detected within the mask (using the bounding box region as context).
      * The method uses the probabilistic Hough Transform to detect lines, computes each line's angle,
      * then aggregates lengths per angle. Finally, it selects the angle with the maximum total length.
-     *
      * The angle is adjusted to fall within the range 0–180 degrees.
      */
-    private double calculateDominantAngle(Mat mask, Rect boundingBox) {
+    public double calculateDominantAngle(Mat mask, Rect boundingBox) {
         Mat edges = new Mat();
         Imgproc.Canny(mask, edges, 50, 150);
         Mat lines = new Mat();
@@ -159,6 +164,24 @@ public class CrushSampleAnglePipeline implements VisionProcessor, CameraStreamSo
         }
 
         return dominantAngle;
+    }
+    public boolean sampleDetected(Rect boundingBox, double LowerBounds, double UpperBounds){
+        if (boundingBox != null){
+        double area = boundingBox.area();
+        return LowerBounds < area && area < UpperBounds;}
+        else{
+            return false;
+        }
+    }
+    public boolean isSampleDetected(){
+        return sampleDetectedVar;
+    }
+
+    public void setLowerBounds(double lB){
+        LowerBounds = lB;
+    }
+    public void setUpperBounds(double uB){
+        UpperBounds = uB;
     }
 
     @Override
