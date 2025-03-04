@@ -46,7 +46,7 @@ public class Tester extends LinearOpMode {
 
 
 
-    private Servo servo0,servo1, servo2, servo3, servo4,  servo5, servo6, servo7, servo8, servo9, servo10, servo11;
+    private Servo servo0,servo1, servo2, servo3, servo4,  servo5, wrist, arm1, arm2, hand, claw, turret, servo11;
     double wristTicks, armTicks;
 
 
@@ -79,11 +79,12 @@ public class Tester extends LinearOpMode {
         Pivot = hardwareMap.get(DcMotorEx.class, "pivotENC");
         Pivot.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         Pivot.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        servo6 = hardwareMap.get(Servo.class, "Servo6"); //wrist
-        servo7 = hardwareMap.get(Servo.class, "Servo7"); //arm
-        servo8 = hardwareMap.get(Servo.class, "Servo8"); //hand
-        servo9 = hardwareMap.get(Servo.class, "Servo9");//claw
-        servo10 = hardwareMap.get(Servo.class, "Servo10");//turret
+        wrist = hardwareMap.get(Servo.class, "Servo0"); //wrist
+        arm1 = hardwareMap.get(Servo.class, "Servo1");//arm
+        arm2 = hardwareMap.get(Servo.class, "Servo2");//arm
+        hand = hardwareMap.get(Servo.class, "Servo3"); //hand
+        claw = hardwareMap.get(Servo.class, "Servo4");//claw
+        turret = hardwareMap.get(Servo.class, "Servo5");//turret
         //servo11 = hardwareMap.get(Servo.class, "Servo11");
 
         BT1 = hardwareMap.get(DcMotorEx.class, "Boxtube1ENC");
@@ -120,11 +121,12 @@ public class Tester extends LinearOpMode {
 
         waitForStart();
 
-        servo6.setPosition(0.5);
-        servo7.setPosition(0.5);
-        servo8.setPosition(0.5);
-        servo9.setPosition(0);
-        servo10.setPosition(0.5);
+        wrist.setPosition(0.5);
+        arm1.setPosition(0.5);
+        arm2.setPosition(0.5);
+        hand.setPosition(0.5);
+        claw.setPosition(0);
+        turret.setPosition(0.5);
 
 
 
@@ -136,12 +138,13 @@ public class Tester extends LinearOpMode {
 
 //            servo6.setPosition(wrist);
 //            servo7.setPosition(arm);
-            servo8.setPosition(servoControl.hand);
-            servo9.setPosition(servoControl.claw);
-            servo10.setPosition(servoControl.turret);
+            hand.setPosition(servoControl.hand);
+            claw.setPosition(servoControl.claw);
+            turret.setPosition(servoControl.turret);
+            wrist.setPosition(servoControl.wrist);
+            arm1.setPosition(servoControl.arm);
+            arm2.setPosition(servoControl.arm);
 
-            servo6.setPosition(servoControl.wrist);
-            servo7.setPosition(servoControl.arm); 
 
 //            tele.addData("Servo0 Position", servo0.getPosition());
 //            tele.addData("Servo1 Position", servo1.getPosition());
@@ -149,11 +152,11 @@ public class Tester extends LinearOpMode {
 //            tele.addData("Servo3 Position", servo3.getPosition());
 //            tele.addData("Servo4 Position", servo4.getPosition());
 //            tele.addData("Servo5 Position", servo5.getPosition());
-            tele.addData("Servo6 Position", servo6.getPosition());
-            tele.addData("Servo7 Position", servo7.getPosition());
-            tele.addData("Servo8 Position", servo8.getPosition());
-            tele.addData("Servo9 Position", servo9.getPosition());
-            tele.addData("Servo10 Position", servo10.getPosition());
+            tele.addData("Servo6 Position", wrist.getPosition());
+            tele.addData("Servo7 Position", arm1.getPosition());
+            tele.addData("Servo8 Position", hand.getPosition());
+            tele.addData("Servo9 Position", claw.getPosition());
+            tele.addData("Servo10 Position", turret.getPosition());
 
             double pivotCurrentPos = offsetPivotTicks + (-Pivot.getCurrentPosition());
             double boxtubeCurrentPos = offsetTubeTicks + (-BT1.getCurrentPosition());
@@ -188,7 +191,7 @@ public class Tester extends LinearOpMode {
                 if(extensionError > 0){power = KpExt*extensionError;}
                 else { power = 0;}
             }
-            else if (BT1.getCurrentPosition() < -35000 || extensionTargetPos > 35000){ //max position hardstop
+            else if (BT1.getCurrentPosition() < -40000 || extensionTargetPos > 40000){ //max position hardstop
                 tele.addLine("Hard Stop Hit");
                 if (extensionError < 0){power = KpExt*extensionError;}
                 else { power = 0;}

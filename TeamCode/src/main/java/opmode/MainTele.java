@@ -13,7 +13,7 @@ import com.sfdev.assembly.state.StateMachine;
 import Subsystems.Boxtube;
 import Subsystems.Drivetrain;
 import Subsystems.EndEffector;
-import Subsystems.TeleRobot;
+import Subsystems.Robot;
 import Subsystems.StateMachineGenerator;
 import pedroPathing.constants.FConstants;
 import pedroPathing.constants.LConstants;
@@ -21,7 +21,7 @@ import pedroPathing.constants.LConstants;
 @TeleOp(name = "MainTele")
 public class MainTele extends LinearOpMode {
 
-    public TeleRobot teleRobot;
+    public Robot teleRobot;
     public Boxtube boxtube;
    // public Follower follower;
     boolean sampleMode = true, check = false;
@@ -32,7 +32,7 @@ public class MainTele extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
         boxtube= new Boxtube(hardwareMap,1); //just for pivot check
-        teleRobot = new TeleRobot(hardwareMap, gamepad1,gamepad2);
+        teleRobot = new Robot(hardwareMap, gamepad1,gamepad2);
 
 //        Constants.setConstants(FConstants.class, LConstants.class);
 //

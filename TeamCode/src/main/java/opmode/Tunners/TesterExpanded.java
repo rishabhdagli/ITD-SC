@@ -36,7 +36,7 @@ public class TesterExpanded extends LinearOpMode {
     Follower follower;
 
     public static class ServoControl{
-        public double pos0, pos1, pos2, pos3, pos4, pos5, wristAngle, armAngle, hand=0.5, claw, turret = 0.5, pos11;
+        public double pos0, pos1, pos2, pos3, pos4, pos5, wrist, arm, hand=0.5, claw, turret = 0.5, pos11;
 
     }
 
@@ -131,8 +131,8 @@ public class TesterExpanded extends LinearOpMode {
 
 
 
-//            servo6.setPosition(wrist);
-//            servo7.setPosition(arm);
+            servo6.setPosition(servoControl.wrist);
+            servo7.setPosition(servoControl.arm);
             servo8.setPosition(servoControl.hand);
             servo9.setPosition(servoControl.claw);
             servo10.setPosition(servoControl.turret);
@@ -156,18 +156,18 @@ public class TesterExpanded extends LinearOpMode {
             // tele.addData("Servo11 Position", servo11.getPosition());
 
 
-            double armTicks = 0.0033333*(servoControl.armAngle) + 0.5;
-            //step 1(angle to tick)
-
-            //step 2 (ticks to offset angle)
-            double offsetAngle = 391.30435 * (armTicks) - 195.65217;
-            //Could be offsetAngle = armAngle *1.2
-
-            //step 3 (offset to wrist ofset)
-            double wirstTicks = -0.0031111*(servoControl.wristAngle+25+offsetAngle) + 0.5;
-
-            servo6.setPosition(wirstTicks); //wrist servo
-            servo7.setPosition(armTicks); //arm servo
+//            double armTicks = 0.0033333*(servoControl.armAngle) + 0.5;
+//            //step 1(angle to tick)
+//
+//            //step 2 (ticks to offset angle)
+//            double offsetAngle = 391.30435 * (armTicks) - 195.65217;
+//            //Could be offsetAngle = armAngle *1.2
+//
+//            //step 3 (offset to wrist ofset)
+//            double wirstTicks = -0.0031111*(servoControl.wristAngle+25+offsetAngle) + 0.5;
+//
+//            servo6.setPosition(wirstTicks); //wrist servo
+//            servo7.setPosition(armTicks); //arm servo
 
             //theese need to reinitlize everytime
             double pivotCurrentPos = boxtubePivot.offsetPivotTicks + (-Pivot.getCurrentPosition());

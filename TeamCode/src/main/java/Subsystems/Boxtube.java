@@ -18,7 +18,7 @@ public class Boxtube{
    AnalogInput boxtubeAbs;
 
    public double pivotoffset,Boxtubeoffset, targetPiv, targetExt;
-    final int MaxExtension = 31500;
+    final int MaxExtension = 41500;
 
     public DcMotorEx Pivot, BT1, BT2, BT3;
 

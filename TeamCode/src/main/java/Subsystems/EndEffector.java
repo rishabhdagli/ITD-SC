@@ -10,12 +10,12 @@ public class EndEffector {
 
     public EndEffector(HardwareMap hardwareMap) {
 
-        Wrist = hardwareMap.get(Servo.class, "Servo6");
-        Arm1 = hardwareMap.get(Servo.class, "Servo7");
-        Arm2 = hardwareMap.get(Servo.class, "");
-        Turret = hardwareMap.get(Servo.class, "Servo10");
-        Hand = hardwareMap.get(Servo.class, "Servo8");
-        Claw = hardwareMap.get(Servo.class, "Servo9");
+        Wrist = hardwareMap.get(Servo.class, "Servo0");
+        Arm1 = hardwareMap.get(Servo.class, "Servo1");
+        Arm2 = hardwareMap.get(Servo.class, "Servo2");
+        Turret = hardwareMap.get(Servo.class, "Servo5");
+        Hand = hardwareMap.get(Servo.class, "Servo3");
+        Claw = hardwareMap.get(Servo.class, "Servo4");
     }
 
     public void hand(double pos) {
@@ -34,22 +34,11 @@ public class EndEffector {
         Claw.setPosition(pos);
     }
 
-    private void arm(double ticks) {
+public void wrist(double pos){Wrist.setPosition(pos);}
+
+    public void arm(double ticks) {
         Arm1.setPosition(ticks);
         Arm2.setPosition(ticks);
     }
-    public void setEndEffector(double armAngle, double wristAngle){
-        double armTicks = 0.0033333*(armAngle) + 0.5;
-
-        double offsetAngle = 391.30435 * (armTicks) - 195.65217;
-
-        double wristTicks = -0.0031111*(wristAngle+25+offsetAngle) + 0.5;
-
-        arm(armTicks);
-        Wrist.setPosition(wristTicks);
-    }
-
-
-
 
 }

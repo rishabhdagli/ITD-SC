@@ -7,7 +7,7 @@ import com.sfdev.assembly.state.StateMachineBuilder;
 
 public class StateMachineGenerator {
     public static double num = 0;
-    public static StateMachine GenerateSpecimenMachine(Gamepad g, Gamepad z, TeleRobot r) {
+    public static StateMachine GenerateSpecimenMachine(Gamepad g, Gamepad z, Robot r) {
         return new StateMachineBuilder()
 
                 .state(States.SpecimenWall) // Position to grab from the wall
@@ -62,16 +62,15 @@ public class StateMachineGenerator {
                 .transition(()-> z.a, States.WAIT10)
 
                 .state(States.WAIT4)
-                .transitionTimed(0.7, States.SpecimenLatch)
+                .transitionTimed(0.7, States.SpecimenPostScore)
                 .transition(()-> z.a, States.WAIT10)
 
 
-                .state(States.SpecimenLatch) //Scores
-                .onEnter(r::SpecimenLatch)
-                .loop(r::SpecimenLatch)
+                .state(States.SpecimenPostScore) //Scores
+                .onEnter(r::SpecimenPostScore)
+                .loop(r::SpecimenPostScore)
                 .transitionTimed(1, States.SpecimenWall)
                 .transition(()-> z.a, States.WAIT10)
-
 
 
                 // Escape state
@@ -89,8 +88,8 @@ public class StateMachineGenerator {
 
 
                 .state(States.HANGUP)
-                .onEnter(r::HangUp)
-                .loop(r::HangUp)
+                //.onEnter(r::HangUp)
+                //.loop(r::HangUp)
                 .transition(()->z.a, States.HANGDOWN)
 
 
@@ -99,8 +98,8 @@ public class StateMachineGenerator {
 
 
                 .state(States.HANGDOWN)
-                .onEnter(r::HangDown)
-                .loop(r::HangDown)
+               // .onEnter(r::HangDown)
+                //.loop(r::HangDown)
                 .transition(()-> z.a, States.WAIT10)
 
 
@@ -109,7 +108,7 @@ public class StateMachineGenerator {
     }
 
     // X is primary, A is secondary, B is escape for logitech gamepad
-    public static StateMachine GenerateSampleMachine(Gamepad g, Gamepad z, TeleRobot r) {
+    public static StateMachine GenerateSampleMachine(Gamepad g, Gamepad z, Robot r) {
         return new StateMachineBuilder()
                 .state(States.Stationary)
                 .onEnter(r::Loiter)
@@ -143,7 +142,7 @@ public class StateMachineGenerator {
 
 
                 .state(States.CLOSING_CLAW)
-                .onEnter(r::ClawClose)
+                .onEnter(r::InsideGrabBeakOpen)
                 .transition(() -> g.b, States.WAIT1) // ESCAPE
                 .transition(() -> g.x, States.WAIT3)
                 .transition(()-> z.a, States.WAIT10)
@@ -181,7 +180,7 @@ public class StateMachineGenerator {
 
 
                 .state(States.WAIT7) //drops sample in the obs zone
-                .onEnter(r::Score)
+                .onEnter(r::ObsZoneScore)
                 .transitionTimed(0.25,States.Stationary)
                 .transition(()-> z.a, States.WAIT10)
 
@@ -214,7 +213,7 @@ public class StateMachineGenerator {
 
 
                 .state(States.SCORE)// just opens claw at highbasket
-                .onEnter(r::Score)
+                .onEnter(r::BasketScore)
                 .transitionTimed(0.5, States.BasketPosition2)
                 .transition(()-> z.a, States.WAIT10)
 
@@ -222,7 +221,7 @@ public class StateMachineGenerator {
                 .state(States.BasketPosition2)// no hang on high basket
                 .onEnter(r::BasketReturn)
                 .loop(r::BasketReturn)
-                .transitionTimed(0.5, States.Stationary)
+                .transitionTimed(1, States.Stationary)
                 .transition(()-> z.a, States.WAIT10)
 
 
@@ -234,16 +233,16 @@ public class StateMachineGenerator {
                 .transitionTimed(0.5, States.HANGUP)
 
                 .state(States.HANGUP)
-                .onEnter(r::HangUp)
-                .loop(r::HangUp)
+              //  .onEnter(r::HangUp)
+                //.loop(r::HangUp)
                 .transition(()->z.a, States.HANGDOWN)
 
                 .state(States.WAIT11)
                 .transitionTimed(0.5, States.HANGDOWN)
 
                 .state(States.HANGDOWN)
-                .onEnter(r::HangDown)
-                .loop(r::HangDown)
+                // .onEnter(r::HangDown)
+                //.loop(r::HangDown)
                 .transition(()-> z.a, States.WAIT10)
 
                 .build();
@@ -251,7 +250,7 @@ public class StateMachineGenerator {
 
     enum States {
 
-        Stationary, HANGUP, HANGDOWN, CLOSING_CLAW, LoiterSample, SampleHover, SampleGrab, BasketExtend, BasketPosition2,PivotOverCenter, ObsZoneRelease, PivotBack, SpecimenWall, SpecimenWallGrab, SpecimenPreScore, SpecimenLatch, WAIT1, WAIT2, WAIT3, WAIT4, WAIT5, WAIT6, WAIT7, WAIT8,WAIT9,WAIT10, WAIT11, SpecimenWallGrabUp, ExtensionDown, SCORE, Passover, SpecimenEscapeState
+        Stationary, HANGUP, HANGDOWN, CLOSING_CLAW, LoiterSample, SampleHover, SampleGrab, BasketExtend, BasketPosition2,PivotOverCenter, ObsZoneRelease, PivotBack, SpecimenWall, SpecimenWallGrab, SpecimenPreScore, SpecimenPostScore, WAIT1, WAIT2, WAIT3, WAIT4, WAIT5, WAIT6, WAIT7, WAIT8,WAIT9,WAIT10, WAIT11, SpecimenWallGrabUp, ExtensionDown, SCORE, Passover, SpecimenEscapeState
 
     }
 

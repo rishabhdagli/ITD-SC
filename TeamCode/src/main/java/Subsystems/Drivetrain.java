@@ -46,7 +46,7 @@ public class Drivetrain {
             LF.setDirection(DcMotorSimple.Direction.REVERSE);
             LR.setDirection(DcMotorSimple.Direction.REVERSE);
 
-            PinPoint = hardwareMap.get(GoBildaPinpointDriver.class,"pinpoint");
+            PinPoint = hardwareMap.get(GoBildaPinpointDriver.class,"odo");
             PinPoint.setEncoderResolution(GoBildaPinpointDriver.GoBildaOdometryPods.goBILDA_4_BAR_POD);
             PinPoint.setEncoderDirections(GoBildaPinpointDriver.EncoderDirection.FORWARD, GoBildaPinpointDriver.EncoderDirection.REVERSED);
             PinPoint.resetPosAndIMU();
