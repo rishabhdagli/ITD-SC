@@ -301,11 +301,13 @@ public class Robot {
     }
 
     public void BasketScore() {
+
+        //flicks the sample inside high basket
         InsideGrabPecked();
         endEffector.arm(0.5);
         endEffector.hand(0.17);
         endEffector.turret(0.55);
-        endEffector.wrist(0.72);
+        endEffector.wrist(0.72); //flick position
     }
 
     public void ObsZoneScore(){
@@ -318,6 +320,7 @@ public class Robot {
 
     public void BasketReturn() {
         boxtube.ExtensionMove(0) ;
+        boxtube.setPivot(pivotBackPos);
         endEffector.arm(0.5);
         endEffector.claw(0.27);
         endEffector.hand(0.17);
