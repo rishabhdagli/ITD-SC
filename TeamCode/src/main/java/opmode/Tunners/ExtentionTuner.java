@@ -39,9 +39,10 @@ public class ExtentionTuner extends LinearOpMode {
         one.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
         three.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
 
-        one.setDirection(DcMotorSimple.Direction.REVERSE);
+        one.setDirection(DcMotorSimple.Direction.FORWARD);
         two.setDirection(DcMotorSimple.Direction.REVERSE);
         three.setDirection(DcMotorSimple.Direction.REVERSE);
+
 
         one.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
@@ -84,7 +85,7 @@ public class ExtentionTuner extends LinearOpMode {
                 }
             }
             // obtaining encoder position
-            currentPos = -one.getCurrentPosition();
+            currentPos = one.getCurrentPosition();
             tele.addData("Current Position:", currentPos);
             tele.addData("Target Position:", targetPos);
 
