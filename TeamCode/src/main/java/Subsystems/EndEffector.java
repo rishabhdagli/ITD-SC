@@ -1,7 +1,7 @@
 package Subsystems;
 
-import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.hardware.Servo;
 
 public class EndEffector {
 
@@ -22,7 +22,7 @@ public class EndEffector {
         Hand.setPosition(pos);
     }
 
-    public double handPos(){
+    public double handPos() {
         return Hand.getPosition();
     }
 
@@ -34,7 +34,9 @@ public class EndEffector {
         Claw.setPosition(pos);
     }
 
-public void wrist(double pos){Wrist.setPosition(pos);}
+    public void wrist(double pos) {
+        Wrist.setPosition(pos);
+    }
 
     public void arm(double ticks) {
         Arm1.setPosition(ticks);

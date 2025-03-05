@@ -87,6 +87,7 @@ public class Tester extends LinearOpMode {
         turret = hardwareMap.get(Servo.class, "Servo5");//turret
         //servo11 = hardwareMap.get(Servo.class, "Servo11");
 
+
         BT1 = hardwareMap.get(DcMotorEx.class, "Boxtube1ENC");
         BT2 = hardwareMap.get(DcMotorEx.class, "Boxtube2odoleft");
         BT3 = hardwareMap.get(DcMotorEx.class, "Boxtube3odoright");
@@ -95,7 +96,7 @@ public class Tester extends LinearOpMode {
         BT1.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
         BT3.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
 
-        BT1.setDirection(DcMotorSimple.Direction.REVERSE);
+        BT1.setDirection(DcMotorSimple.Direction.FORWARD);
         BT2.setDirection(DcMotorSimple.Direction.REVERSE);
         BT3.setDirection(DcMotorSimple.Direction.REVERSE);
 

@@ -36,7 +36,7 @@ public class TesterExpanded extends LinearOpMode {
     Follower follower;
 
     public static class ServoControl{
-        public double pos0, pos1, pos2, pos3, pos4, pos5, wrist, arm, hand=0.5, claw, turret = 0.5, pos11;
+        public double pos0, pos1, pos2, pos3, pos4, pos5, wrist = 0.5, arm = 0.5, hand=0.5, claw =0.5, turret = 0.5, pos11;
 
     }
 
@@ -94,7 +94,7 @@ public class TesterExpanded extends LinearOpMode {
         BT1.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
         BT3.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
 
-        BT1.setDirection(DcMotorSimple.Direction.REVERSE);
+        BT1.setDirection(DcMotorSimple.Direction.FORWARD);
         BT2.setDirection(DcMotorSimple.Direction.REVERSE);
         BT3.setDirection(DcMotorSimple.Direction.REVERSE);
 

@@ -18,58 +18,27 @@ import pedroPathing.constants.LConstants;
 
 public class Robot {
 
-    //COMMON
-    ElapsedTime timer;
     public Boxtube boxtube;
     public EndEffector endEffector;
-    Drivetrain drive;
-
-
-
-
-    //PIVOT VARIABLES
-     double pivotBackPos = 1120,pivotHorizontal = 0, pivotSpecSpos = 900
-            ,pivotPreLoad = 550;
-
-
-
-    //EXTENTION VARIABLES
-    double minExtension = 2000,midExtension = 10000,fullExtension = 25000,
-            basketExtension = 40000,specScoreExtension = 15250,
-            currentExtension = midExtension,specimenWallExtension = 7000;
-
-
-
-    //BOOLEANS FOR BUTTONS
-    boolean wasPressedL,wasPressedR, minExtendSubPressed, midExtendSubPressed,
-            lowExtendSubPressed, maxExtendSubPressed;
-
-
-
-    //Gamepads
-    Gamepad gamepadOperator, gamepadDriver;
-
     //Pedro
     public Follower follower;
-
-
+    //COMMON
+    ElapsedTime timer;
+    Drivetrain drive;
+    //PIVOT VARIABLES
+    double pivotBackPos = 1120, pivotHorizontal = 0, pivotSpecSpos = 900, pivotPreLoad = 550;
+    //EXTENSION VARIABLES
+    double minExtension = 2000, midExtension = 10000, fullExtension = 25000, basketExtension = 40000, specScoreExtension = 15250, currentExtension = midExtension, specimenWallExtension = 7000;
+    //BOOLEANS FOR BUTTONS
+    boolean wasPressedL, wasPressedR, minExtendSubPressed, midExtendSubPressed, lowExtendSubPressed, maxExtendSubPressed;
+    //Gamepads
+    Gamepad gamepadOperator, gamepadDriver;
     //VISION
     private CrushSampleAnglePipelineTurretTrial pipeline;
     private VisionPortal VP;
 
 
-
-
-
-
-
-
-
-
-
-
-
-    //Contructors for that merge autorobot and telerobot
+    // Constructors for auto-robot and tele-robot
 
 
     public Robot(HardwareMap hardwareMap, Gamepad g1, Gamepad g2) {
@@ -99,31 +68,15 @@ public class Robot {
     }
 
 
-
-
-
-
-
-
-//TELE - Op drive control
+    //TELE - Op drive control
     public void TeleControl(double yMultiplier, double xMultiplier, double rxMultiplier) {
-        drive.TeleopControl(
-                yMultiplier * gamepadDriver.left_stick_y,
-                xMultiplier * gamepadDriver.left_stick_x,
-                rxMultiplier * gamepadDriver.right_stick_x);
+        drive.TeleopControl(yMultiplier * gamepadDriver.left_stick_y, xMultiplier * gamepadDriver.left_stick_x, rxMultiplier * gamepadDriver.right_stick_x);
     }
-
-
-
-
-
-
-
 
 
     //AUTON SPECIFIC METHOD HERE
     //TODO: NEED TO REDO ALL OF THESE METHODS
-    public void InitPosition(){
+    public void InitPosition() {
         endEffector.turret(0.2);
         endEffector.hand(47);
         boxtube.setPivot(200);
@@ -141,7 +94,7 @@ public class Robot {
         ClawClose();
     }
 
-    public void PreloadSpecExt(){
+    public void PreloadSpecExt() {
         endEffector.hand(0.16);
         endEffector.wrist(0.25);
         endEffector.turret(0.55);
@@ -150,9 +103,9 @@ public class Robot {
         boxtube.setExt(13750);
         ClawClose();
 
-    };
+    }
 
-    public void SpecimenPreLoadScore(){
+    public void SpecimenPreLoadScore() {
         endEffector.hand(0.16);
         //change in Method Loiter In aswell
         endEffector.arm(0.47);
@@ -160,6 +113,7 @@ public class Robot {
         boxtube.setPivot(50);
         ClawClose();
     }
+
     public void SpecimenWallForSamplePush() {
         boxtube.ExtensionMove(minExtension);
         boxtube.setPivot(pivotHorizontal);
@@ -172,13 +126,6 @@ public class Robot {
     }
 
 
-
-
-
-
-
-
-
     //Common methods
     public void ClawOpen() {
         endEffector.claw(0.46);
@@ -187,27 +134,14 @@ public class Robot {
     public void ClawClose() {
         endEffector.claw(0.3);
     }
+
     public void InsideGrabPecked() {
         endEffector.claw(0.27);
     }
+
     public void InsideGrabBeakOpen() {
         endEffector.claw(0.55);
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
     //SAMPLE METHODS START HERE
@@ -219,7 +153,6 @@ public class Robot {
         endEffector.turret(0.55);
         ClawOpen();
     }
-
 
 
     public void SampleHover() {
@@ -310,7 +243,7 @@ public class Robot {
         endEffector.wrist(0.72); //flick position
     }
 
-    public void ObsZoneScore(){
+    public void ObsZoneScore() {
         InsideGrabPecked();
     }
 
@@ -319,7 +252,7 @@ public class Robot {
     }
 
     public void BasketReturn() {
-        boxtube.ExtensionMove(0) ;
+        boxtube.ExtensionMove(0);
         boxtube.setPivot(pivotBackPos);
         endEffector.arm(0.5);
         endEffector.claw(0.27);
@@ -336,17 +269,6 @@ public class Robot {
         endEffector.turret(0.55);
         ClawClose();
     }
-
-
-
-
-
-
-
-
-
-
-
 
 
     //SPEC POSITIONS

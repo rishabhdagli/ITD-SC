@@ -9,27 +9,20 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 
-public class Boxtube{
+public class Boxtube {
 
+    public static double PivotDownKp = 0.0008, PivotDownKd = 0.00011, PivotkP = 0.002, PivotKd = 0.0001, Tick90 = 1086, FF = 0.088, period = (2 * Math.PI) / (Tick90 * 4), ExtensionKp, ExtensionKd, lasterror, KpExt = 0.0005;
+    final int MaxExtension = 57000;
+    public double pivotoffset, Boxtubeoffset, targetPiv, targetExt;
+    public DcMotorEx Pivot, BT1, BT2, BT3;
+    public double offsetAngle, ExtPwr;
     Telemetry t;
     HardwareMap h;
-
-   AnalogInput PivotAbs;
-   AnalogInput boxtubeAbs;
-
-   public double pivotoffset,Boxtubeoffset, targetPiv, targetExt;
-    final int MaxExtension = 41500;
-
-    public DcMotorEx Pivot, BT1, BT2, BT3;
-
-    public double offsetAngle, ExtPwr;
-
+    AnalogInput PivotAbs;
+    AnalogInput boxtubeAbs;
     ElapsedTime timer;
 
-    public static double PivotDownKp = 0.0008, PivotDownKd = 0.00011, PivotkP = 0.002, PivotKd = 0.0001,Tick90 = 1086,FF = 0.088,period = (2*Math.PI)/(Tick90*4),
-            ExtensionKp,ExtensionKd,lasterror, KpExt = 0.0005;
-
-    public Boxtube(HardwareMap hardwareMap,int x) {
+    public Boxtube(HardwareMap hardwareMap, int x) {
         // Initialize motors with proper names
         Pivot = hardwareMap.get(DcMotorEx.class, "pivotENC");
         BT1 = hardwareMap.get(DcMotorEx.class, "Boxtube1ENC");
@@ -54,7 +47,7 @@ public class Boxtube{
         Pivot.setDirection(DcMotorSimple.Direction.FORWARD);
 
         //theese are good
-        BT1.setDirection(DcMotorSimple.Direction.REVERSE);
+        BT1.setDirection(DcMotorSimple.Direction.FORWARD);
         BT2.setDirection(DcMotorSimple.Direction.REVERSE);
         BT3.setDirection(DcMotorSimple.Direction.REVERSE);
 
@@ -70,6 +63,7 @@ public class Boxtube{
         //1243.083*(boxtubeAbs.getVoltage()) - 2292.24506;
 
     }
+
     public Boxtube(HardwareMap hardwareMap) {
         // Initialize motors with proper names
         Pivot = hardwareMap.get(DcMotorEx.class, "pivotENC");
@@ -112,18 +106,19 @@ public class Boxtube{
         boxtubeAbs = hardwareMap.get(AnalogInput.class, "boxtubeAbs");
 
         pivotoffset = 0;
-                //-1233.33333*(PivotAbs.getVoltage()) + 482.233333;
+        //-1233.33333*(PivotAbs.getVoltage()) + 482.233333;
         Boxtubeoffset = 0;
-                //1243.083*(boxtubeAbs.getVoltage()) - 2292.24506;
+        //1243.083*(boxtubeAbs.getVoltage()) - 2292.24506;
 
     }
 
 
-    public void update(){
+    public void update() {
         updatePiv();
         updateExt();
     }
-    public void changekP(double kp){
+
+    public void changekP(double kp) {
         PivotkP = kp;
     }
 
@@ -131,13 +126,16 @@ public class Boxtube{
     public void setPivot(double val) {
         targetPiv = val;
     }
+
     public void updatePiv() {
         PivotMove(targetPiv);
     }
-    public int getExtpos(){
+
+    public int getExtpos() {
         return BT1.getCurrentPosition();
     }
-    public int getPivpos(){
+
+    public int getPivpos() {
         return Pivot.getCurrentPosition();
     }
 
@@ -146,15 +144,14 @@ public class Boxtube{
         double currentPivot = pivotoffset + (-Pivot.getCurrentPosition());
         double error = targetPos - currentPivot;
 
-        if (error >  0 ) {
-            double power = PivotkP * error + PivotKd*(error - lasterror)/timer.seconds() +   FF * Math.cos(period * Pivot.getCurrentPosition());
+        if (error > 0) {
+            double power = PivotkP * error + PivotKd * (error - lasterror) / timer.seconds() + FF * Math.cos(period * Pivot.getCurrentPosition());
             Pivot.setPower(power);
             lasterror = error;
 
             timer.reset();
-        }
-        else if (error < 0){
-            double power = PivotDownKp * error + PivotDownKd*(error - lasterror)/timer.seconds();
+        } else if (error < 0) {
+            double power = PivotDownKp * error + PivotDownKd * (error - lasterror) / timer.seconds();
             Pivot.setPower(power);
             lasterror = error;
 
@@ -171,6 +168,7 @@ public class Boxtube{
     public void setExt(double val) {
         targetExt = val;
     }
+
     public void updateExt() {
         ExtensionMove(targetExt);
     }
@@ -179,27 +177,28 @@ public class Boxtube{
     //for slowing when moving
     public boolean PivotisMoving() {
         //change to if moving slow when down
-       if(Pivot.getPower() > 0.3){
-           return true;
-       }
-       else{
-           return false;
-       }
+        return Pivot.getPower() > 0.3;
     }
 
 
-    public void ExtensionMove(double extensionTargetPos){
+    public void ExtensionMove(double extensionTargetPos) {
         double currentBoxtube = Boxtubeoffset = (-BT1.getCurrentPosition());
-        double extensionError = (extensionTargetPos)+BT1.getCurrentPosition();
-        if (BT1.getCurrentPosition() > 0 || extensionTargetPos < 0){ //min position hardstop
-            if(extensionError > 0){ExtPwr = KpExt*extensionError;}
-            else { ExtPwr = 0;}
+        double extensionError = (extensionTargetPos) + BT1.getCurrentPosition();
+        if (BT1.getCurrentPosition() > 0 || extensionTargetPos < 0) { //min position hardstop
+            if (extensionError > 0) {
+                ExtPwr = KpExt * extensionError;
+            } else {
+                ExtPwr = 0;
+            }
+        } else if (BT1.getCurrentPosition() < -MaxExtension || extensionTargetPos > MaxExtension) { //max position hardstop
+            if (extensionError < 0) {
+                ExtPwr = KpExt * extensionError;
+            } else {
+                ExtPwr = 0;
+            }
+        } else {
+            ExtPwr = KpExt * extensionError;
         }
-        else if (BT1.getCurrentPosition() < -MaxExtension || extensionTargetPos > MaxExtension){ //max position hardstop
-            if (extensionError < 0){ExtPwr = KpExt*extensionError;}
-            else { ExtPwr = 0;}
-        }
-        else {ExtPwr = KpExt*extensionError;}
         ExtensionPower(ExtPwr);
 
     }
