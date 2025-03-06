@@ -73,9 +73,9 @@ public class FiveSpecCFCRUSH extends LinearOpMode {
         actionTimer.time(TimeUnit.SECONDS);
 
         while (opModeInInit()) {
-            boxtube.updatePiv();
-            boxtube.updateExt();
-            r.InitPosition();
+           // boxtube.updatePiv();
+           // boxtube.updateExt();
+            //r.InitPosition();
         }
 
         waitForStart();

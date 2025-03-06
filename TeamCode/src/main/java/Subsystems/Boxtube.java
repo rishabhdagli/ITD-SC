@@ -11,7 +11,8 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 
 public class Boxtube {
 
-    public static double PivotDownKp = 0.0008, PivotDownKd = 0.00011, PivotkP = 0.002, PivotKd = 0.0001, Tick90 = 1086, FF = 0.088, period = (2 * Math.PI) / (Tick90 * 4), ExtensionKp, ExtensionKd, lasterror, KpExt = 0.0005;
+    public static double PivotDownKp = 0.0008, PivotDownKd = 0.00011, PivotkP = 0.002, PivotKd = 0.0001, Tick90 = 1086, FF = 0.088, period = (2 * Math.PI) / (Tick90 * 4), lasterror,
+            KpExt = 0.0005;
     final int MaxExtension = 57000;
     public double pivotoffset, Boxtubeoffset, targetPiv, targetExt;
     public DcMotorEx Pivot, BT1, BT2, BT3;
@@ -95,15 +96,15 @@ public class Boxtube {
         Pivot.setDirection(DcMotorSimple.Direction.FORWARD);
 
         //theese are good
-        BT1.setDirection(DcMotorSimple.Direction.REVERSE);
+        BT1.setDirection(DcMotorSimple.Direction.FORWARD);
         BT2.setDirection(DcMotorSimple.Direction.REVERSE);
         BT3.setDirection(DcMotorSimple.Direction.REVERSE);
 
         timer = new ElapsedTime(ElapsedTime.Resolution.SECONDS);
         timer.startTime();
 
-        PivotAbs = hardwareMap.get(AnalogInput.class, "pivotAbs");
-        boxtubeAbs = hardwareMap.get(AnalogInput.class, "boxtubeAbs");
+      //  PivotAbs = hardwareMap.get(AnalogInput.class, "pivotAbs");
+       // boxtubeAbs = hardwareMap.get(AnalogInput.class, "boxtubeAbs");
 
         pivotoffset = 0;
         //-1233.33333*(PivotAbs.getVoltage()) + 482.233333;

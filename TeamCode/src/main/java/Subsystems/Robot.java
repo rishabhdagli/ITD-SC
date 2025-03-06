@@ -44,7 +44,7 @@ public class Robot {
     public Robot(HardwareMap hardwareMap, Gamepad g1, Gamepad g2) {
 
         drive = new Drivetrain(hardwareMap);
-        boxtube = new Boxtube(hardwareMap, 1);
+        boxtube = new Boxtube(hardwareMap, 1); //init without reseting 0
         endEffector = new EndEffector(hardwareMap);
 
         gamepadOperator = g2;
@@ -58,6 +58,8 @@ public class Robot {
         boxtube = new Boxtube(h);
         endEffector = new EndEffector(h);
         follower = new Follower(h);
+
+        currentExtension = boxtube.getExtpos();
 
         follower.setStartingPose(startPose);
 
