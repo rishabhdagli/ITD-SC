@@ -10,15 +10,14 @@ import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-import java.lang.reflect.Array;
-
 @Config
 @TeleOp(name="Extention Tuner")
 public class ExtentionTuner extends LinearOpMode {
     public static double targetPos = 0.0;
     public static int switchCase = 0;
     private int lastSwitchCase = 0;
-    public static double P,D,FF;
+    public static double upkP, downkD, downkP, horizantalkP;
+    public static boolean horizantal;
     private double error,derivitave, currentPos, pwr, lastError;
     private DcMotorEx one;
     private DcMotorEx two;
@@ -83,6 +82,11 @@ public class ExtentionTuner extends LinearOpMode {
                 else if(switchCase == 4) {
                     one.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
                     two.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+                    three.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+                }
+                else if(switchCase == 5) {
+                    one.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+                    two.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
                     three.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
                 }
             }
@@ -99,9 +103,14 @@ public class ExtentionTuner extends LinearOpMode {
             timer.reset();
             lastError = error;
             // Reset for change in Time.seconds
-            tele.addData("Feed Forward Steady State: ", FF);
+//            tele.addData();
+            if(!horizantal && error > 0)
+                pwr  = (error* upkP);
+            else if(!horizantal && error < 0)
+                pwr  = (error* downkP) + (downkD *derivitave);
+            else if (horizantal)
+                pwr = (error * horizantalkP);
 
-            pwr  = (error*P) + (D*derivitave) + FF;
 
             //DONE: write a switch Case
             // DONE: create a set of instructions for motor directions
@@ -132,6 +141,12 @@ public class ExtentionTuner extends LinearOpMode {
                     tele.addData("Motor three power", pwr);
                     break;
                 case 4:
+                    one.setPower(pwr);
+                    two.setPower(pwr);
+                    three.setPower(0);
+                    tele.addData("1 and 2 motor power", pwr);
+                    break;
+                case 5:
                     one.setPower(pwr);
                     two.setPower(pwr);
                     three.setPower(pwr);

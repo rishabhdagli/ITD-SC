@@ -12,7 +12,7 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 public class Boxtube {
 
     public static double PivotDownKp = 0.0008, PivotDownKd = 0.00011, PivotkP = 0.002, PivotKd = 0.0001, Tick90 = 1086, FF = 0.088, period = (2 * Math.PI) / (Tick90 * 4), lasterror,
-            KpExt = 0.0005;
+            upkP = 0.0002, downkD = 0.00001, downkP = 0.0003, horizantalkP=0.00015;
     final int MaxExtension = 57000;
     public double pivotoffset, Boxtubeoffset, targetPiv, targetExt;
     public DcMotorEx Pivot, BT1, BT2, BT3;
@@ -187,18 +187,18 @@ public class Boxtube {
         double extensionError = (extensionTargetPos) + BT1.getCurrentPosition();
         if (BT1.getCurrentPosition() > 0 || extensionTargetPos < 0) { //min position hardstop
             if (extensionError > 0) {
-                ExtPwr = KpExt * extensionError;
+                ExtPwr = upkP * extensionError;
             } else {
                 ExtPwr = 0;
             }
         } else if (BT1.getCurrentPosition() < -MaxExtension || extensionTargetPos > MaxExtension) { //max position hardstop
             if (extensionError < 0) {
-                ExtPwr = KpExt * extensionError;
+                ExtPwr = upkP * extensionError;
             } else {
                 ExtPwr = 0;
             }
         } else {
-            ExtPwr = KpExt * extensionError;
+            ExtPwr = upkP * extensionError;
         }
         ExtensionPower(ExtPwr);
 

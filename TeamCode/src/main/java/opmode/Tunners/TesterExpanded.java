@@ -48,7 +48,7 @@ public class TesterExpanded extends LinearOpMode {
 
 
     private Servo servo0,servo1, servo2, servo3, servo4,  servo5, servo6, servo7, servo8, servo9, servo10, servo11;
-    public static double extensionTargetPos, KpExt = Boxtube.KpExt;
+    public static double extensionTargetPos, KpExt = Boxtube.upkP;
     double wristTicks, armTicks;
 
     public static ServoControl servoControl = new ServoControl();
