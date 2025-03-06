@@ -1,4 +1,4 @@
-package opmode.Archive.PinPointFiles;
+package opmode.Archive;
 
 import static org.firstinspires.ftc.robotcore.external.navigation.AngleUnit.RADIANS;
 import static org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit.MM;
