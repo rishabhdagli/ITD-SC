@@ -141,7 +141,7 @@ public class Boxtube {
 
 
     public void PivotMove(double targetPos) {
-        double currentPivot = pivotoffset + (-Pivot.getCurrentPosition());
+        double currentPivot =  -Pivot.getCurrentPosition();
         double error = targetPos - currentPivot;
 
         if (error > 0) {

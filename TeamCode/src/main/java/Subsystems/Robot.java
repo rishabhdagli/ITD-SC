@@ -28,7 +28,7 @@ public class Robot {
     //PIVOT VARIABLES
     double pivotBackPos = 1120, pivotHorizontal = 0, pivotSpecSpos = 900, pivotPreLoad = 550;
     //EXTENSION VARIABLES
-    double minExtension = 2000, midExtension = 10000, fullExtension = 25000, basketExtension = 40000, specScoreExtension = 15250, currentExtension = midExtension, specimenWallExtension = 7000;
+    double minExtension = 000, midExtension = 10000, fullExtension = 25000, basketExtension = 40000, specScoreExtension = 15250, currentExtension = midExtension, specimenWallExtension = 7000;
     //BOOLEANS FOR BUTTONS
     boolean wasPressedL, wasPressedR, minExtendSubPressed, midExtendSubPressed, lowExtendSubPressed, maxExtendSubPressed;
     //Gamepads
@@ -63,7 +63,7 @@ public class Robot {
 
         timer = new ElapsedTime(ElapsedTime.Resolution.SECONDS);
         pipeline = new CrushSampleAnglePipelineTurretTrial();
-        VP = VisionPortal.easyCreateWithDefaults(hardwareMap.get(WebcamName.class, "Webcam 1"), pipeline);
+//        VP = VisionPortal.easyCreateWithDefaults(hardwareMap.get(WebcamName.class, "Webcam 1"), pipeline);
 
     }
 
