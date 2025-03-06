@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.Tuners;
+package opmode.Tunners;
 
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.config.Config;
@@ -9,6 +9,8 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.util.ElapsedTime;
+
+import java.lang.reflect.Array;
 
 @Config
 @TeleOp(name="Extention Tuner")

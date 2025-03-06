@@ -14,31 +14,21 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 import java.util.concurrent.TimeUnit;
 
-import Subsystems.Robot;
 import Subsystems.Boxtube;
 import Subsystems.EndEffector;
+import Subsystems.Robot;
 import pedroPathing.constants.FConstants;
 import pedroPathing.constants.LConstants;
 
 @Autonomous(name = "5 Specimen")
 public class FiveSpecCFCRUSH extends LinearOpMode {
-    Robot r;
-
-    Boxtube boxtube;
-
-    EndEffector endEffector;
-
     public static Follower follower;
-    private Timer pathTimer = new Timer();
-
-    private ElapsedTime actionTimer = new ElapsedTime();
     public boolean pathDone = false;
-    public boolean prevPathDone = false,CountDone = false;
-
+    public boolean prevPathDone = false, CountDone = false;
+    Robot r;
+    Boxtube boxtube;
+    EndEffector endEffector;
     int SpeciminCount = 0;
-
-
-
     PathChain Preload,
             PrePush1,
             PrePush2,
@@ -55,12 +45,9 @@ public class FiveSpecCFCRUSH extends LinearOpMode {
             Score3,
             Score4,
             Park;
-
-    enum PathStates {
-        Preload, PrePush1, PrePush2, PrePush3, Push1, Push2, Push3, Pickup1, SCORING, Pickup3, Pickup4, WallPickup, Score2, Score3, Score4, Park, End, WAIT1
-    }
-
     PathStates currentPathState, lastPathState;
+    private Timer pathTimer = new Timer();
+    private ElapsedTime actionTimer = new ElapsedTime();
 
     private void setPathState(PathStates state) {
         currentPathState = state;
@@ -68,13 +55,12 @@ public class FiveSpecCFCRUSH extends LinearOpMode {
         pathDone = false;
     }
 
-    private void resetActionTimer(){
+    private void resetActionTimer() {
         pathDone = true;
-        if(pathDone && !prevPathDone){
+        if (pathDone && !prevPathDone) {
             actionTimer.reset();
         }
     }
-
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -86,7 +72,7 @@ public class FiveSpecCFCRUSH extends LinearOpMode {
         endEffector = r.endEffector;
         actionTimer.time(TimeUnit.SECONDS);
 
-        while(opModeInInit()){
+        while (opModeInInit()) {
             boxtube.updatePiv();
             boxtube.updateExt();
             r.InitPosition();
@@ -94,38 +80,36 @@ public class FiveSpecCFCRUSH extends LinearOpMode {
 
         waitForStart();
 
-        currentPathState = PathStates.Preload;
+        currentPathState = PathStates.DriveToPreloadScoringPosition;
         actionTimer.reset();
         pathTimer.resetTimer();
 
-        while(opModeIsActive()){
+        while (opModeIsActive()) {
             boxtube.updatePiv();
             boxtube.updateExt();
             follower.update();
             telemetry.addData("State", currentPathState);
             telemetry.update();
 
-            switch(currentPathState){
+            switch (currentPathState) {
 
-                case Preload: //Drivng to preload position
+                case DriveToPreloadScoringPosition: //Drivng to preload position
                     follower.followPath(Preload);
                     resetActionTimer();
                     r.SpecimenPreLoad(); //moves pivot up
-                    setPathState(PathStates.PrePush1);
+                    setPathState(PathStates.ScorePreload);
                     break;
 
-                case PrePush1: //Scoring preload
+                case ScorePreload: //Scoring preload
                     if (!follower.isBusy()) {
                         resetActionTimer();
 
-                        if(actionTimer.time() < 1.0){
+                        if (actionTimer.time() < 1.0) {
                             r.PreloadSpecExt(); //extends tube for preload
-                        }
-                        else if(actionTimer.time() < 1.5){
+                        } else if (actionTimer.time() < 1.5) {
                             r.SpecimenPreLoadScore();  //move pivot down
                             SpeciminCount = 1;
-                        }
-                        else {
+                        } else {
                             r.SpecimenWallForSamplePush();
                             follower.followPath(PrePush1);
                             setPathState(PathStates.Push1);
@@ -135,101 +119,62 @@ public class FiveSpecCFCRUSH extends LinearOpMode {
                     break;
 
                 case Push1:
-                    if(!follower.isBusy()){
+                    if (!follower.isBusy()) {
                         follower.followPath(Push1);
                         setPathState(PathStates.PrePush2);
                     }
                     break;
 
                 case PrePush2:
-                    if(!follower.isBusy()){
+                    if (!follower.isBusy()) {
                         follower.followPath(PrePush2);
                         setPathState(PathStates.Push2);
                     }
                     break;
 
                 case Push2:
-                    if(!follower.isBusy()){
+                    if (!follower.isBusy()) {
                         follower.followPath(Push2);
                         setPathState(PathStates.PrePush3);
                     }
                     break;
 
                 case PrePush3:
-                    if(!follower.isBusy()){
+                    if (!follower.isBusy()) {
                         follower.followPath(PrePush3);
                         setPathState(PathStates.Push3);
                     }
                     break;
 
                 case Push3:
-                    if(!follower.isBusy()){
+                    if (!follower.isBusy()) {
                         follower.followPath(Push3);
                         setPathState(PathStates.Pickup1);
                     }
                     break;
 
                 case Pickup1:
-                    if(!follower.isBusy()){
+                    if (!follower.isBusy()) {
                         follower.followPath(Pickup1);
                         setPathState(PathStates.WallPickup);
                     }
                     break;
 
                 case WallPickup:
-                    if(!follower.isBusy()){
+                    if (!follower.isBusy()) {
                         CountDone = false;
                         resetActionTimer();
 
                         //Grabs specmin
                         //moves pivot back
-                            if(actionTimer.time() < 0.1) {
-                                r.SpecimenWallGrab();
-                            }
-                            else if(actionTimer.time() < 0.15) {
-                                r.SpecimenWallUp();
-                            }
-                            else if (actionTimer.time() < 0.65){
-                                switch (SpeciminCount) {
-                                    case 1:
-                                    follower.followPath(Score1);
-                                    break;
-                                    case 2:
-                                    follower.followPath(Score2);
-                                    break;
-                                    case 3:
-                                    follower.followPath(Score3);
-                                    break;
-                                    case 4:
-                                        follower.followPath(Score4);
-                                        break;
-                                }
-                            }
-                            else {
-                                r.SpecimenPreScore(); //Parrelel action
-                                setPathState(PathStates.SCORING);
-                            }
-
-                    }
-                    break;
-
-                case SCORING:
-                    if(!follower.isBusy()){
-                        resetActionTimer();
-                        if(!CountDone){
-                            SpeciminCount++;
-                            CountDone = true;
-                        }
-
-                        //brings the thing down
-                        if(actionTimer.time() < 0.1) {
-                            r.SpecimenPostScore();
-                        }
-                        //drivetrain move
-                        else if(actionTimer.time() < 1) {
+                        if (actionTimer.time() < 0.1) {
+                            r.SpecimenWallGrab();
+                        } else if (actionTimer.time() < 0.15) {
+                            r.SpecimenWallUp();
+                        } else if (actionTimer.time() < 0.65) {
                             switch (SpeciminCount) {
                                 case 1:
-                                    follower.followPath(Pickup1);
+                                    follower.followPath(Score1);
                                     break;
                                 case 2:
                                     follower.followPath(Score2);
@@ -241,26 +186,61 @@ public class FiveSpecCFCRUSH extends LinearOpMode {
                                     follower.followPath(Score4);
                                     break;
                             }
+                        } else {
+                            r.SpecimenPreScore(); //Parrelel action
+                            setPathState(PathStates.SCORING);
+                        }
+
+                    }
+                    break;
+
+                case SCORING:
+                    if (!follower.isBusy()) {
+                        resetActionTimer();
+                        if (!CountDone) {
+                            SpeciminCount++;
+                            CountDone = true;
+                        }
+
+                        //brings the thing down
+                        if (actionTimer.time() < 0.1) {
+                            r.SpecimenPostScore();
+                        }
+                        //drivetrain move
+                        else if (actionTimer.time() < 1) {
+                            switch (SpeciminCount) {
+                                case 2:
+                                    follower.followPath(Pickup2);
+                                    break;
+                                case 3:
+                                    follower.followPath(Pickup3);
+                                    break;
+                                case 4:
+                                    follower.followPath(Pickup4);
+                                    break;
+
+                            }
                         }
                         //gets ready for pick up
-                        else{
+                        else {
                             r.SpecimenWall();
                             setPathState(PathStates.WallPickup);
-                            }
-
                         }
+
+                    }
 
                     break;
 
                 case End:
                 default:
-                    if(!follower.isBusy()){
+                    if (!follower.isBusy()) {
                         return;
                     }
             }
             prevPathDone = pathDone;
         }
     }
+
     public void buildPaths() {
 
         Preload = follower.pathBuilder()
@@ -367,7 +347,7 @@ public class FiveSpecCFCRUSH extends LinearOpMode {
                         new BezierCurve(
                                 new Point(43.250, 69.000, Point.CARTESIAN),
                                 new Point(24.000, 62.000, Point.CARTESIAN),
-                                new Point(55.000,35.000, Point.CARTESIAN),
+                                new Point(55.000, 35.000, Point.CARTESIAN),
                                 new Point(27.000, 27.500, Point.CARTESIAN)
                         )
                 )
@@ -392,7 +372,7 @@ public class FiveSpecCFCRUSH extends LinearOpMode {
                         new BezierCurve(
                                 new Point(43.250, 70.000, Point.CARTESIAN),
                                 new Point(24.000, 62.000, Point.CARTESIAN),
-                                new Point(55.000,35.000, Point.CARTESIAN),
+                                new Point(55.000, 35.000, Point.CARTESIAN),
                                 new Point(27.000, 27.500, Point.CARTESIAN)
                         )
                 )
@@ -417,7 +397,7 @@ public class FiveSpecCFCRUSH extends LinearOpMode {
                         new BezierCurve(
                                 new Point(43.250, 73.000, Point.CARTESIAN),
                                 new Point(24.000, 62.000, Point.CARTESIAN),
-                                new Point(55.000,35.000, Point.CARTESIAN),
+                                new Point(55.000, 35.000, Point.CARTESIAN),
                                 new Point(27.000, 27.500, Point.CARTESIAN)
                         )
                 )
@@ -445,5 +425,9 @@ public class FiveSpecCFCRUSH extends LinearOpMode {
                 )
                 .setConstantHeadingInterpolation(Math.toRadians(180))
                 .build();
+    }
+
+    enum PathStates {
+        DriveToPreloadScoringPosition, ScorePreload, PrePush2, PrePush3, Push1, Push2, Push3, Pickup1, SCORING, Pickup3, Pickup4, WallPickup, Score2, Score3, Score4, Park, End, WAIT1
     }
 }
