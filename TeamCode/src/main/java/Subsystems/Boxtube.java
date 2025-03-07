@@ -183,7 +183,7 @@ public class Boxtube {
 
 
     public void ExtensionMove(double extensionTargetPos) {
-        double currentBoxtube = Boxtubeoffset = (-BT1.getCurrentPosition());
+        double currentBoxtube = BT1.getCurrentPosition();
         double extensionError = (extensionTargetPos) + BT1.getCurrentPosition();
         if (BT1.getCurrentPosition() > 0 || extensionTargetPos < 0) { //min position hardstop
             if (extensionError > 0) {
