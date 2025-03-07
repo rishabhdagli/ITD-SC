@@ -28,7 +28,7 @@ public class Robot {
     //PIVOT VARIABLES
     double pivotBackPos = 1120, pivotHorizontal = 0, pivotSpecSpos = 900, pivotPreLoad = 550;
     //EXTENSION VARIABLES
-    double minExtension = 000, midExtension = 10000, fullExtension = 25000, basketExtension = 40000, specScoreExtension = 15250, currentExtension = midExtension, specimenWallExtension = 7000;
+    double minExtension = 000, midExtension = 10000, fullExtension = 25000, basketExtension = 58435, specScoreExtension = 15250, currentExtension = midExtension, specimenWallExtension = 15000;
     //BOOLEANS FOR BUTTONS
     boolean wasPressedL, wasPressedR, minExtendSubPressed, midExtendSubPressed, lowExtendSubPressed, maxExtendSubPressed;
     //Gamepads
@@ -119,7 +119,7 @@ public class Robot {
     public void SpecimenWallForSamplePush() {
         boxtube.ExtensionMove(minExtension);
         boxtube.setPivot(pivotHorizontal);
-        endEffector.hand(0.165);
+        endEffector.hand(0.17);
         endEffector.wrist(0.45);
         endEffector.arm(0.4);
         endEffector.turret(0.55);
@@ -130,20 +130,23 @@ public class Robot {
 
     //Common methods
     public void ClawOpen() {
-        endEffector.claw(0.46);
+        endEffector.claw(0.63);
     }
 
     public void ClawClose() {
-        endEffector.claw(0.3);
+        endEffector.claw(1.0);
     }
 
     public void InsideGrabPecked() {
-        endEffector.claw(0.27);
+        endEffector.claw(1.0);
     }
 
     public void InsideGrabBeakOpen() {
-        endEffector.claw(0.55);
+        endEffector.claw(0.63);
     }
+
+
+
 
 
     //SAMPLE METHODS START HERE
@@ -153,7 +156,7 @@ public class Robot {
         boxtube.ExtensionMove(minExtension);
         endEffector.hand(0.48);
         endEffector.turret(0.55);
-        ClawOpen();
+        InsideGrabPecked();
     }
 
 
@@ -161,7 +164,7 @@ public class Robot {
         boxtube.PivotMove(pivotHorizontal);
         boxtube.ExtensionMove(currentExtension);
         endEffector.arm(0.47);
-        endEffector.wrist(0.25);
+        endEffector.wrist(0.3);
         endEffector.turret(0.55);
 
         InsideGrabPecked();
@@ -211,10 +214,9 @@ public class Robot {
     }
 
     public void SampleGrab() {
-        endEffector.arm(0.55);
-        endEffector.wrist(0.27);
-        endEffector.hand(0.5);
-        endEffector.turret(0.55);
+        endEffector.arm(0.56);
+        endEffector.wrist(0.35);
+        InsideGrabBeakOpen();
     }
 
     public void LoiterSample() {
@@ -222,7 +224,7 @@ public class Robot {
         endEffector.hand(0.5);
         endEffector.arm(0.4);
         endEffector.turret(0.55);
-        endEffector.claw(0.55);
+        InsideGrabBeakOpen();
         endEffector.wrist(0.7);
     }
 
@@ -234,7 +236,9 @@ public class Robot {
         endEffector.claw(0.55);
         endEffector.wrist(0.65);
     }
-
+    public void BasketExtension() { // Ready to score
+        boxtube.ExtensionMove(basketExtension);
+    }
     public void BasketScore() {
 
         //flicks the sample inside high basket
@@ -249,9 +253,7 @@ public class Robot {
         InsideGrabPecked();
     }
 
-    public void BasketExtension() { // Ready to score
-        boxtube.ExtensionMove(basketExtension);
-    }
+
 
     public void BasketReturn() {
         boxtube.ExtensionMove(0);
@@ -278,10 +280,10 @@ public class Robot {
     public void SpecimenWall() {
         boxtube.ExtensionMove(specimenWallExtension);
         boxtube.setPivot(pivotHorizontal);
-        endEffector.hand(0.165);
+        endEffector.hand(0.17);
         endEffector.Wrist.setPosition(0.45);
         //        endEffector.setEndEffector(60,-45);
-        endEffector.arm(0.4);
+        endEffector.arm(0.36);
         endEffector.turret(0.55);
         ClawOpen();
 
@@ -296,8 +298,8 @@ public class Robot {
         boxtube.PivotMove(pivotBackPos);
         endEffector.hand(0.17);
         endEffector.turret(0.55);
-        endEffector.arm(0.4);
-        endEffector.wrist(0.45);
+        endEffector.arm(0.36);
+        endEffector.wrist(0.5);
         ClawClose();
     }
 

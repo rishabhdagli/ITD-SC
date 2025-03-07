@@ -151,7 +151,7 @@ public class Tester extends LinearOpMode {
             tele.addData("Turret Position", turret.getPosition());
 
             double pivotCurrentPos =  (-Pivot.getCurrentPosition());
-            double boxtubeCurrentPos = -BT1.getCurrentPosition();
+            double boxtubeCurrentPos = BT1.getCurrentPosition();
 
 
             double Pivoterror = targetPosPivot - pivotCurrentPos;
