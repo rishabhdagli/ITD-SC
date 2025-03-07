@@ -151,7 +151,7 @@ public class Tester extends LinearOpMode {
             tele.addData("Turret Position", turret.getPosition());
 
             double pivotCurrentPos =  (-Pivot.getCurrentPosition());
-            double boxtubeCurrentPos = -BT1.getCurrentPosition();
+            double boxtubeCurrentPos = BT1.getCurrentPosition();
 
 
             double Pivoterror = targetPosPivot - pivotCurrentPos;
@@ -181,12 +181,12 @@ public class Tester extends LinearOpMode {
             double derivitave = (extensionError - lastExtError)/timer.seconds();
             if (BT1.getCurrentPosition() > 0 || extensionTargetPos < 0){ //min position hardstop
                 tele.addLine("Hard Stop Hit");
-                if(!(Pivot.getCurrentPosition() < Tick90/4) && extensionError > 0)
-                    power  = (extensionError* KpExt);
-                else if(!(Pivot.getCurrentPosition() < Tick90/4) && extensionError < 0)
-                    power  = (extensionError* downkP) + (downkD *derivitave);
-                else if (Pivot.getCurrentPosition() < Tick90/4)
-                    power = (extensionError * horizantalkP);
+                if(pivotCurrentPos > Tick90/4.0 && extensionError > 0){
+                    power  = (extensionError* KpExt);}
+                else if(pivotCurrentPos > Tick90/4.0 && extensionError < 0){
+                    power  = (extensionError* downkP) + (downkD *derivitave);}
+                else if (pivotCurrentPos < Tick90/4.0){
+                    power = (extensionError * horizantalkP);}
                 else { power = 0;}
             }
             else if (BT1.getCurrentPosition() < -60000 || extensionTargetPos > 60000){ //max position hardstop
