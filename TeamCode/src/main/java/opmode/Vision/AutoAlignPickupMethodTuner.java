@@ -1,7 +1,7 @@
-package opmode.Tunners;
+package opmode.Vision;
 
-import static opmode.Tunners.AutoAlignTuner.hp;
-import static opmode.Tunners.AutoAlignTuner.tp;
+import static opmode.Vision.AutoAlignTuner.hp;
+import static opmode.Vision.AutoAlignTuner.tp;
 
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
@@ -13,7 +13,6 @@ import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.vision.VisionPortal;
 
 import Subsystems.Boxtube;
-import opmode.Vision.CrushSampleAnglePipelineTurretTrial;
 
 public class AutoAlignPickupMethodTuner extends LinearOpMode {
     private CrushSampleAnglePipelineTurretTrial pipeline;

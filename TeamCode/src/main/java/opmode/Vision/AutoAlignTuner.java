@@ -1,21 +1,17 @@
-package opmode.Tunners;
+package opmode.Vision;
 
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.Servo;
-import com.qualcomm.robotcore.util.ElapsedTime;
 
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.vision.VisionPortal;
 
 import Subsystems.Boxtube;
-import opmode.Vision.CrushSampleAnglePipeline;
-import opmode.Vision.CrushSampleAnglePipelineTurretTrial;
 
 @Config
 @TeleOp(name="Auto Align Tuner (for 6 sevos) assuming offset")
