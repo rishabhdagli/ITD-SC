@@ -14,14 +14,15 @@ public class Boxtube {
     public static double PivotDownKp = 0.0008, PivotDownKd = 0.00011, PivotkP = 0.002, PivotKd = 0.0001, Tick90 = 1086, FF = 0.088, period = (2 * Math.PI) / (Tick90 * 4), lasterror,
             upkP = 0.0002, downkD = 0.00001, downkP = 0.0003, horizantalkP=0.00015;
     final int MaxExtension = 57000;
-    public double pivotoffset, Boxtubeoffset, targetPiv, targetExt;
+    public double targetPiv, targetExt;
+    double currentPivot,currentBoxtube;
     public DcMotorEx Pivot, BT1, BT2, BT3;
     public double offsetAngle, ExtPwr;
     Telemetry t;
     HardwareMap h;
     AnalogInput PivotAbs;
     AnalogInput boxtubeAbs;
-    ElapsedTime timer;
+    ElapsedTime Pivottimer,Extensiontimer;
 
     public Boxtube(HardwareMap hardwareMap, int x) {
         // Initialize motors with proper names
@@ -52,16 +53,14 @@ public class Boxtube {
         BT2.setDirection(DcMotorSimple.Direction.REVERSE);
         BT3.setDirection(DcMotorSimple.Direction.REVERSE);
 
-        timer = new ElapsedTime(ElapsedTime.Resolution.SECONDS);
-        timer.startTime();
+        Pivottimer = new ElapsedTime(ElapsedTime.Resolution.SECONDS);
+        Pivottimer.startTime();
+
+        Extensiontimer = new ElapsedTime(ElapsedTime.Resolution.SECONDS);
+        Extensiontimer.startTime();
 
         PivotAbs = hardwareMap.get(AnalogInput.class, "pivotAbs");
         boxtubeAbs = hardwareMap.get(AnalogInput.class, "boxtubeAbs");
-
-        pivotoffset = 0;
-        //-1233.33333*(PivotAbs.getVoltage()) + 482.233333;
-        Boxtubeoffset = 0;
-        //1243.083*(boxtubeAbs.getVoltage()) - 2292.24506;
 
     }
 
@@ -100,17 +99,14 @@ public class Boxtube {
         BT2.setDirection(DcMotorSimple.Direction.REVERSE);
         BT3.setDirection(DcMotorSimple.Direction.REVERSE);
 
-        timer = new ElapsedTime(ElapsedTime.Resolution.SECONDS);
-        timer.startTime();
+        Pivottimer = new ElapsedTime(ElapsedTime.Resolution.SECONDS);
+        Pivottimer.startTime();
+
+        Extensiontimer = new ElapsedTime(ElapsedTime.Resolution.SECONDS);
+        Extensiontimer.startTime();
 
       //  PivotAbs = hardwareMap.get(AnalogInput.class, "pivotAbs");
        // boxtubeAbs = hardwareMap.get(AnalogInput.class, "boxtubeAbs");
-
-        pivotoffset = 0;
-        //-1233.33333*(PivotAbs.getVoltage()) + 482.233333;
-        Boxtubeoffset = 0;
-        //1243.083*(boxtubeAbs.getVoltage()) - 2292.24506;
-
     }
 
 
@@ -142,22 +138,20 @@ public class Boxtube {
 
 
     public void PivotMove(double targetPos) {
-        double currentPivot =  -Pivot.getCurrentPosition();
+         currentPivot =  -Pivot.getCurrentPosition();
         double error = targetPos - currentPivot;
 
         if (error > 0) {
-            double power = PivotkP * error + PivotKd * (error - lasterror) / timer.seconds() + FF * Math.cos(period * Pivot.getCurrentPosition());
+            double power = PivotkP * error + PivotKd * (error - lasterror) / Pivottimer.seconds() + FF * Math.cos(period * Pivot.getCurrentPosition());
             Pivot.setPower(power);
             lasterror = error;
 
-            timer.reset();
         } else if (error < 0) {
-            double power = PivotDownKp * error + PivotDownKd * (error - lasterror) / timer.seconds();
+            double power = PivotDownKp * error + PivotDownKd * (error - lasterror) / Pivottimer.seconds();
             Pivot.setPower(power);
             lasterror = error;
-
-            timer.reset();
         }
+        Pivottimer.reset();
     }
 
     public void ExtensionPower(double power) {
@@ -183,23 +177,16 @@ public class Boxtube {
 
 
     public void ExtensionMove(double extensionTargetPos) {
-        double currentBoxtube = BT1.getCurrentPosition();
+         currentBoxtube = BT1.getCurrentPosition();
         double extensionError = (extensionTargetPos) + BT1.getCurrentPosition();
-        if (BT1.getCurrentPosition() > 0 || extensionTargetPos < 0) { //min position hardstop
-            if (extensionError > 0) {
-                ExtPwr = upkP * extensionError;
-            } else {
-                ExtPwr = 0;
-            }
-        } else if (BT1.getCurrentPosition() < -MaxExtension || extensionTargetPos > MaxExtension) { //max position hardstop
-            if (extensionError < 0) {
-                ExtPwr = upkP * extensionError;
-            } else {
-                ExtPwr = 0;
-            }
-        } else {
-            ExtPwr = upkP * extensionError;
-        }
+
+        if(currentPivot > Tick90/4.0 && extensionError > 0){
+            ExtPwr  = (extensionError* upkP);}
+        else if(currentPivot > Tick90/4.0 && extensionError < 0){
+            ExtPwr  = (extensionError* downkP) + (downkD *((extensionError - lastExtError)/ExentionTimer.seconds()));}
+        else if (currentPivot < Tick90/4.0){
+            ExtPwr = (extensionError * horizantalkP);}
+        else { power = 0;}
         ExtensionPower(ExtPwr);
 
     }

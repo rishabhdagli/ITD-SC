@@ -29,7 +29,7 @@ public class Tester extends LinearOpMode {
 
     DcMotorEx Pivot, BT1, BT2, BT3;
 
-    ElapsedTime timer;
+    ElapsedTime Pivottimer,ExentionTimer;
 
     public static class ServoControl{
         public double wrist, arm, hand, claw, turret = 0.5;
@@ -65,8 +65,10 @@ public class Tester extends LinearOpMode {
         MultipleTelemetry tele = new MultipleTelemetry(telemetry, dashboard.getTelemetry());
 
 
-        timer = new ElapsedTime(ElapsedTime.Resolution.SECONDS);
-        timer.startTime();
+        Pivottimer = new ElapsedTime(ElapsedTime.Resolution.SECONDS);
+        ExentionTimer = new ElapsedTime(ElapsedTime.Resolution.SECONDS);
+        Pivottimer.startTime();
+        ExentionTimer.startTime();
 
 
 
@@ -154,22 +156,22 @@ public class Tester extends LinearOpMode {
             double boxtubeCurrentPos = BT1.getCurrentPosition();
 
 
+            //PIVOT STUFF
+
             double Pivoterror = targetPosPivot - pivotCurrentPos;
 
             if (Pivoterror > 0) {
-                double power = PivotkP * Pivoterror + PivotKd * (Pivoterror - lasterror) / timer.seconds() + FF * Math.cos(period * Pivot.getCurrentPosition());
+                double power = PivotkP * Pivoterror + PivotKd * (Pivoterror - lasterror) / Pivottimer.seconds() + FF * Math.cos(period * Pivot.getCurrentPosition());
                 Pivot.setPower(power);
                 lasterror = Pivoterror;
 
-                timer.reset();
             } else if (Pivoterror < 0) {
-                double power = PivotDownKp * Pivoterror + PivotDownKd * (Pivoterror - lasterror) / timer.seconds();
+                double power = PivotDownKp * Pivoterror + PivotDownKd * (Pivoterror - lasterror) / Pivottimer.seconds();
                 Pivot.setPower(power);
                 lasterror = Pivoterror;
-
-                timer.reset();
 
             }
+            Pivottimer.reset();
 
 
             tele.addData("Pivot power:", Pivot.getPower());
@@ -177,10 +179,15 @@ public class Tester extends LinearOpMode {
             tele.addData("Target Pos", targetPosPivot);
 
 
+
+
+
+//EXTENTION STUFF
+
+            tele.addData("Boxtube current position: ", boxtubeCurrentPos);
             double extensionError = (extensionTargetPos)-boxtubeCurrentPos;
-            double derivitave = (extensionError - lastExtError)/timer.seconds();
-            if (BT1.getCurrentPosition() > 0 || extensionTargetPos < 0){ //min position hardstop
-                tele.addLine("Hard Stop Hit");
+            double derivitave = (extensionError - lastExtError)/ExentionTimer.seconds();
+
                 if(pivotCurrentPos > Tick90/4.0 && extensionError > 0){
                     power  = (extensionError* KpExt);}
                 else if(pivotCurrentPos > Tick90/4.0 && extensionError < 0){
@@ -188,23 +195,17 @@ public class Tester extends LinearOpMode {
                 else if (pivotCurrentPos < Tick90/4.0){
                     power = (extensionError * horizantalkP);}
                 else { power = 0;}
-            }
-            else if (BT1.getCurrentPosition() < -60000 || extensionTargetPos > 60000){ //max position hardstop
-                tele.addLine("Hard Stop Hit");
-                if(!(Pivot.getCurrentPosition() < Tick90/4) && extensionError < 0)
-                    power  = (extensionError* downkP) + (downkD *derivitave);
-                else if (Pivot.getCurrentPosition() < Tick90/4)
-                    power = (extensionError * horizantalkP);
-                else { power = 0;}
-            }
-            else {power = KpExt*extensionError;}
+
+                ExentionTimer.reset();
+            lastExtError = extensionError;
+
 
             BT1.setPower(power);
             BT2.setPower(power);
             BT3.setPower(power);
 
-            tele.addData("Boxtube current position: ", boxtubeCurrentPos);
-            lastExtError = extensionError;
+
+
             tele.update();
         }
     }
