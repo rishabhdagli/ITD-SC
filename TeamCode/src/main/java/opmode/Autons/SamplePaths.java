@@ -17,7 +17,7 @@ import Subsystems.Robot;
 import pedroPathing.constants.FConstants;
 import pedroPathing.constants.LConstants;
 
-@Autonomous(name = "4 Sample Paths only")
+@Autonomous(name = "4 Sample Auto")
 public class SamplePaths extends LinearOpMode {
 
 

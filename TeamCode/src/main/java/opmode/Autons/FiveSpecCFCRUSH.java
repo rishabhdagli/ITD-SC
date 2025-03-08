@@ -66,16 +66,16 @@ public class FiveSpecCFCRUSH extends LinearOpMode {
     public void runOpMode() throws InterruptedException {
         Constants.setConstants(FConstants.class, LConstants.class);
         follower = new Follower(hardwareMap);
+        follower.setStartingPose(new Pose(7.000,54.000,Math.toRadians(180)));
         buildPaths();
         r = new Robot(hardwareMap);
         boxtube = r.boxtube;
         endEffector = r.endEffector;
         actionTimer.time(TimeUnit.SECONDS);
 
+        r.InitPosition();
         while (opModeInInit()) {
-//            boxtube.updatePiv();
-//            boxtube.updateExt();
-//            r.InitPosition();
+            r.boxtube.update();
         }
 
         waitForStart();
@@ -247,19 +247,19 @@ public class FiveSpecCFCRUSH extends LinearOpMode {
                 .addPath(
                         new BezierLine(
                                 new Point(7.000, 54.000, Point.CARTESIAN),
-                                new Point(25.000, 61.000, Point.CARTESIAN)
+                                new Point(43.00, 68.000, Point.CARTESIAN)
                         )
                 )
-                .setConstantHeadingInterpolation(Math.toRadians(0))
-                .setZeroPowerAccelerationMultiplier(.75)
+                .setConstantHeadingInterpolation(Math.toRadians(180))
+                .setZeroPowerAccelerationMultiplier(4)
                 .build();
 
         PrePush1 = follower.pathBuilder()
                 .addPath(
                         new BezierCurve(
-                                new Point(25.000, 61.000, Point.CARTESIAN),
-                                new Point(29.419, 22.452, Point.CARTESIAN),
-                                new Point(58.323, 52.129, Point.CARTESIAN),
+                                new Point(43.000, 68.000, Point.CARTESIAN),
+                                new Point(21.000, 16.000, Point.CARTESIAN),
+                                new Point(74.000, 40.000, Point.CARTESIAN),
                                 new Point(58.000, 25.000, Point.CARTESIAN)
                         )
                 )
