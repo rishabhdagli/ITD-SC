@@ -40,10 +40,11 @@ public class Robot {
 
 
     //For Endeffecotor
-    double hand = 0.5;
+    double hand = 0.17; boolean horizontal = true;
 
     //BOOLEANS FOR BUTTONS
-    boolean wasPressedL, wasPressedR, minExtendSubPressed, midExtendSubPressed, lowExtendSubPressed, maxExtendSubPressed,SampleHandHover = false;
+    boolean wasPressedL, wasPressedR, minExtendSubPressed, midExtendSubPressed,
+            lowExtendSubPressed, maxExtendSubPressed,wasPressedTriangle = false;
     //Gamepads
     Gamepad gamepadOperator, gamepadDriver;
     //VISION
@@ -189,7 +190,14 @@ public class Robot {
         endEffector.wrist(0.1);
         endEffector.turret(0.55);
 
+
         ClawOpen();
+
+
+        //button detections
+        if (gamepadOperator.triangle) {
+            wasPressedTriangle = true;
+        }
 
         if (gamepadOperator.dpad_down) {
             minExtendSubPressed = true;
@@ -202,6 +210,14 @@ public class Robot {
         if (gamepadOperator.dpad_up) {
             maxExtendSubPressed = true;
             currentExtension = fullExtension;
+        }
+
+        //Falling edges here
+
+        if (!gamepadOperator.triangle && wasPressedTriangle) {
+            horizontal = !horizontal;
+            hand = (horizontal)? 0.5 : 0.17;
+            wasPressedTriangle = false;
         }
         if (!gamepadOperator.dpad_down && minExtendSubPressed) {
             minExtendSubPressed = false;
@@ -233,7 +249,9 @@ public class Robot {
         }
             JoystickIncrement = MainTele.JoyStickInc *gamepadOperator.left_stick_y;
 
+
         endEffector.hand(hand);
+
 
         boxtube.setExt(currentExtension-= JoystickIncrement);
 
