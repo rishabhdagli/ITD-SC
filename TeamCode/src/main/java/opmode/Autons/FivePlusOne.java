@@ -180,16 +180,16 @@ public class FivePlusOne extends LinearOpMode {
                                     follower.followPath(Score1);
                                     break;
                                 case 2:
-                                    follower.followPath(Pickup2);
+                                    follower.followPath(Score2);
                                     break;
                                 case 3:
-                                    follower.followPath(Pickup3);
+                                    follower.followPath(Score3);
                                     break;
                                 case 4:
-                                    follower.followPath(Pickup4);
+                                    follower.followPath(Score4);
                                     break;
                                 case 5:
-                                    follower.followPath(Pickup5);
+                                    follower.followPath(Score5);
                             }
                         } else {
 //                            r.SpecimenPreScore(); //Parrelel action
