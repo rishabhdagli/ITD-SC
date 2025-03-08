@@ -66,7 +66,7 @@ public class FiveSpecCFCRUSH extends LinearOpMode {
     public void runOpMode() throws InterruptedException {
         Constants.setConstants(FConstants.class, LConstants.class);
         follower = new Follower(hardwareMap);
-        follower.setStartingPose(new Pose(7.000,54.000,Math.toRadians(180)));
+        follower.setStartingPose(new Pose(7.000,54.000, Math.toRadians(180)));
         buildPaths();
         r = new Robot(hardwareMap);
         boxtube = r.boxtube;
@@ -76,6 +76,7 @@ public class FiveSpecCFCRUSH extends LinearOpMode {
         r.InitPosition();
         while (opModeInInit()) {
             r.boxtube.update();
+            follower.update();
         }
 
         waitForStart();
@@ -247,7 +248,7 @@ public class FiveSpecCFCRUSH extends LinearOpMode {
                 .addPath(
                         new BezierLine(
                                 new Point(7.000, 54.000, Point.CARTESIAN),
-                                new Point(43.00, 68.000, Point.CARTESIAN)
+                                new Point(43.00, 60.000, Point.CARTESIAN)
                         )
                 )
                 .setConstantHeadingInterpolation(Math.toRadians(180))
