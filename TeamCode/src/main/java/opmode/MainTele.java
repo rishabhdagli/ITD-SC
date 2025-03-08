@@ -15,7 +15,7 @@ import Subsystems.StateMachineGenerator;
 @TeleOp(name = "MainTele")
 public class MainTele extends LinearOpMode {
 
-    public static double JoyStickInc = 700;
+    public static double JoyStickInc = 700,Ymult = 0.8,rxMult = 0.7;
     public Robot teleRobot;
     public Boxtube boxtube;
     // public Follower follower;
@@ -62,10 +62,10 @@ public class MainTele extends LinearOpMode {
 
 
             //hopefully this works
-            if (gamepad1.left_bumper) {
-                teleRobot.TeleControl(0.8, 1, 0.7);
+            if (gamepad1.right_bumper) {
+                teleRobot.TeleControl(Ymult, 1, rxMult);
             } else if (boxtube.PivotisMoving()) {
-                teleRobot.TeleControl(0.8, 1, 1);
+                teleRobot.TeleControl(1, 1, rxMult);
             } else {
                 teleRobot.TeleControl(1, 1, 1);
             }

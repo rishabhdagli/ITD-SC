@@ -174,11 +174,11 @@ public class Robot {
     public void SampleHover() {
         double JoystickIncrement = 0;
         boxtube.setPivot(pivotHorizontal);
-        endEffector.arm(0.5);
-        endEffector.wrist(0.13);
+        endEffector.arm(0.45);
+        endEffector.wrist(0.1);
         endEffector.turret(0.55);
 
-        InsideGrabPecked();
+        ClawOpen();
 
         if (gamepadOperator.dpad_down) {
             minExtendSubPressed = true;
@@ -230,9 +230,8 @@ public class Robot {
     }
 
     public void SampleGrab() {
-        endEffector.arm(0.55);
-        endEffector.wrist(0.16);
-        InsideGrabPecked();
+        endEffector.arm(0.5);
+        endEffector.wrist(0.14);
     }
 
     public void LoiterSample() {
@@ -240,7 +239,7 @@ public class Robot {
         endEffector.hand(0.5);
         endEffector.arm(0.5);
         endEffector.turret(0.55);
-        InsideGrabBeakOpen();
+       ClawClose();
         endEffector.wrist(0.7);
     }
 
@@ -260,7 +259,7 @@ public class Robot {
 
     public void BasketScore() {
         //flicks the sample inside high basket
-        InsideGrabPecked();
+        ClawOpen();
         endEffector.arm(0.5);
         endEffector.hand(0.17);
         endEffector.turret(0.55);
@@ -307,7 +306,7 @@ public class Robot {
         boxtube.setPivot(pivotHorizontal);
         endEffector.hand(0.16);
         endEffector.wrist(0.34);
-        endEffector.arm(0.36);
+        endEffector.arm(0.34);
         endEffector.turret(0.55);
         ClawOpen();
 

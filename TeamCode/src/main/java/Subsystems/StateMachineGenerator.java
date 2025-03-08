@@ -96,7 +96,7 @@ public class StateMachineGenerator {
 
 
                 .state(States.CLOSING_CLAW)
-                .onEnter(r::InsideGrabBeakOpen)
+                .onEnter(r::ClawClose)
                 .transition(() -> g.b, States.WAIT1) // ESCAPE
                 .transition(() -> g.x, States.WAIT3)
 //

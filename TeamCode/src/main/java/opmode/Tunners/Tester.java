@@ -178,7 +178,6 @@ public class Tester extends LinearOpMode {
 
 
             tele.addData("Pivot power:", Pivot.getPower());
-            tele.addData("Pivot current", Pivot.getCurrent(CurrentUnit.MILLIAMPS));
             tele.addData("Pivot position", pivotCurrentPos);
             tele.addData("Target Pos", targetPosPivot);
 
