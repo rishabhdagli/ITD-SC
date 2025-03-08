@@ -20,7 +20,7 @@
  *   SOFTWARE.
  */
 
-package opmode.Archive.PinPointFiles;
+package opmode.Archive;
 
 import static com.qualcomm.robotcore.util.TypeConversion.byteArrayToInt;
 

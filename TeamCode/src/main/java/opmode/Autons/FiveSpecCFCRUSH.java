@@ -177,13 +177,13 @@ public class FiveSpecCFCRUSH extends LinearOpMode {
                                     follower.followPath(Score1);
                                     break;
                                 case 2:
-                                    follower.followPath(Score2);
+                                    follower.followPath(Pickup2);
                                     break;
                                 case 3:
-                                    follower.followPath(Score3);
+                                    follower.followPath(Pickup3);
                                     break;
                                 case 4:
-                                    follower.followPath(Score4);
+                                    follower.followPath(Pickup4);
                                     break;
                             }
                         } else {
