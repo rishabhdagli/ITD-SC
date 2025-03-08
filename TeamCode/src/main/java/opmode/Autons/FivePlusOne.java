@@ -46,8 +46,7 @@ public class FivePlusOne extends LinearOpMode {
             Score2,
             Score3,
             Score4,
-            Score5,
-            Park;
+            Score5;
     PathStates currentPathState, lastPathState;
     private Timer pathTimer = new Timer();
     private ElapsedTime actionTimer = new ElapsedTime();
@@ -257,8 +256,8 @@ public class FivePlusOne extends LinearOpMode {
                                 new Point(25.000, 61.000, Point.CARTESIAN)
                         )
                 )
-                .setConstantHeadingInterpolation(Math.toRadians(0))
-                .setZeroPowerAccelerationMultiplier(.75)
+                .setConstantHeadingInterpolation(Math.toRadians(180))
+                .setZeroPowerAccelerationMultiplier(1)
                 .build();
 
         PrePush1 = follower.pathBuilder()
@@ -442,19 +441,11 @@ public class FivePlusOne extends LinearOpMode {
                                 new Point(10.219, 26.199, Point.CARTESIAN),
                                 new Point(10.405, 130.436, Point.CARTESIAN)
                         )
-                ).setConstantHeadingInterpolation(Math.toRadians(180))
+                ).setConstantHeadingInterpolation(Math.toRadians(-90))
                 .setZeroPowerAccelerationMultiplier(1.75)
                 .build();
 
-        Park = follower.pathBuilder()
-                .addPath(
-                        new BezierLine(
-                                new Point(43.250, 77.000, Point.CARTESIAN),
-                                new Point(22.000, 30.000, Point.CARTESIAN)
-                        )
-                )
-                .setConstantHeadingInterpolation(Math.toRadians(180))
-                .build();
+
     }
 
     enum PathStates {

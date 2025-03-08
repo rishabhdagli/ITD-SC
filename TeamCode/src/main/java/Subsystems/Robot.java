@@ -83,51 +83,46 @@ public class Robot {
     }
 
 
+
+
+
+
+
+
     //TELE - Op drive control
     public void TeleControl(double yMultiplier, double xMultiplier, double rxMultiplier) {
         drive.TeleopControl(yMultiplier * gamepadDriver.left_stick_y, xMultiplier * gamepadDriver.left_stick_x, rxMultiplier * gamepadDriver.right_stick_x);
     }
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     //AUTON SPECIFIC METHOD HERE
-    //TODO: NEED TO REDO ALL OF THESE METHODS
+
     public void InitPosition() {
-        endEffector.turret(0.2);
-        endEffector.hand(47);
-        boxtube.setPivot(200);
-        boxtube.setExt(0); //less than min
-        ClawClose();
-    }
-
-    public void SpecimenPreLoad() {
-        endEffector.hand(0.16);
-        endEffector.wrist(0.25);
-        endEffector.turret(0.55);
-        endEffector.turret(0.47);
-        boxtube.setPivot(pivotPreLoad);
-        boxtube.setExt(0);
-        ClawClose();
-    }
-
-    public void PreloadSpecExt() {
-        endEffector.hand(0.16);
-        endEffector.wrist(0.25);
-        endEffector.turret(0.55);
-        endEffector.turret(0.47);
-        boxtube.setPivot(pivotPreLoad);
-        boxtube.setExt(13750);
-        ClawClose();
-
-    }
-
-    public void SpecimenPreLoadScore() {
+        boxtube.setExt(minExtension);
+        boxtube.setPivot(450);
         endEffector.hand(0.17);
-        //change in Method Loiter In aswell
-        endEffector.arm(0.47);
-
-        boxtube.setPivot(50);
-        ClawClose();
+        endEffector.wrist(0.63);
+        endEffector.arm(0.15);
+        endEffector.claw(0.4);
+        endEffector.turret(0.55);
+        ClawOpen();
     }
+
 
     public void SpecimenWallForSamplePush() {
         boxtube.setExt(minExtension);
