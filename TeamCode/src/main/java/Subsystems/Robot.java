@@ -36,7 +36,7 @@ public class Robot {
 
 
     //EXTENSION VARIABLES
-    double minExtension = 000, midExtension = 12500, fullExtension = 25000, basketExtension = 60000, specScoreExtension = 15250, currentExtension = minExtension, specimenWallExtension = 15000;
+    double minExtension = 000, midExtension = 12500, fullExtension = 25000, basketExtension = 56000, specScoreExtension = 15250, currentExtension = minExtension, specimenWallExtension = 15000;
 
 
     //For Endeffecotor
@@ -147,19 +147,19 @@ public class Robot {
 
     //Common methods
     public void ClawOpen() {
-        endEffector.claw(0.2);
+        endEffector.claw(0.4);
     }
 
     public void ClawClose() {
-        endEffector.claw(0.55);
+        endEffector.claw(0.71);
     }
 
     public void InsideGrabPecked() {
-        endEffector.claw(0.6);
+        endEffector.claw(0.75);
     }
 
     public void InsideGrabBeakOpen() {
-        endEffector.claw(0.2);
+        endEffector.claw(0.5);
     }
 
 
@@ -180,7 +180,7 @@ public class Robot {
         double JoystickIncrement = 0;
         boxtube.setPivot(pivotHorizontal);
         endEffector.arm(0.5);
-        endEffector.wrist(0.21);
+        endEffector.wrist(0.13);
         endEffector.turret(0.55);
 
         InsideGrabPecked();
@@ -236,7 +236,7 @@ public class Robot {
 
     public void SampleGrab() {
         endEffector.arm(0.55);
-        endEffector.wrist(0.26);
+        endEffector.wrist(0.16);
         InsideGrabPecked();
     }
 
@@ -310,7 +310,7 @@ public class Robot {
     public void SpecimenWall() {
         boxtube.setExt(specimenWallExtension);
         boxtube.setPivot(pivotHorizontal);
-        endEffector.hand(0.17);
+        endEffector.hand(0.16);
         endEffector.wrist(0.34);
         endEffector.arm(0.36);
         endEffector.turret(0.55);
@@ -338,7 +338,7 @@ public class Robot {
         endEffector.hand(0.8);
         endEffector.turret(0.55);
         endEffector.arm(0.23);
-        endEffector.wrist(0.3);
+        endEffector.wrist(0.27);
         ClawClose();
     }
 

@@ -34,7 +34,7 @@ public class Tester extends LinearOpMode {
     ElapsedTime Pivottimer,ExentionTimer;
 
     public static class ServoControl{
-        public double wrist=0.5, arm = 0.5, hand = 0.17, claw = 0.2, turret = 0.55;
+        public double wrist=0.5, arm = 0.5, hand = 0.17, claw = 0.4, turret = 0.55;
 
     }
 
