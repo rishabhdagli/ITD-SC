@@ -5,6 +5,7 @@ import com.pedropathing.follower.Follower;
 import com.pedropathing.localization.Pose;
 import com.pedropathing.pathgen.BezierCurve;
 import com.pedropathing.pathgen.BezierLine;
+import com.pedropathing.pathgen.PathBuilder;
 import com.pedropathing.pathgen.PathChain;
 import com.pedropathing.pathgen.Point;
 import com.pedropathing.util.Constants;
@@ -37,7 +38,6 @@ public class FivePlusOne extends LinearOpMode {
             Push1,
             Push2,
             Push3,
-            Pickup1,
             Pickup2,
             Pickup3,
             Pickup4,
@@ -69,7 +69,7 @@ public class FivePlusOne extends LinearOpMode {
         Constants.setConstants(FConstants.class, LConstants.class);
         follower = new Follower(hardwareMap);
         buildPaths();
-        r = new Robot(hardwareMap, new Pose(7.000, 54.000));
+        r = new Robot(hardwareMap, new Pose(8.733, 64.103));
         boxtube = r.boxtube;
         endEffector = r.endEffector;
         actionTimer.time(TimeUnit.SECONDS);
@@ -156,10 +156,10 @@ public class FivePlusOne extends LinearOpMode {
                     break;
 
                 case Pickup1:
-                    if (!follower.isBusy()) {
-                        follower.followPath(Pickup1);
-                        setPathState(PathStates.WallPickup);
-                    }
+//                    if (!follower.isBusy()) {
+//                        follower.followPath(Pickup1);
+//                        setPathState(PathStates.WallPickup);
+//                    }
                     break;
 
                 case WallPickup:
@@ -249,30 +249,33 @@ public class FivePlusOne extends LinearOpMode {
 
     public void buildPaths() {
 
-        Preload = follower.pathBuilder()
+
+        PathBuilder builder = follower.pathBuilder();
+
+
+        Preload = builder
                 .addPath(
                         new BezierLine(
-                                new Point(7.000, 54.000, Point.CARTESIAN),
-                                new Point(25.000, 61.000, Point.CARTESIAN)
+                                new Point(8.547, 65.032, Point.CARTESIAN),
+                                new Point(40.692, 66.519, Point.CARTESIAN)
                         )
                 )
-                .setConstantHeadingInterpolation(Math.toRadians(180))
-                .setZeroPowerAccelerationMultiplier(1)
+                .setConstantHeadingInterpolation(Math.toRadians(0))
                 .build();
 
-        PrePush1 = follower.pathBuilder()
+        PrePush1 = builder
                 .addPath(
                         new BezierCurve(
-                                new Point(25.000, 61.000, Point.CARTESIAN),
+                                new Point(40.692, 66.519, Point.CARTESIAN),
                                 new Point(29.419, 22.452, Point.CARTESIAN),
                                 new Point(58.323, 52.129, Point.CARTESIAN),
                                 new Point(58.000, 25.000, Point.CARTESIAN)
                         )
                 )
-                .setLinearHeadingInterpolation(Math.toRadians(0), Math.toRadians(180))
+                .setLinearHeadingInterpolation(Math.toRadians(180), Math.toRadians(0))
                 .build();
 
-        Push1 = follower.pathBuilder()
+        Push1 = builder
                 .addPath(
                         new BezierLine(
                                 new Point(58.000, 25.000, Point.CARTESIAN),
@@ -282,7 +285,7 @@ public class FivePlusOne extends LinearOpMode {
                 .setConstantHeadingInterpolation(Math.toRadians(180))
                 .build();
 
-        PrePush2 = follower.pathBuilder()
+        PrePush2 = builder
                 .addPath(
                         new BezierCurve(
                                 new Point(30.000, 25.000, Point.CARTESIAN),
@@ -294,7 +297,7 @@ public class FivePlusOne extends LinearOpMode {
                 .setConstantHeadingInterpolation(Math.toRadians(180))
                 .build();
 
-        Push2 = follower.pathBuilder()
+        Push2 = builder
                 .addPath(
                         new BezierLine(
                                 new Point(57.000, 16.000, Point.CARTESIAN),
@@ -304,7 +307,7 @@ public class FivePlusOne extends LinearOpMode {
                 .setConstantHeadingInterpolation(Math.toRadians(180))
                 .build();
 
-        PrePush3 = follower.pathBuilder()
+        PrePush3 = builder
                 .addPath(
                         new BezierCurve(
                                 new Point(30.000, 13.000, Point.CARTESIAN),
@@ -315,40 +318,28 @@ public class FivePlusOne extends LinearOpMode {
                 .setConstantHeadingInterpolation(Math.toRadians(180))
                 .build();
 
-        Push3 = follower.pathBuilder()
+        Push3 = builder
                 .addPath(
                         new BezierLine(
                                 new Point(57.000, 9.000, Point.CARTESIAN),
-                                new Point(30.000, 9.000, Point.CARTESIAN)
+                                new Point(17.652, 9.290, Point.CARTESIAN)
                         )
                 )
                 .setConstantHeadingInterpolation(Math.toRadians(180))
                 .build();
 
-        Pickup1 = follower.pathBuilder()
-                .addPath(
-                        new BezierLine(
-                                new Point(30.000, 9.000, Point.CARTESIAN),
-                                new Point(19.500, 9.000, Point.CARTESIAN)
-                        )
-                )
-                .setConstantHeadingInterpolation(Math.toRadians(180))
-                .setZeroPowerAccelerationMultiplier(2)
-                .build();
-
-        Score1 = follower.pathBuilder()
+        Score1 = builder
                 .addPath(
                         new BezierCurve(
-                                new Point(19.500, 9.000, Point.CARTESIAN),
+                                new Point(17.652, 9.290, Point.CARTESIAN),
                                 new Point(12.903, 62.000, Point.CARTESIAN),
-                                new Point(43.25, 69.000, Point.CARTESIAN)
+                                new Point(43.250, 69.000, Point.CARTESIAN)
                         )
                 )
                 .setConstantHeadingInterpolation(Math.toRadians(180))
-                .setZeroPowerAccelerationMultiplier(2)
                 .build();
 
-        Pickup2 = follower.pathBuilder()
+        Pickup2 = builder
                 .addPath(
                         new BezierCurve(
                                 new Point(43.250, 69.000, Point.CARTESIAN),
@@ -358,10 +349,9 @@ public class FivePlusOne extends LinearOpMode {
                         )
                 )
                 .setConstantHeadingInterpolation(Math.toRadians(180))
-                .setZeroPowerAccelerationMultiplier(2)
                 .build();
 
-        Score2 = follower.pathBuilder()
+        Score2 = builder
                 .addPath(
                         new BezierCurve(
                                 new Point(27.000, 27.500, Point.CARTESIAN),
@@ -370,10 +360,9 @@ public class FivePlusOne extends LinearOpMode {
                         )
                 )
                 .setConstantHeadingInterpolation(Math.toRadians(180))
-                .setZeroPowerAccelerationMultiplier(2)
                 .build();
 
-        Pickup3 = follower.pathBuilder()
+        Pickup3 = builder
                 .addPath(
                         new BezierCurve(
                                 new Point(43.250, 70.000, Point.CARTESIAN),
@@ -383,68 +372,64 @@ public class FivePlusOne extends LinearOpMode {
                         )
                 )
                 .setConstantHeadingInterpolation(Math.toRadians(180))
-                .setZeroPowerAccelerationMultiplier(2)
                 .build();
 
-        Score3 = follower.pathBuilder()
+        Score3 = builder
                 .addPath(
                         new BezierCurve(
                                 new Point(27.000, 27.500, Point.CARTESIAN),
+                                new Point(12.903, 62.000, Point.CARTESIAN),
+                                new Point(43.250, 70.000, Point.CARTESIAN)
+                        )
+                )
+                .setConstantHeadingInterpolation(Math.toRadians(180))
+                .build();
+
+        Pickup4 = builder
+                .addPath(
+                        new BezierCurve(
+                                new Point(43.250, 70.000, Point.CARTESIAN),
+                                new Point(24.000, 62.000, Point.CARTESIAN),
+                                new Point(55.000, 35.000, Point.CARTESIAN),
+                                new Point(27.000, 27.250, Point.CARTESIAN)
+                        )
+                )
+                .setConstantHeadingInterpolation(Math.toRadians(180))
+                .build();
+
+        Score4 = builder
+                .addPath(
+                        new BezierCurve(
+                                new Point(27.000, 27.250, Point.CARTESIAN),
                                 new Point(12.903, 62.000, Point.CARTESIAN),
                                 new Point(43.250, 73.000, Point.CARTESIAN)
                         )
                 )
                 .setConstantHeadingInterpolation(Math.toRadians(180))
-                .setZeroPowerAccelerationMultiplier(1.75)
                 .build();
 
-        Pickup4 = follower.pathBuilder()
+        Pickup5 = builder
                 .addPath(
                         new BezierCurve(
                                 new Point(43.250, 73.000, Point.CARTESIAN),
                                 new Point(24.000, 62.000, Point.CARTESIAN),
-                                new Point(55.000, 35.000, Point.CARTESIAN),
-                                new Point(27.000, 27.500, Point.CARTESIAN)
-                        )
-                )
-                .setConstantHeadingInterpolation(Math.toRadians(180))
-                .setZeroPowerAccelerationMultiplier(1.25)
-                .build();
-
-        Score4 = follower.pathBuilder()
-                .addPath(
-                        new BezierCurve(
-                                new Point(27.000, 27.500, Point.CARTESIAN),
-                                new Point(12.903, 62.000, Point.CARTESIAN),
-                                new Point(43.250, 77.000, Point.CARTESIAN)
-                        )
-                )
-                .setConstantHeadingInterpolation(Math.toRadians(180))
-                .setZeroPowerAccelerationMultiplier(1.75)
-                .build();
-
-        Pickup5 = follower.pathBuilder()
-                .addPath(
-                        new BezierCurve(
-                                new Point(43.250, 77.000, Point.CARTESIAN),
-                                new Point(24.000, 62.000, Point.CARTESIAN),
-                                new Point(55.000, 35.000, Point.CARTESIAN),
+                                new Point(10.405, 72.465, Point.CARTESIAN),
                                 new Point(10.219, 26.199, Point.CARTESIAN)
                         )
-                ).setConstantHeadingInterpolation(Math.toRadians(180))
-                .setZeroPowerAccelerationMultiplier(1.25)
+                )
+                .setLinearHeadingInterpolation(Math.toRadians(189), Math.toRadians(-90))
                 .build();
 
-        Score5 = follower.pathBuilder()
+        Score5 = builder
                 .addPath(
-                        new BezierLine(
+                        new BezierCurve(
                                 new Point(10.219, 26.199, Point.CARTESIAN),
-                                new Point(10.405, 130.436, Point.CARTESIAN)
+                                new Point(7.432, 71.164, Point.CARTESIAN),
+                                new Point(14.865, 124.490, Point.CARTESIAN)
                         )
-                ).setConstantHeadingInterpolation(Math.toRadians(-90))
-                .setZeroPowerAccelerationMultiplier(1.75)
+                )
+                .setLinearHeadingInterpolation(Math.toRadians(-90), Math.toRadians(-45))
                 .build();
-
 
     }
 
