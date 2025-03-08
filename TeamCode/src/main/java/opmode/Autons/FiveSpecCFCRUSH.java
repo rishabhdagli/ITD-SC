@@ -263,7 +263,7 @@ public class FiveSpecCFCRUSH extends LinearOpMode {
                                 new Point(58.000, 25.000, Point.CARTESIAN)
                         )
                 )
-                .setLinearHeadingInterpolation(Math.toRadians(0), Math.toRadians(180))
+                .setConstantHeadingInterpolation(Math.toRadians(180))
                 .build();
 
         Push1 = follower.pathBuilder()
