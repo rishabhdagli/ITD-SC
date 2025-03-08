@@ -67,7 +67,7 @@ public class FiveSpecCFCRUSH extends LinearOpMode {
         Constants.setConstants(FConstants.class, LConstants.class);
         follower = new Follower(hardwareMap);
         buildPaths();
-        r = new Robot(hardwareMap, new Pose(7.000, 54.000));
+        r = new Robot(hardwareMap);
         boxtube = r.boxtube;
         endEffector = r.endEffector;
         actionTimer.time(TimeUnit.SECONDS);

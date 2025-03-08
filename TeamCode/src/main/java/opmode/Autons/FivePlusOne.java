@@ -69,7 +69,7 @@ public class FivePlusOne extends LinearOpMode {
         Constants.setConstants(FConstants.class, LConstants.class);
         follower = new Follower(hardwareMap);
         buildPaths();
-        r = new Robot(hardwareMap, new Pose(8.733, 64.103));
+        r = new Robot(hardwareMap);
         boxtube = r.boxtube;
         endEffector = r.endEffector;
         actionTimer.time(TimeUnit.SECONDS);

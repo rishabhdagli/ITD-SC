@@ -64,7 +64,7 @@ public class Robot {
         gamepadDriver = g1;
     }
 
-    public Robot(HardwareMap h, Pose startPose) {
+    public Robot(HardwareMap h) {
 
         Constants.setConstants(FConstants.class, LConstants.class);
 
@@ -74,7 +74,6 @@ public class Robot {
 
         currentExtension = boxtube.getExtpos();
 
-        follower.setStartingPose(startPose);
 
         timer = new ElapsedTime(ElapsedTime.Resolution.SECONDS);
         pipeline = new CrushSampleAnglePipelineTurretTrial();
@@ -120,7 +119,7 @@ public class Robot {
         endEffector.arm(0.15);
         endEffector.claw(0.4);
         endEffector.turret(0.55);
-        ClawOpen();
+        ClawClose();
     }
 
 
@@ -134,6 +133,18 @@ public class Robot {
         ClawOpen();
 
     }
+
+    public void SampleHoverAuto(){
+        boxtube.setPivot(pivotHorizontal);
+        boxtube.setExt(0);
+        endEffector.arm(0.45);
+        endEffector.wrist(0.1);
+        endEffector.turret(0.55);
+        endEffector.hand(0.17);
+        ClawOpen();
+
+    }
+
 
 
 
@@ -258,16 +269,16 @@ public class Robot {
     }
 
     public void BasketScore() {
-        //flicks the sample inside high basket
+
         ClawOpen();
         endEffector.arm(0.5);
-        endEffector.hand(0.17);
+        endEffector.hand(0.5);
         endEffector.turret(0.55);
         endEffector.wrist(0.72); //flick position
     }
 
     public void ObsZoneScore() {
-        InsideGrabPecked();
+        ClawOpen();
     }
 
     public void BasketReturn() {
