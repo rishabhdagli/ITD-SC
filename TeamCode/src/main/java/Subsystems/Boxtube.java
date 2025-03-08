@@ -11,8 +11,8 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 
 public class Boxtube {
 
-    public static double PivotDownKp = 0.0008, PivotDownKd = 0.00011, PivotkP = 0.002, PivotKd = 0.0001, Tick90 = 1086, FF = 0.088, period = (2 * Math.PI) / (Tick90 * 4), lasterror,
-            upkP = 0.0002, downkD = 0.00001, downkP = 0.0003, horizantalkP=0.00015;
+    public static double PivotDownKp = 0.0008, PivotDownKd = 0.00011, PivotkP = 0.002, PivotKd = 0.0001, Tick90 = 1120, FF = 0.088, period = (2 * Math.PI) / (Tick90 * 4), lasterrorPivot,
+            upkP = 0.0002, downkD = 0.00001, downkP = 0.0003, horizantalkP=0.00015,lasterrorExtention;
     final int MaxExtension = 57000;
     public double targetPiv, targetExt;
     double currentPivot,currentBoxtube;
@@ -125,7 +125,15 @@ public class Boxtube {
     }
 
     public void updatePiv() {
-        PivotMove(targetPiv);
+        PivotMove();
+    }
+
+    public double getExtpow() {
+        return BT1.getPower();
+    }
+
+    public double getPivpow() {
+        return Pivot.getPower();
     }
 
     public int getExtpos() {
@@ -137,20 +145,20 @@ public class Boxtube {
     }
 
 
-    public void PivotMove(double targetPos) {
+    public void PivotMove() {
          currentPivot =  -Pivot.getCurrentPosition();
-        double error = targetPos - currentPivot;
+        double error = targetPiv - currentPivot;
+        double power = 0;
 
         if (error > 0) {
-            double power = PivotkP * error + PivotKd * (error - lasterror) / Pivottimer.seconds() + FF * Math.cos(period * Pivot.getCurrentPosition());
-            Pivot.setPower(power);
-            lasterror = error;
+            power = PivotkP * error + PivotKd * (error - lasterrorPivot) / Pivottimer.seconds() + FF * Math.cos(period * Pivot.getCurrentPosition());
+
 
         } else if (error < 0) {
-            double power = PivotDownKp * error + PivotDownKd * (error - lasterror) / Pivottimer.seconds();
-            Pivot.setPower(power);
-            lasterror = error;
+             power = PivotDownKp * error + PivotDownKd * (error - lasterrorPivot) / Pivottimer.seconds();
         }
+        Pivot.setPower(power);
+        lasterrorPivot = error;
         Pivottimer.reset();
     }
 
@@ -165,7 +173,7 @@ public class Boxtube {
     }
 
     public void updateExt() {
-        ExtensionMove(targetExt);
+        ExtensionMove();
     }
 
 
@@ -176,17 +184,19 @@ public class Boxtube {
     }
 
 
-    public void ExtensionMove(double extensionTargetPos) {
+    public void ExtensionMove() {
          currentBoxtube = BT1.getCurrentPosition();
-        double extensionError = (extensionTargetPos) + BT1.getCurrentPosition();
+        double extensionError = (targetExt) - BT1.getCurrentPosition();
 
         if(currentPivot > Tick90/4.0 && extensionError > 0){
             ExtPwr  = (extensionError* upkP);}
         else if(currentPivot > Tick90/4.0 && extensionError < 0){
-            ExtPwr  = (extensionError* downkP) + (downkD *((extensionError - lastExtError)/ExentionTimer.seconds()));}
+            ExtPwr  = (extensionError* downkP) + (downkD *((extensionError - lasterrorExtention)/Extensiontimer.seconds()));}
         else if (currentPivot < Tick90/4.0){
             ExtPwr = (extensionError * horizantalkP);}
-        else { power = 0;}
+
+        lasterrorExtention = extensionError;
+        Extensiontimer.reset();
         ExtensionPower(ExtPwr);
 
     }

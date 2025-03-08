@@ -12,6 +12,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.vision.VisionPortal;
 
+import opmode.MainTele;
 import opmode.Vision.CrushSampleAnglePipelineTurretTrial;
 import pedroPathing.constants.FConstants;
 import pedroPathing.constants.LConstants;
@@ -25,12 +26,24 @@ public class Robot {
     //COMMON
     ElapsedTime timer;
     Drivetrain drive;
+
+
+
     //PIVOT VARIABLES
-    double pivotBackPos = 1120, pivotHorizontal = 0, pivotSpecSpos = 900, pivotPreLoad = 550;
+
+    //over shoort 1120 to ensure locking
+    double pivotBackPos = 1280, pivotHorizontal = 0, pivotSpecSpos = 900, pivotPreLoad = 550;
+
+
     //EXTENSION VARIABLES
-    double minExtension = 000, midExtension = 10000, fullExtension = 25000, basketExtension = 58435, specScoreExtension = 15250, currentExtension = midExtension, specimenWallExtension = 15000;
+    double minExtension = 000, midExtension = 12500, fullExtension = 25000, basketExtension = 60000, specScoreExtension = 15250, currentExtension = minExtension, specimenWallExtension = 15000;
+
+
+    //For Endeffecotor
+    double hand = 0.5;
+
     //BOOLEANS FOR BUTTONS
-    boolean wasPressedL, wasPressedR, minExtendSubPressed, midExtendSubPressed, lowExtendSubPressed, maxExtendSubPressed;
+    boolean wasPressedL, wasPressedR, minExtendSubPressed, midExtendSubPressed, lowExtendSubPressed, maxExtendSubPressed,SampleHandHover = false;
     //Gamepads
     Gamepad gamepadOperator, gamepadDriver;
     //VISION
@@ -117,7 +130,7 @@ public class Robot {
     }
 
     public void SpecimenWallForSamplePush() {
-        boxtube.ExtensionMove(minExtension);
+        boxtube.setExt(minExtension);
         boxtube.setPivot(pivotHorizontal);
         endEffector.hand(0.17);
         endEffector.wrist(0.45);
@@ -134,19 +147,19 @@ public class Robot {
 
     //Common methods
     public void ClawOpen() {
-        endEffector.claw(0.63);
+        endEffector.claw(0.2);
     }
 
     public void ClawClose() {
-        endEffector.claw(1.0);
+        endEffector.claw(0.55);
     }
 
     public void InsideGrabPecked() {
-        endEffector.claw(1.0);
+        endEffector.claw(0.6);
     }
 
     public void InsideGrabBeakOpen() {
-        endEffector.claw(0.63);
+        endEffector.claw(0.2);
     }
 
 
@@ -161,20 +174,13 @@ public class Robot {
 
     //SAMPLE METHODS START HERE
 
-    public void Loiter() {
-        boxtube.PivotMove(pivotHorizontal);
-        boxtube.ExtensionMove(minExtension);
-        endEffector.hand(0.48);
-        endEffector.turret(0.55);
-        ClawOpen();
-    }
 
 
     public void SampleHover() {
-        boxtube.PivotMove(pivotHorizontal);
-        boxtube.ExtensionMove(currentExtension);
-        endEffector.arm(0.47);
-        endEffector.wrist(0.3);
+        double JoystickIncrement = 0;
+        boxtube.setPivot(pivotHorizontal);
+        endEffector.arm(0.5);
+        endEffector.wrist(0.21);
         endEffector.turret(0.55);
 
         InsideGrabPecked();
@@ -212,47 +218,52 @@ public class Robot {
         }
 
         if (!gamepadOperator.left_bumper && wasPressedL) {
-            endEffector.hand(endEffector.handPos() + 0.05);
+           hand+=0.05;
             wasPressedL = false;
         }
         if (!gamepadOperator.right_bumper && wasPressedR) {
-            endEffector.hand(endEffector.handPos() - 0.05);
+           hand-=0.05;
             wasPressedR = false;
         }
+            JoystickIncrement = MainTele.JoyStickInc *gamepadOperator.left_stick_y;
+
+        endEffector.hand(hand);
+
+        boxtube.setExt(currentExtension-= JoystickIncrement);
 
         //Add stuff to move extension + hand stuff using new .copy() method
     }
 
     public void SampleGrab() {
-        endEffector.arm(0.56);
-        endEffector.wrist(0.35);
-        InsideGrabBeakOpen();
+        endEffector.arm(0.55);
+        endEffector.wrist(0.26);
+        InsideGrabPecked();
     }
 
     public void LoiterSample() {
-        boxtube.ExtensionMove(0);
+        boxtube.setExt(0);
         endEffector.hand(0.5);
-        endEffector.arm(0.4);
+        endEffector.arm(0.5);
         endEffector.turret(0.55);
         InsideGrabBeakOpen();
         endEffector.wrist(0.7);
     }
 
     public void PivotBack() {
-        boxtube.PivotMove(pivotBackPos);
+        boxtube.setPivot(pivotBackPos);
         endEffector.hand(0.17);
         endEffector.arm(0.5);
         endEffector.turret(0.55);
-        endEffector.claw(0.55);
-        endEffector.wrist(0.65);
+        endEffector.wrist(0.6);
+        hand = 0.5;//for sample hover
     }
 
     public void BasketExtension() { // Ready to score
-        boxtube.ExtensionMove(basketExtension);
+        boxtube.setExt(basketExtension);
+        boxtube.setPivot(pivotBackPos);
     }
 
     public void BasketScore() {
-
         //flicks the sample inside high basket
         InsideGrabPecked();
         endEffector.arm(0.5);
@@ -266,17 +277,17 @@ public class Robot {
     }
 
     public void BasketReturn() {
-        boxtube.ExtensionMove(0);
+        boxtube.setExt(0);
+        currentExtension = 0;
         boxtube.setPivot(pivotBackPos);
         endEffector.arm(0.5);
-        endEffector.claw(0.27);
         endEffector.hand(0.17);
         endEffector.wrist(0.3);
     }
 
     public void obsZoneRelease() {
-        boxtube.PivotMove(pivotHorizontal);
-        boxtube.ExtensionMove(fullExtension);
+        boxtube.setPivot(pivotHorizontal);
+        boxtube.setExt(fullExtension);
         endEffector.arm(0.47);
         endEffector.wrist(0.25);
         endEffector.hand(0.48);
@@ -297,11 +308,10 @@ public class Robot {
     //SPEC POSITIONS
 
     public void SpecimenWall() {
-        boxtube.ExtensionMove(specimenWallExtension);
+        boxtube.setExt(specimenWallExtension);
         boxtube.setPivot(pivotHorizontal);
         endEffector.hand(0.17);
-        endEffector.Wrist.setPosition(0.45);
-        //        endEffector.setEndEffector(60,-45);
+        endEffector.wrist(0.34);
         endEffector.arm(0.36);
         endEffector.turret(0.55);
         ClawOpen();
@@ -313,18 +323,18 @@ public class Robot {
     }
 
     public void SpecimenWallUp() {
-        boxtube.ExtensionMove(0);
-        boxtube.PivotMove(pivotBackPos);
+        boxtube.setExt(specimenWallExtension);
+        boxtube.setPivot(pivotHorizontal);
         endEffector.hand(0.17);
-        endEffector.turret(0.55);
+        endEffector.wrist(0.4);
         endEffector.arm(0.36);
-        endEffector.wrist(0.5);
+        endEffector.turret(0.55);
         ClawClose();
     }
 
     public void SpecimenPreScore() {
-        boxtube.ExtensionMove(0);
-        boxtube.PivotMove(pivotBackPos);
+        boxtube.setExt(0);
+        boxtube.setPivot(pivotBackPos);
         endEffector.hand(0.8);
         endEffector.turret(0.55);
         endEffector.arm(0.23);
@@ -334,13 +344,13 @@ public class Robot {
 
     public void SpecimenPostScore() {
 
-        boxtube.ExtensionMove(0);
+        boxtube.setExt(0);
         endEffector.turret(0.55);
         endEffector.arm(0.23);
         endEffector.hand(0.8);
 
         endEffector.wrist(0.5);
-        boxtube.PivotMove(0);
+        boxtube.setPivot(0);
         ClawOpen();
 
 

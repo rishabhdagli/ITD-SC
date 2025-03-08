@@ -12,6 +12,8 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
+import org.firstinspires.ftc.robotcore.external.navigation.CurrentUnit;
+
 import Subsystems.Boxtube;
 
 @Config
@@ -32,7 +34,7 @@ public class Tester extends LinearOpMode {
     ElapsedTime Pivottimer,ExentionTimer;
 
     public static class ServoControl{
-        public double wrist, arm, hand, claw, turret = 0.5;
+        public double wrist=0.5, arm = 0.5, hand = 0.17, claw = 0.2, turret = 0.55;
 
     }
 
@@ -45,9 +47,10 @@ public class Tester extends LinearOpMode {
 
     public static double targetPosPivot,extensionTargetPos;
     double lastExtError;
+    public static double currentThres = 0;
 
 
-    private Servo servo0,servo1, servo2, servo3, servo4,  servo5, wrist, arm1, arm2, hand, claw, turret, servo11;
+    private Servo  wrist, arm1, arm2, hand, claw, turret;
     double wristTicks, armTicks;
 
 
@@ -152,7 +155,7 @@ public class Tester extends LinearOpMode {
             tele.addData("Claw Position", claw.getPosition());
             tele.addData("Turret Position", turret.getPosition());
 
-            double pivotCurrentPos =  (-Pivot.getCurrentPosition());
+            double pivotCurrentPos = (-Pivot.getCurrentPosition());
             double boxtubeCurrentPos = BT1.getCurrentPosition();
 
 
@@ -162,22 +165,22 @@ public class Tester extends LinearOpMode {
 
             if (Pivoterror > 0) {
                 double power = PivotkP * Pivoterror + PivotKd * (Pivoterror - lasterror) / Pivottimer.seconds() + FF * Math.cos(period * Pivot.getCurrentPosition());
-                Pivot.setPower(power);
                 lasterror = Pivoterror;
+                Pivot.setPower(power);
 
             } else if (Pivoterror < 0) {
                 double power = PivotDownKp * Pivoterror + PivotDownKd * (Pivoterror - lasterror) / Pivottimer.seconds();
-                Pivot.setPower(power);
                 lasterror = Pivoterror;
+                Pivot.setPower(power);
 
             }
             Pivottimer.reset();
 
 
             tele.addData("Pivot power:", Pivot.getPower());
+            tele.addData("Pivot current", Pivot.getCurrent(CurrentUnit.MILLIAMPS));
             tele.addData("Pivot position", pivotCurrentPos);
             tele.addData("Target Pos", targetPosPivot);
-
 
 
 
@@ -185,18 +188,20 @@ public class Tester extends LinearOpMode {
 //EXTENTION STUFF
 
             tele.addData("Boxtube current position: ", boxtubeCurrentPos);
-            double extensionError = (extensionTargetPos)-boxtubeCurrentPos;
-            double derivitave = (extensionError - lastExtError)/ExentionTimer.seconds();
+            double extensionError = (extensionTargetPos) - boxtubeCurrentPos;
+            double derivitave = (extensionError - lastExtError) / ExentionTimer.seconds();
 
-                if(pivotCurrentPos > Tick90/4.0 && extensionError > 0){
-                    power  = (extensionError* KpExt);}
-                else if(pivotCurrentPos > Tick90/4.0 && extensionError < 0){
-                    power  = (extensionError* downkP) + (downkD *derivitave);}
-                else if (pivotCurrentPos < Tick90/4.0){
-                    power = (extensionError * horizantalkP);}
-                else { power = 0;}
+            if (pivotCurrentPos > Tick90 / 4.0 && extensionError > 0) {
+                power = (extensionError * KpExt);
+            } else if (pivotCurrentPos > Tick90 / 4.0 && extensionError < 0) {
+                power = (extensionError * downkP) + (downkD * derivitave);
+            } else if (pivotCurrentPos < Tick90 / 4.0) {
+                power = (extensionError * horizantalkP);
+            } else {
+                power = 0;
+            }
 
-                ExentionTimer.reset();
+            ExentionTimer.reset();
             lastExtError = extensionError;
 
 
@@ -204,9 +209,8 @@ public class Tester extends LinearOpMode {
             BT2.setPower(power);
             BT3.setPower(power);
 
-
-
             tele.update();
         }
+
+        }
     }
-}

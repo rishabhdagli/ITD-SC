@@ -1,5 +1,7 @@
 package opmode;
 
+import com.acmerobotics.dashboard.FtcDashboard;
+import com.acmerobotics.dashboard.config.Config;
 import com.pedropathing.follower.Follower;
 import com.pedropathing.localization.Pose;
 import com.pedropathing.pathgen.Point;
@@ -18,21 +20,27 @@ import Subsystems.StateMachineGenerator;
 import pedroPathing.constants.FConstants;
 import pedroPathing.constants.LConstants;
 
+@Config
 @TeleOp(name = "MainTele")
 public class MainTele extends LinearOpMode {
 
     public Robot teleRobot;
     public Boxtube boxtube;
+
+    public static double JoyStickInc = 700;
    // public Follower follower;
     boolean sampleMode = true, check = false;
     double MonkeyExpressFlashBang = 0;
 
     LED redLED, redLED2, greenLED, greenLED2;
+    FtcDashboard dashboard;
 
     @Override
     public void runOpMode() throws InterruptedException {
-        boxtube= new Boxtube(hardwareMap,1); //just for pivot check
+        dashboard = FtcDashboard.getInstance();
+
         teleRobot = new Robot(hardwareMap, gamepad1,gamepad2);
+        boxtube = teleRobot.boxtube;
 
 //        Constants.setConstants(FConstants.class, LConstants.class);
 //
@@ -63,10 +71,9 @@ public class MainTele extends LinearOpMode {
 
 
             //hopefully this works
-            if(Math.abs(gamepad1.left_trigger) > 0) {teleRobot.TeleControl(0.7 + (gamepad1.left_trigger*0.3),1,0.7);}
-            else if (Math.abs(gamepad1.right_trigger) > 0) {teleRobot.TeleControl((0.7-gamepad1.right_trigger*0.7),1,0.7);}
-            else if(boxtube.PivotisMoving()) {teleRobot.TeleControl(0.7,1,1);}
-            else{teleRobot.TeleControl(0.7,1,0.7);}
+            if (gamepad1.left_bumper) {teleRobot.TeleControl(0.8,1,0.7);}
+            else if(boxtube.PivotisMoving()) {teleRobot.TeleControl(0.8,1,1);}
+            else{teleRobot.TeleControl(1,1,0.7);}
 
 
             String state = sampleMachine.getStateString();
@@ -95,12 +102,12 @@ public class MainTele extends LinearOpMode {
                 }
 
 
-            if (gamepad2.left_stick_button) {
+            if (gamepad2.touchpad) {
                 check = true;
             }
 
 
-            if (!gamepad2.left_stick_button && check) {
+            if (!gamepad2.touchpad && check) {
                 check = false;
                 sampleMode = !sampleMode;
                 if (!sampleMode) {
@@ -133,7 +140,11 @@ public class MainTele extends LinearOpMode {
 //
 //            follower.update();
 
+            telemetry.addData("Extention Power: ",boxtube.getExtpow());
+            telemetry.addData("Pivot Power: ",boxtube.getPivpow());
+
             telemetry.update();
+            boxtube.update();
 
         }// opmode loop active
     }//linear opmode end

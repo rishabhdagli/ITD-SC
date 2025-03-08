@@ -96,7 +96,7 @@ public class FiveSpecCFCRUSH extends LinearOpMode {
                 case DriveToPreloadScoringPosition: //Drivng to preload position
                     follower.followPath(Preload);
                     resetActionTimer();
-                    r.SpecimenPreLoad(); //moves pivot up
+//                    r.SpecimenPreLoad(); //moves pivot up
                     setPathState(PathStates.ScorePreload);
                     break;
 
@@ -105,12 +105,12 @@ public class FiveSpecCFCRUSH extends LinearOpMode {
                         resetActionTimer();
 
                         if (actionTimer.time() < 1.0) {
-                            r.PreloadSpecExt(); //extends tube for preload
+//                            r.PreloadSpecExt(); //extends tube for preload
                         } else if (actionTimer.time() < 1.5) {
-                            r.SpecimenPreLoadScore();  //move pivot down
+//                            r.SpecimenPreLoadScore();  //move pivot down
                             SpeciminCount = 1;
                         } else {
-                            r.SpecimenWallForSamplePush();
+//                            r.SpecimenWallForSamplePush();
                             follower.followPath(PrePush1);
                             setPathState(PathStates.Push1);
                         }
@@ -168,9 +168,9 @@ public class FiveSpecCFCRUSH extends LinearOpMode {
                         //Grabs specmin
                         //moves pivot back
                         if (actionTimer.time() < 0.1) {
-                            r.SpecimenWallGrab();
+//                            r.SpecimenWallGrab();
                         } else if (actionTimer.time() < 0.15) {
-                            r.SpecimenWallUp();
+//                            r.SpecimenWallUp();
                         } else if (actionTimer.time() < 0.65) {
                             switch (SpeciminCount) {
                                 case 1:
@@ -187,7 +187,7 @@ public class FiveSpecCFCRUSH extends LinearOpMode {
                                     break;
                             }
                         } else {
-                            r.SpecimenPreScore(); //Parrelel action
+//                            r.SpecimenPreScore(); //Parrelel action
                             setPathState(PathStates.SCORING);
                         }
 
@@ -204,7 +204,7 @@ public class FiveSpecCFCRUSH extends LinearOpMode {
 
                         //brings the thing down
                         if (actionTimer.time() < 0.1) {
-                            r.SpecimenPostScore();
+//                            r.SpecimenPostScore();
                         }
                         //drivetrain move
                         else if (actionTimer.time() < 1) {
@@ -223,7 +223,7 @@ public class FiveSpecCFCRUSH extends LinearOpMode {
                         }
                         //gets ready for pick up
                         else {
-                            r.SpecimenWall();
+//                            r.SpecimenWall();
                             setPathState(PathStates.WallPickup);
                         }
 
@@ -333,7 +333,7 @@ public class FiveSpecCFCRUSH extends LinearOpMode {
         Score1 = follower.pathBuilder()
                 .addPath(
                         new BezierCurve(
-                                new Point(19.500, 8.000, Point.CARTESIAN),
+                                new Point(19.500, 9.000, Point.CARTESIAN),
                                 new Point(12.903, 62.000, Point.CARTESIAN),
                                 new Point(43.25, 69.000, Point.CARTESIAN)
                         )
