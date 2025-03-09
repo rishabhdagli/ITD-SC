@@ -18,7 +18,7 @@ import pedroPathing.constants.FConstants;
 import pedroPathing.constants.LConstants;
 
 @Autonomous(name = "4 Sample Auto")
-public class SamplePaths extends LinearOpMode {
+public class SampleAuto extends LinearOpMode {
 
 
     public static Follower follower;
@@ -111,6 +111,11 @@ public class SamplePaths extends LinearOpMode {
                 case ScoreOne:
                     if (!follower.isBusy()) {
                         resetActionTimer();
+
+                        if (actionTimer.getElapsedTimeSeconds() < 2)
+                        {
+                            r.AutoAlign();
+                        }
                         if(actionTimer.getElapsedTimeSeconds() > 2){
                             follower.followPath(Score2);
                             setPathState(PathStates.PickupTwo);

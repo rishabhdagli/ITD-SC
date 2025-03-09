@@ -13,6 +13,7 @@ import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.vision.VisionPortal;
 
 import opmode.MainTele;
+import opmode.Vision.AutoAlignTuner;
 import opmode.Vision.CrushSampleAnglePipelineTurretTrial;
 import pedroPathing.constants.FConstants;
 import pedroPathing.constants.LConstants;
@@ -52,6 +53,36 @@ public class Robot {
     private VisionPortal VP;
 
 
+    //AutoAlign Varibles
+
+    enum AutoAlignstates {
+        TURRET_ALIGN, HAND_ALIGN, PICK_UP,NOT_DETECTED
+    }
+    private AutoAlignstates Camerastate = AutoAlignstates.TURRET_ALIGN;
+    private AutoAlignTuner.BoxtubeParam bp = new AutoAlignTuner.BoxtubeParam();
+    private AutoAlignTuner.CameraParams cp = new AutoAlignTuner.CameraParams();
+    private AutoAlignTuner.TurretParams tp = new AutoAlignTuner.TurretParams();
+    private AutoAlignTuner.HandParams hp = new AutoAlignTuner.HandParams();
+
+    public double ServoRegulizer(double x) {
+        return (x > 1) ? (((int)(x * 100)) % 100) / 100.0 : x;
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     // Constructors for auto-robot and tele-robot
 
 
@@ -75,12 +106,25 @@ public class Robot {
 
         currentExtension = boxtube.getExtpos();
 
-
         timer = new ElapsedTime(ElapsedTime.Resolution.SECONDS);
         pipeline = new CrushSampleAnglePipelineTurretTrial();
-//        VP = VisionPortal.easyCreateWithDefaults(hardwareMap.get(WebcamName.class, "Webcam 1"), pipeline);
+        VP = VisionPortal.easyCreateWithDefaults(hardwareMap.get(WebcamName.class, "Webcam 1"), pipeline);
 
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -93,6 +137,8 @@ public class Robot {
     public void TeleControl(double yMultiplier, double xMultiplier, double rxMultiplier) {
         drive.TeleopControl(yMultiplier * gamepadDriver.left_stick_y, xMultiplier * gamepadDriver.left_stick_x, rxMultiplier * gamepadDriver.right_stick_x);
     }
+
+
 
 
 
@@ -136,15 +182,55 @@ public class Robot {
     }
 
     public void SampleHoverAuto(){
-        boxtube.setPivot(pivotHorizontal);
-        boxtube.setExt(0);
         endEffector.arm(0.45);
         endEffector.wrist(0.1);
         endEffector.turret(0.55);
         endEffector.hand(0.17);
         ClawOpen();
 
-    }
+    }// method end
+
+    public void AutoAlign(){
+        switch (Camerastate)
+        {
+            case TURRET_ALIGN:
+                bp.ErrorY =  pipeline.getMiddleLineY() - cp.middleLine;
+                //boxtube.ExtensionPower(bp.KpExtention*bp.ErrorY);
+                tp.error  =  cp.verticalCenterFrame - pipeline.getMiddleLineX();
+                tp.ServoGain =  tp.AGain*(tp.error*tp.error) + tp.BGain*(tp.error) + tp.CGain;
+
+
+                if(Math.abs(tp.error) >= 321){
+                    //do nothing
+                }
+                //moving turret
+                else if(cp.thresholdPixelError < Math.abs(tp.error)) {
+                    if (tp.error > 0) {
+                        endEffector.turret(endEffector.Turret.getPosition() + tp.ServoGain);
+                    } else if (tp.error < 0) {
+                        endEffector.turret(endEffector.Turret.getPosition() - tp.ServoGain);
+                    }
+                }
+
+                //if in position then move Hand
+                else if (cp.thresholdPixelError >=  Math.abs(tp.error)){
+                    Camerastate = AutoAlignstates.HAND_ALIGN;
+                }
+
+                break;
+            case HAND_ALIGN:
+                hp.HandAngle = 180 - pipeline.getDetectedAngle()+90;
+                endEffector.hand(ServoRegulizer(hp.MStandard*(hp.HandAngle) + hp.BStandard));
+                Camerastate = AutoAlignstates.PICK_UP;
+                break;
+        }//switch case end
+    }//method end
+
+
+
+
+
+
 
 
 
@@ -240,11 +326,11 @@ public class Robot {
         }
 
         if (!gamepadOperator.left_bumper && wasPressedL) {
-           hand+=0.05;
+           hand+=0.1;
             wasPressedL = false;
         }
         if (!gamepadOperator.right_bumper && wasPressedR) {
-           hand-=0.05;
+           hand-=0.1;
             wasPressedR = false;
         }
             JoystickIncrement = MainTele.JoyStickInc *gamepadOperator.left_stick_y;

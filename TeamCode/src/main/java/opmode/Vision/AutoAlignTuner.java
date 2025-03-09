@@ -29,7 +29,7 @@ public class AutoAlignTuner extends LinearOpMode{
     //
     Servo wrist,arm1,arm2,hand,claw,turret;
 
-    public static double Wrist=0.21,Arms=0.5,Claw =0.4,verticalCenterFrame = 320;
+    public static double Wrist=0.21,Arms=0.5,Claw =0.4;
 
     public static int State = 0;
 
@@ -38,10 +38,13 @@ public class AutoAlignTuner extends LinearOpMode{
     private int prevState = 0;
     private double prevServoGain = 0,MaxPixelError =0;
 
-    public static class BoxtubeParam{ public double KpExtention = 0, ErrorY = 0, middleLine = 240;
+    public static class CameraParams{
+        public double middleLine = 240,thresholdPixelError = 30,verticalCenterFrame = 320,lowerBound = 0,upperBound = 100000;
+    }
+    public static class BoxtubeParam{ public double KpExtention = 0, ErrorY = 0;
     }
     public static class TurretParams{ public double Turret=0.55,MStandard = 0.003,BStandard=0.28,TurretAngle= 90,
-        AGain = 0.0000000100878, BGain = -0.00000012635, CGain = 0.00000109792, error,ServoGain = 0,thresholdPixelError = 30;
+        AGain = 0.0000000100878, BGain = -0.00000012635, CGain = 0.00000109792, error,ServoGain = 0;
     }
 
     public static class HandParams{ public double Hand=0.5,MStandard = 0.00366667,BStandard=0.15,HandAngle = 90;}
@@ -56,6 +59,7 @@ public class AutoAlignTuner extends LinearOpMode{
         return (x > 1) ? (((int)(x * 100)) % 100) / 100.0 : x;
     }
 
+    public static CameraParams cp = new CameraParams();
     public static TurretParams tp = new TurretParams();
    public static HandParams hp = new HandParams();
    public static BoxtubeParam bp = new BoxtubeParam();
@@ -184,8 +188,8 @@ tele.update();
                     tele.addLine("Quadratic or Linear gain interpolator 3 points x(error pixels) y(servo gain)");
                     tele.addData("Middle Line X", pipeline.getMiddleLineX());
                     tele.addData("Max Error:",MaxPixelError);
-                     tp.error  =  verticalCenterFrame - pipeline.getMiddleLineX();
-                     if(tp.thresholdPixelError < Math.abs(tp.error)) {
+                     tp.error  =  cp.verticalCenterFrame - pipeline.getMiddleLineX();
+                     if(cp.thresholdPixelError < Math.abs(tp.error)) {
                          if (tp.error > 0) {
                              turret.setPosition(turret.getPosition() + tp.ServoGain);
                          } else if (tp.error < 0) {
@@ -209,9 +213,9 @@ tele.update();
                     tele.addLine("Test by moving the sample around");
                     tele.addData("Middle Line X", pipeline.getMiddleLineX());
                     tele.addData("Error",tp.error );
-                    tp.error  =  verticalCenterFrame - pipeline.getMiddleLineX();
+                    tp.error  =  cp.verticalCenterFrame - pipeline.getMiddleLineX();
                     tp.ServoGain =  tp.AGain*(tp.error*tp.error) + tp.BGain*(tp.error) + tp.CGain;
-                    if(tp.thresholdPixelError < Math.abs(tp.error)) {
+                    if(cp.thresholdPixelError < Math.abs(tp.error)) {
                         if (tp.error > 0) {
                             turret.setPosition(turret.getPosition() + tp.ServoGain);
                         } else if (tp.error < 0) {
@@ -221,33 +225,37 @@ tele.update();
                     break;
                 case 3:
                     tele.addLine("for moving the boxtube to align also make sure wrist and hand in a good pick up postion");
-                    tele.addData("Middle line ", bp.middleLine);
-                    bp.ErrorY =  pipeline.getMiddleLineY() - bp.middleLine;
+                    tele.addData("Middle line ", cp.middleLine);
+                    bp.ErrorY =  pipeline.getMiddleLineY() - cp.middleLine;
                     tele.addData("Pixel error", bp.ErrorY);
                     tele.addData("Motor power", bp.KpExtention*bp.ErrorY);
                     boxtube.ExtensionPower(bp.KpExtention*bp.ErrorY);
                     break;
                 case 4:
+                    tele.addLine("Tune area for sample not detected and switch to 5 for autoalign full tester");
+                    tele.addLine("Change lower and upper bounds");
+                    pipeline.setLowerBounds(cp.lowerBound);
+                    pipeline.setUpperBounds(cp.upperBound);
                     runOnce = true;
                     break;
                 case 5:
                     tele.addLine("Full tester");
                     tele.addData("Error",tp.error );
-                    bp.ErrorY =  pipeline.getMiddleLineY() - bp.middleLine;
+                    bp.ErrorY =  pipeline.getMiddleLineY() - cp.middleLine;
                     boxtube.ExtensionPower(bp.KpExtention*bp.ErrorY);
 
-                    tp.error  =  verticalCenterFrame - pipeline.getMiddleLineX();
+                    tp.error  =  cp.verticalCenterFrame - pipeline.getMiddleLineX();
                     tp.ServoGain =  tp.AGain*(tp.error*tp.error) + tp.BGain*(tp.error) + tp.CGain;
                     if(Math.abs(tp.error) >= 321){
                     }
-                   else if(tp.thresholdPixelError < Math.abs(tp.error)) {
+                   else if(cp.thresholdPixelError < Math.abs(tp.error)) {
                         if (tp.error > 0) {
                             turret.setPosition(turret.getPosition() + tp.ServoGain);
                         } else if (tp.error < 0) {
                             turret.setPosition(turret.getPosition() - tp.ServoGain);
                         }
                     }
-                    else if (tp.thresholdPixelError >=  Math.abs(tp.error) && runOnce){
+                    else if (cp.thresholdPixelError >=  Math.abs(tp.error) && runOnce){
                         State = 6;
                     }
 

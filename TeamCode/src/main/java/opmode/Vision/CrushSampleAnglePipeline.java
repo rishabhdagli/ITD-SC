@@ -35,8 +35,8 @@ public class CrushSampleAnglePipeline implements VisionProcessor, CameraStreamSo
     private double detectedAngle = 0.0;
     private boolean sampleDetectedVar = false;
 
-    private boolean detectRed = true;
-    private boolean detectBlue = true;
+    private boolean detectRed = false;
+    private boolean detectBlue = false;
     private boolean detectYellow = true;
 
     // Define HSV color ranges for red, blue, and yellow
@@ -173,6 +173,7 @@ public class CrushSampleAnglePipeline implements VisionProcessor, CameraStreamSo
             return false;
         }
     }
+
     public boolean isSampleDetected(){
         return sampleDetectedVar;
     }
