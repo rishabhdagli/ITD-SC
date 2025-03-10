@@ -160,7 +160,7 @@ public class Robot {
 
     public void InitPosition() {
         boxtube.setExt(minExtension);
-        boxtube.setPivot(450);
+        boxtube.setPivot(420);
         endEffector.hand(0.17);
         endEffector.wrist(0.63);
         endEffector.arm(0.15);
@@ -446,7 +446,7 @@ public class Robot {
         boxtube.setPivot(pivotBackPos);
         endEffector.hand(0.8);
         endEffector.turret(0.55);
-        endEffector.arm(0.23);
+        endEffector.arm(0.22);
         endEffector.wrist(0.27);
         ClawClose();
     }
