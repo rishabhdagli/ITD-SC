@@ -108,7 +108,7 @@ public class Robot {
 
         timer = new ElapsedTime(ElapsedTime.Resolution.SECONDS);
         pipeline = new CrushSampleAnglePipelineTurretTrial();
-        VP = VisionPortal.easyCreateWithDefaults(hardwareMap.get(WebcamName.class, "Webcam 1"), pipeline);
+//        VP = VisionPortal.easyCreateWithDefaults(hardwareMap.get(WebcamName.class, "Webcam 1"), pipeline);
 
     }
 
