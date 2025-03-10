@@ -1,11 +1,13 @@
 package Subsystems;
 
 import com.pedropathing.localization.GoBildaPinpointDriver;
+import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.IMU;
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 
@@ -81,6 +83,45 @@ public class Drivetrain {
 
         PinPoint.update();
     }
+
+
+
+    public void FeildCentric(double y, double x, double rx) {
+        // Reverse y-axis to correct for joystick inversion
+        y = -y;
+
+        // Cube the inputs for finer control at low speeds
+        y = Math.pow(y, 3);
+        x = Math.pow(x, 3);
+        rx = rx * 0.75;
+
+        // Get the current heading in degrees from PinPoint (assuming getAngle() returns degrees)
+        double heading = PinPoint.getHeading();
+        // Convert heading to radians
+        double theta = Math.toRadians(heading);
+
+        // Rotate the joystick input by -theta to convert field-centric to robot-centric values.
+        // Using the standard rotation transformation for a -theta rotation:
+        double robotX = x * Math.cos(theta) + y * Math.sin(theta);
+        double robotY = -x * Math.sin(theta) + y * Math.cos(theta);
+
+        // Normalize the motor powers so none exceed 1
+        double denominator = Math.max(Math.abs(robotY) + Math.abs(robotX) + Math.abs(rx), 1);
+        double frontLeftPower  = (robotY + robotX + rx) / denominator;
+        double backLeftPower   = (robotY - robotX + rx) / denominator;
+        double frontRightPower = (robotY - robotX - rx) / denominator;
+        double backRightPower  = (robotY + robotX - rx) / denominator;
+
+        // Set motor powers accordingly
+        LF.setPower(frontLeftPower);
+        LR.setPower(backLeftPower);
+        RF.setPower(frontRightPower);
+        RR.setPower(backRightPower);
+
+        // Update the PinPoint (odometry) for the latest heading and position
+        PinPoint.update();
+    }
+
 
 
 

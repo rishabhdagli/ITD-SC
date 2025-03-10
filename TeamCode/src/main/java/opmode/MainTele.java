@@ -2,6 +2,10 @@ package opmode;
 
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.config.Config;
+import com.pedropathing.follower.Follower;
+import com.pedropathing.localization.Pose;
+import com.pedropathing.pathgen.Point;
+import com.pedropathing.util.Constants;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.LED;
@@ -10,6 +14,8 @@ import com.sfdev.assembly.state.StateMachine;
 import Subsystems.Boxtube;
 import Subsystems.Robot;
 import Subsystems.StateMachineGenerator;
+import pedroPathing.constants.FConstants;
+import pedroPathing.constants.LConstants;
 
 @Config
 @TeleOp(name = "MainTele")
@@ -18,7 +24,7 @@ public class MainTele extends LinearOpMode {
     public static double JoyStickInc = 700,Ymult = 0.8,rxMult = 0.7;
     public Robot teleRobot;
     public Boxtube boxtube;
-    // public Follower follower;
+     public Follower follower;
     boolean sampleMode = true, check = false;
     double MonkeyExpressFlashBang = 0;
 
@@ -32,11 +38,11 @@ public class MainTele extends LinearOpMode {
         teleRobot = new Robot(hardwareMap, gamepad1, gamepad2);
         boxtube = teleRobot.boxtube;
 
-//        Constants.setConstants(FConstants.class, LConstants.class);
-//
-//        follower = new Follower(hardwareMap);
-//
-//        follower.setStartingPose(new Pose(22.000, 30.000, Point.CARTESIAN));
+        Constants.setConstants(FConstants.class, LConstants.class);
+
+        follower = new Follower(hardwareMap);
+
+        follower.setStartingPose(new Pose(22.000, 30.000, Point.CARTESIAN));
 
         redLED = hardwareMap.get(LED.class, "red");
         greenLED = hardwareMap.get(LED.class, "green");
