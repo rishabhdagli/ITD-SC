@@ -21,7 +21,7 @@ import pedroPathing.constants.LConstants;
 @TeleOp(name = "MainTele")
 public class MainTele extends LinearOpMode {
 
-    public static double JoyStickInc = 700,Ymult = 0.8,rxMult = 0.7;
+    public static double JoyStickInc = 2250,Ymult = 0.8,rxMult = 0.7;
     public Robot teleRobot;
     public Boxtube boxtube;
      public Follower follower;
@@ -34,15 +34,15 @@ public class MainTele extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
         dashboard = FtcDashboard.getInstance();
-
         teleRobot = new Robot(hardwareMap, gamepad1, gamepad2);
+
         boxtube = teleRobot.boxtube;
 
         Constants.setConstants(FConstants.class, LConstants.class);
 
-        follower = new Follower(hardwareMap);
+//        follower = new Follower(hardwareMap);
 
-        follower.setStartingPose(new Pose(22.000, 30.000, Point.CARTESIAN));
+//        follower.setStartingPose(new Pose(22.000, 30.000, Point.CARTESIAN));
 
         redLED = hardwareMap.get(LED.class, "red");
         greenLED = hardwareMap.get(LED.class, "green");

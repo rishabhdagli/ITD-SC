@@ -29,8 +29,6 @@ public class Robot {
     Drivetrain drive;
 
 
-
-
     //PIVOT VARIABLES
 
     //over shoort 1120 to ensure locking
@@ -232,23 +230,13 @@ public class Robot {
 
 
 
-
-
-
-
-
-
-
-
-
-
     //Common methods
     public void ClawClose() {
         endEffector.claw(0.29);
     }
 
     public void ClawOpen() {
-        endEffector.claw(0.75);
+        endEffector.claw(0.8);
     }
 
     public void InsideGrabPecked() {
@@ -349,8 +337,9 @@ public class Robot {
     }
 
     public void SampleGrab() {
-        endEffector.arm(0.55);
-        endEffector.wrist(0.22);
+        endEffector.arm(0.53
+        );
+        endEffector.wrist(0.2);
     }
 
     public void LoiterSample() {
@@ -430,6 +419,16 @@ public class Robot {
         ClawOpen();
 
     }
+    public void SpecimenWallTele() {
+        boxtube.setExt(0);
+        boxtube.setPivot(pivotHorizontal);
+        endEffector.hand(0.16);
+        endEffector.wrist(0.32);
+        endEffector.arm(0.32);
+        endEffector.turret(0.55);
+        ClawOpen();
+
+    }
 
     public void SpecimenWallGrab() {
         ClawClose();
@@ -441,6 +440,15 @@ public class Robot {
         endEffector.hand(0.17);
         endEffector.wrist(0.4);
         endEffector.arm(0.36);
+        endEffector.turret(0.55);
+        ClawClose();
+    }
+    public void SpecimenWallUpTele() {
+        boxtube.setExt(0);
+        boxtube.setPivot(pivotHorizontal);
+        endEffector.hand(0.17);
+        endEffector.wrist(0.32);
+        endEffector.arm(0.245);
         endEffector.turret(0.55);
         ClawClose();
     }
