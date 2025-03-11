@@ -51,6 +51,7 @@ public class Drivetrain {
             PinPoint = hardwareMap.get(GoBildaPinpointDriver.class,"odo");
             PinPoint.setEncoderResolution(GoBildaPinpointDriver.GoBildaOdometryPods.goBILDA_4_BAR_POD);
             PinPoint.setEncoderDirections(GoBildaPinpointDriver.EncoderDirection.FORWARD, GoBildaPinpointDriver.EncoderDirection.REVERSED);
+            //PinPoint.setOffsets();
             PinPoint.resetPosAndIMU();
 
 
@@ -120,6 +121,15 @@ public class Drivetrain {
 
         // Update the PinPoint (odometry) for the latest heading and position
         PinPoint.update();
+    }
+
+    public double[] getPos(){
+        PinPoint.update();
+        double[] pos = new double[3];
+        pos[0] = PinPoint.getPosX();
+        pos[1] = PinPoint.getPosY();
+        pos[2] = PinPoint.getHeading();
+        return pos;
     }
 
 
