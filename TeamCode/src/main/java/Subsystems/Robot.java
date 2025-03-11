@@ -136,6 +136,11 @@ public class Robot {
         drive.TeleopControl(yMultiplier * gamepadDriver.left_stick_y, xMultiplier * gamepadDriver.left_stick_x, rxMultiplier * gamepadDriver.right_stick_x);
     }
 
+    public void UPDATE(){
+        drive.update();
+        boxtube.update();
+    }
+
 
 
 

@@ -123,8 +123,16 @@ public class Drivetrain {
         PinPoint.update();
     }
 
-    public double[] getPos(){
+    public void Reset(){
+        PinPoint.resetPosAndIMU();
+    }
+
+    public void update(){
         PinPoint.update();
+    }
+
+
+    public double[] getPos(){
         double[] pos = new double[3];
         pos[0] = PinPoint.getPosX();
         pos[1] = PinPoint.getPosY();

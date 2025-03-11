@@ -19,7 +19,16 @@ public class WayPointingTuner extends LinearOpMode {
 
      Drivetrain drive;
 
-     public static double KpX = 0, KpY = 0, KpTheta = 0, KdX = 0, KdY = 0, KdTheta = 0;
+     public static double KpX = 0, KpY = 0, KpTheta = 0, KdX = 0, KdY = 0,
+    targetHeading = 0,targetX = 0,targetY = 0;
+
+     private boolean wasPressedGampadA = false;
+
+     public static boolean score = false;
+     private double lastErrorx,lastErrory,powerX,powerY;
+
+     public static double specScorex = 0,specScorey = 0, pickupx = 0,pickupy = 0;
+
 
     @Override
         public void runOpMode() throws InterruptedException {
@@ -30,7 +39,13 @@ public class WayPointingTuner extends LinearOpMode {
         drive = new Drivetrain(hardwareMap);
 
         while (opModeInInit()){
+            powerX = 0;
+            powerY = 0;
+            //reseting exept for in state
             tele.update();
+            drive.update();
+            if(gamepad1.options){drive.Reset();}
+
             switch(State){
                 case 0:
                     tele.addLine("Switch to state 1 for localization test make sure offsets are set in drivetrain");
@@ -41,9 +56,62 @@ public class WayPointingTuner extends LinearOpMode {
                     tele.addData("Heading offset:", drive.getPos()[2]);
                     break;
                 case 2:
+                    tele.addLine("Heading PID");
+                    tele.addData("Current Heading:", drive.getPos()[2]);
+                    tele.addData("Target Heading",targetHeading);
+                    drive.TeleopControl(0,0,KpTheta*(targetHeading - drive.getPos()[2]));
+                    break;
+                case 3:
+                    tele.addLine("X PID (guessed tele-op carfull!!!)");
+                    tele.addData("Current X", drive.getPos()[0]);
+                    tele.addData("Target X",targetX);
+                    powerX = KpX*(targetX - drive.getPos()[0]) + KdX*(targetX - drive.getPos()[0] - lastErrorx)/time.seconds();
+                    time.reset();
+                    lastErrorx = targetX - drive.getPos()[0];
+                    drive.TeleopControl(powerX,0,0);
+                    break;
+                case 4:
+                    tele.addLine("Y PID (guessed tele-op carfull!!!)");
+                    tele.addData("Current Y", drive.getPos()[2]);
+                    tele.addData("Target Y",targetY);
+                    powerY = KpX*(targetY - drive.getPos()[1]) + KdX*(targetY - drive.getPos()[1] - lastErrory)/time.seconds();
+                    time.reset();
+                    lastErrory = targetY - drive.getPos()[1];
+                    drive.TeleopControl(0,powerY,0);
+                    break;
+                case 5:
+                    tele.addLine("Full tester");
 
+                    powerX = KpX*(targetX - drive.getPos()[0]) + KdX*(targetX - drive.getPos()[0] - lastErrorx)/time.seconds();
+                    time.reset();
+                    lastErrorx = targetX - drive.getPos()[0];
+                    powerY = KpX*(targetY - drive.getPos()[1]) + KdX*(targetY - drive.getPos()[1] - lastErrory)/time.seconds();
+                    time.reset();
+                    lastErrory = targetY - drive.getPos()[1];
+                    drive.TeleopControl(powerX,powerY,KpTheta*(targetHeading - drive.getPos()[2]));
 
                     break;
+                case 6:
+                    tele.addLine("Full tester but wayPointing (The Pick up pose should be 0,0)");
+                    if(gamepad1.options){drive.Reset();}
+
+                    if(gamepad1.a){wasPressedGampadA = true;}
+
+                    if (!gamepad1.a && wasPressedGampadA){
+                        targetX=(score)? specScorex : pickupx;
+                        targetY=(score)? specScorey : pickupy;
+                        wasPressedGampadA = false;
+                    }
+
+                        powerX = KpX * (targetX - drive.getPos()[0]) + KdX * (targetX - drive.getPos()[0] - lastErrorx) / time.seconds();
+                        time.reset();
+                        lastErrorx = targetX - drive.getPos()[0];
+                        powerY = KpX * (targetY - drive.getPos()[1]) + KdX * (targetY - drive.getPos()[1] - lastErrory) / time.seconds();
+                        time.reset();
+                        lastErrory = targetY - drive.getPos()[1];
+                        drive.TeleopControl(powerX, powerY, KpTheta * (targetHeading - drive.getPos()[2]));
+
+
             } //switch end
         } //inint end
 
