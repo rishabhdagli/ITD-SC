@@ -102,12 +102,11 @@ public class SampleAuto extends LinearOpMode {
                         }
                         else if (actionTimer.getElapsedTimeSeconds() < 4) {r.BasketScore();
                         }
-                        else if (actionTimer.getElapsedTimeSeconds() <6) {r.BasketReturn();
-                         }
+                        else if (actionTimer.getElapsedTimeSeconds() <6)
+                        {r.BasketReturn();}
                          else if (actionTimer.getElapsedTimeSeconds() <8) {
                              follower.followPath(Pickup1);
                              setPathState(PathStates.ScoreOne);
-                             r.SampleHoverAuto();
                          }
 
                     }
@@ -115,9 +114,12 @@ public class SampleAuto extends LinearOpMode {
                 case ScoreOne: //picking up the first one
                     if (!follower.isBusy()) {
                         resetActionTimer();
-                        if (actionTimer.getElapsedTimeSeconds() < 8)
-                        {r.AutoAlign();}
-                        else if(actionTimer.getElapsedTimeSeconds() < 10){
+                        if (actionTimer.getElapsedTimeSeconds() < 4)
+                        {
+//                            r.AutoAlign();
+                            r.SampleHoverAuto(1);
+                        }
+                        else if(actionTimer.getElapsedTimeSeconds() < 5){
                             follower.followPath(Score2);
                             setPathState(PathStates.PickupTwo);
                         }
@@ -137,7 +139,7 @@ public class SampleAuto extends LinearOpMode {
                         else if (actionTimer.getElapsedTimeSeconds() <8) {
                             follower.followPath(Pickup2);
                             setPathState(PathStates.ScoreTwo);
-                            r.SampleHoverAuto();
+                            r.PivotDown();
                         }
                     }
                     break;
@@ -164,7 +166,7 @@ public class SampleAuto extends LinearOpMode {
                         else if (actionTimer.getElapsedTimeSeconds() <8) {
                             follower.followPath(Pickup3);
                             setPathState(PathStates.ScoreThree);
-                            r.SampleHoverAuto();
+                            r.PivotDown();
                         }
                     }
                     break;
@@ -200,74 +202,69 @@ public class SampleAuto extends LinearOpMode {
         PreloadScore = follower.pathBuilder()
                 .addPath(
                         new BezierCurve(
-                                new Point(7.000,104.000,Point.CARTESIAN),
-                                new Point(28.000,119.000,Point.CARTESIAN),
-                                new Point(13.000,130.000,Point.CARTESIAN)
+                                new Point(7.000, 104.000, Point.CARTESIAN),
+                                new Point(28.000, 119.000, Point.CARTESIAN),
+                                new Point(13.000, 130.000, Point.CARTESIAN)
                         )
                 )
-                .setLinearHeadingInterpolation(Math.toRadians(-90), Math.toRadians(-45))
-                .setZeroPowerAccelerationMultiplier(2)
+                .setLinearHeadingInterpolation(Math.toRadians(270), Math.toRadians(315))
                 .build();
 
         Pickup1 = follower.pathBuilder()
                 .addPath(
                         new BezierLine(
                                 new Point(13.000, 130.000, Point.CARTESIAN),
-                                new Point(20.000, 126.000, Point.CARTESIAN)
+                                new Point(33.500, 120.000, Point.CARTESIAN)
                         )
                 )
-                .setLinearHeadingInterpolation(Math.toRadians(-45), Math.toRadians(-18))
-                .setZeroPowerAccelerationMultiplier(4)
+                .setLinearHeadingInterpolation(Math.toRadians(315), Math.toRadians(0))
                 .build();
 
         Score1 = follower.pathBuilder()
                 .addPath(
                         new BezierLine(
-                                new Point(20.000, 126.000, Point.CARTESIAN),
+                                new Point(33.500, 120.000, Point.CARTESIAN),
                                 new Point(13.000, 130.000, Point.CARTESIAN)
                         )
                 )
-                .setLinearHeadingInterpolation(Math.toRadians(-18), Math.toRadians(-45))
-                .setZeroPowerAccelerationMultiplier(4)
+                .setLinearHeadingInterpolation(Math.toRadians(0), Math.toRadians(315))
                 .build();
 
         Pickup2 = follower.pathBuilder()
                 .addPath(
                         new BezierLine(
                                 new Point(13.000, 130.000, Point.CARTESIAN),
-                                new Point(20.000, 126.000, Point.CARTESIAN)
+                                new Point(33.500, 131.500, Point.CARTESIAN)
                         )
                 )
-                .setLinearHeadingInterpolation(Math.toRadians(-45), Math.toRadians(23))
-                .setZeroPowerAccelerationMultiplier(4)
+                .setLinearHeadingInterpolation(Math.toRadians(315), Math.toRadians(0))
                 .build();
 
         Score2 = follower.pathBuilder()
                 .addPath(
                         new BezierLine(
-                                new Point(20.000, 126.000, Point.CARTESIAN),
+                                new Point(33.500, 131.000, Point.CARTESIAN),
                                 new Point(13.000, 130.000, Point.CARTESIAN)
                         )
                 )
-                .setLinearHeadingInterpolation(Math.toRadians(23), Math.toRadians(-45))
-                .setZeroPowerAccelerationMultiplier(4)
+                .setLinearHeadingInterpolation(Math.toRadians(0), Math.toRadians(315))
                 .build();
 
         Pickup3 = follower.pathBuilder()
                 .addPath(
                         new BezierLine(
                                 new Point(13.000, 130.000, Point.CARTESIAN),
-                                new Point(20.000, 126.000, Point.CARTESIAN)
+                                new Point(33.500, 137.000, Point.CARTESIAN)
                         )
                 )
-                .setLinearHeadingInterpolation(Math.toRadians(-45), Math.toRadians(40))
+                .setLinearHeadingInterpolation(Math.toRadians(315), Math.toRadians(0))
                 .setZeroPowerAccelerationMultiplier(4)
                 .build();
 //
         Score3 = follower.pathBuilder()
                 .addPath(
                         new BezierLine(
-                                new Point(20.000, 126.000, Point.CARTESIAN),
+                                new Point(33.500, 137.000, Point.CARTESIAN),
                                 new Point(13.000, 130.000, Point.CARTESIAN)
                         )
                 )

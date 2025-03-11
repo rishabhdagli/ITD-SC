@@ -182,15 +182,22 @@ public class Robot {
 
     }
 
-    public void SampleHoverAuto(){
-        boxtube.setExt(0);
-        boxtube.setPivot(pivotHorizontal);
-        endEffector.arm(0.45);
-        endEffector.wrist(0.15);
-        endEffector.turret(0.55);
-        endEffector.hand(0.17);
-        ClawOpen();
+    public void SampleHoverAuto(int x){
+        switch (x) {
+            case 1:
+            boxtube.setExt(30000);
+            boxtube.setPivot(pivotHorizontal);
+            endEffector.arm(0.45);
+            endEffector.wrist(0.15);
+            endEffector.turret(0.47);
+            endEffector.hand(0.25);
+            ClawOpen();
+        }
     }// method end
+
+    public void PivotDown(){
+        boxtube.setPivot(0);
+    }
 
     public void AutoAlign(){
         switch (Camerastate)
@@ -341,6 +348,8 @@ public class Robot {
         );
         endEffector.wrist(0.2);
     }
+
+
 
     public void LoiterSample() {
         boxtube.setExt(0);
