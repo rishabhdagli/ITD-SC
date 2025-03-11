@@ -29,8 +29,6 @@ public class Robot {
     Drivetrain drive;
 
 
-
-
     //PIVOT VARIABLES
 
     //over shoort 1120 to ensure locking
@@ -227,16 +225,6 @@ public class Robot {
 
 
 
-
-
-
-
-
-
-
-
-
-
     //Common methods
     public void ClawClose() {
         endEffector.claw(0.29);
@@ -344,8 +332,9 @@ public class Robot {
     }
 
     public void SampleGrab() {
-        endEffector.arm(0.55);
-        endEffector.wrist(0.22);
+        endEffector.arm(0.53
+        );
+        endEffector.wrist(0.2);
     }
 
     public void LoiterSample() {

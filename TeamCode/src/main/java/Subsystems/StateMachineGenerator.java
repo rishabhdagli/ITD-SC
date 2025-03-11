@@ -40,12 +40,7 @@ public class StateMachineGenerator {
                 .state(States.SpecimenWallGrabUp) //(prolly need to change) bring pivot up
                 .onEnter(r::SpecimenWallUp)
                 .loop(r::SpecimenWallUp)
-                .transition(() -> g.x, States.WAIT3)
-                .transition(()-> g.b, States.WAIT6) //in case karthik has autism last escape states
-
-
-                .state(States.WAIT3)
-                .transitionTimed(0.25, States.SpecimenPreScore)
+                .transitionTimed(0.25,States.SpecimenPreScore)
 
                 .state(States.SpecimenPreScore) // Bout to score
                 .onEnter(r::SpecimenPreScore)
