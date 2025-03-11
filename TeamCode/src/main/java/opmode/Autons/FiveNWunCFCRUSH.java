@@ -1,7 +1,5 @@
 package opmode.Autons;
 
-import android.widget.GridLayout;
-
 import com.pedropathing.follower.Follower;
 import com.pedropathing.localization.Pose;
 import com.pedropathing.pathgen.BezierCurve;
@@ -22,8 +20,8 @@ import Subsystems.Robot;
 import pedroPathing.constants.FConstants;
 import pedroPathing.constants.LConstants;
 
-@Autonomous(name = "5 Specimen")
-public class FiveSpecCFCRUSH extends LinearOpMode {
+@Autonomous(name = "5 + 1")
+public class FiveNWunCFCRUSH extends LinearOpMode {
     public  static Follower follower;
     public boolean pathDone = false;
     public boolean prevPathDone = false, CountDone = false;
@@ -46,6 +44,8 @@ public class FiveSpecCFCRUSH extends LinearOpMode {
             Score2,
             Score3,
             Score4,
+            Pickup5,
+            ScoreSample,
             Park;
     PathStates currentPathState, lastPathState;
     private Timer pathTimer = new Timer();
@@ -168,9 +168,11 @@ public class FiveSpecCFCRUSH extends LinearOpMode {
                         //moves pivot back
                         if (actionTimer.time() < 0.2) {
                             r.SpecimenWallGrab();
-                        } else if (actionTimer.time() < 0.4) {
+                        }
+                        else if (actionTimer.time() < 0.4) {
                             r.SpecimenWallUp();
-                        } else if (actionTimer.time() < 0.55) {
+                        }
+                        else if (actionTimer.time() < 0.55) {
                             r.SpecimenPreScore();
                             switch (SpeciminCount) {
                                 case 1:
@@ -187,11 +189,12 @@ public class FiveSpecCFCRUSH extends LinearOpMode {
                                     break;
                                 case 4:
                                     follower.followPath(Score4);
-                                    setPathState(PathStates.SCORING);
+                                    setPathState(PathStates.Pickup5);
                                     break;
                             }
                             telemetry.addData("Path:", follower.getCurrentPath().toString());
-                        } else {
+                        }
+                        else {
                             r.SpecimenPreScore(); //Parrelel action
                         }
 
@@ -226,14 +229,42 @@ public class FiveSpecCFCRUSH extends LinearOpMode {
                                     follower.followPath(Pickup4);
                                     setPathState(PathStates.WallPickup);
                                     break;
-
                             }
                         }
                         //gets ready for pick up
                     }
-
+                case Pickup5:
+                    if(!follower.isBusy()) {
+                        follower.followPath(Pickup5);
+                        setPathState(PathStates.SamplePickup);
+                    }
                     break;
+                case SamplePickup:
+                    if(!follower.isBusy()){
+                    resetActionTimer();
+                    if (actionTimer.time() < 0.2) {
+                        r.SpecimenWallGrab();
+                    }
+                    else if (actionTimer.time() < 0.4) {
+                        r.SpecimenWallUp();
+                    }
+                    else{
+                        follower.followPath(ScoreSample);
+                    }
+                    }
+                case SampleScore:
+                    r.PivotBack();
+                    if(!follower.isBusy()){
+                        resetActionTimer();
+                        if(actionTimer.time() < 1){
+                        r.BasketExtension();
+                        } else if (actionTimer.time() < 1.3) {
+                            r.BasketScore();
+                        } else if (actionTimer.time() < 1.9) {
+                            r.BasketReturn();
+                        }
 
+                    }
                 case End:
                 default:
                     if (!follower.isBusy()) {
@@ -420,6 +451,27 @@ public class FiveSpecCFCRUSH extends LinearOpMode {
                 .setConstantHeadingInterpolation(Math.toRadians(180))
                 .setZeroPowerAccelerationMultiplier(2)
                 .build();
+        Pickup5 = follower.pathBuilder()
+                .addPath(
+                        new BezierCurve(
+                                new Point(38.500, 70.000, Point.CARTESIAN),
+                                new Point(16.774, 72.258, Point.CARTESIAN),
+                                new Point(54.000, 33.5, Point.CARTESIAN),
+                                new Point(26.5000, 33.500, Point.CARTESIAN)
+                        )
+                )
+                .setConstantHeadingInterpolation(Math.toRadians(180))
+                .setZeroPowerAccelerationMultiplier(3)
+                .build();
+          ScoreSample = follower.pathBuilder()
+                .addPath(
+                        new BezierLine(
+                                new Point(26.500, 33.500, Point.CARTESIAN),
+                                new Point(12.129, 125.677, Point.CARTESIAN)
+                        )
+                )
+                .setLinearHeadingInterpolation(Math.toRadians(180), Math.toRadians(315))
+                .build();
         Park = follower.pathBuilder()
                 .addPath(
                         new BezierLine(
@@ -432,6 +484,6 @@ public class FiveSpecCFCRUSH extends LinearOpMode {
     }
 
     enum PathStates {
-        DriveToPreloadScoringPosition, ScorePreload, PrePush2, PrePush3, Push1, Push2, Push3, Pickup1, SCORING, Pickup3, Pickup4, WallPickup, Score2, Score3, Score4, Park, End, WAIT1
+        Pickup5,SamplePickup,SampleScore, DriveToPreloadScoringPosition, ScorePreload, PrePush2, PrePush3, Push1, Push2, Push3, Pickup1, SCORING, Pickup3, Pickup4, WallPickup, Score2, Score3, Score4, Park, End, WAIT1
     }
 }

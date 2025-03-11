@@ -13,8 +13,8 @@ public class StateMachineGenerator {
                 // X is primary, A is secondary, B is escape for logitech gamepad
 
                 .state(States.SpecimenWall) // Position to grab from the wall
-                .onEnter(r::SpecimenWall)
-                .loop(r::SpecimenWall)
+                .onEnter(r::SpecimenWallTele)
+                .loop(r::SpecimenWallTele)
                 .transition(() -> g.x, States.WAIT1)
 
 
@@ -38,8 +38,8 @@ public class StateMachineGenerator {
 
 
                 .state(States.SpecimenWallGrabUp) //(prolly need to change) bring pivot up
-                .onEnter(r::SpecimenWallUp)
-                .loop(r::SpecimenWallUp)
+                .onEnter(r::SpecimenWallUpTele)
+                .loop(r::SpecimenWallUpTele)
                 .transitionTimed(0.25,States.SpecimenPreScore)
 
                 .state(States.SpecimenPreScore) // Bout to score
