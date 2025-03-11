@@ -268,8 +268,8 @@ tele.update();
 
                     break;
                     case 8:
-                        tele.addData("Error",tp.error );
-                        tele.addData("Middle line ", cp.middleLine);
+                        tele.addData("Error",bp.ErrorY);
+                        tele.addData("Middle line ", pipeline.getMiddleLineY());
                         bp.ErrorY =  pipeline.getMiddleLineY() - cp.middleLine;
                         boxtube.ExtensionPower(bp.KpExtention*bp.ErrorY);
 
