@@ -33,11 +33,9 @@ public class CrushSampleAnglePipelineTurretTrial implements VisionProcessor, Cam
     private List<MatOfPoint> contours = new ArrayList<>();
     private Mat hierarchy = new Mat();
     private double detectedAngle = 0.0;
-    private boolean sampleDetectedVar = false;
-    private double LowerBounds = 500, UpperBounds = 3500;
 
-    private boolean detectRed = false;
-    private boolean detectBlue = false;
+    private boolean detectRed = true;
+    private boolean detectBlue = true;
     private boolean detectYellow = true;
 
     private Rect boundingBox = null;
@@ -114,10 +112,7 @@ public class CrushSampleAnglePipelineTurretTrial implements VisionProcessor, Cam
             detectedAngle = calculateDominantAngle(processedMask, boundingBox);
         }
 
-        sampleDetectedVar = sampleDetected(boundingBox, LowerBounds, UpperBounds);
         Imgproc.putText(frame, "Angle: " + detectedAngle, new Point(50, 50), Imgproc.FONT_HERSHEY_SIMPLEX, 1, new Scalar(0, 255, 0), 2);
-        Imgproc.putText(frame, "Sample Detected: " + sampleDetectedVar, new Point(50, 100), Imgproc.FONT_HERSHEY_SIMPLEX, 1, new Scalar(0, 255, 0), 2);
-        Imgproc.putText(frame, "Area of Bounding Box: " + boundingBox.area(), new Point(50, 150), Imgproc.FONT_HERSHEY_SIMPLEX, 1, new Scalar(0, 255, 0), 2);
         Utils.matToBitmap(frame, bitmap);
         lastFrame.set(bitmap);
 
@@ -132,24 +127,6 @@ public class CrushSampleAnglePipelineTurretTrial implements VisionProcessor, Cam
             Point bottom = new Point(middleX, boundingBox.y + boundingBox.height);
             Imgproc.line(frame, top, bottom, new Scalar(0, 255, 0), 2);
         }
-    }
-    public boolean sampleDetected(Rect boundingBox, double LowerBounds, double UpperBounds){
-        if (boundingBox != null){
-            double area = boundingBox.area();
-            return LowerBounds < area && area < UpperBounds;}
-        else{
-            return false;
-        }
-    }
-    public boolean isSampleDetected(){
-        return sampleDetectedVar;
-    }
-
-    public void setLowerBounds(double lB){
-        LowerBounds = lB;
-    }
-    public void setUpperBounds(double uB){
-        UpperBounds = uB;
     }
 
     // Returns the x-coordinate of the vertical middle line
@@ -207,11 +184,5 @@ public class CrushSampleAnglePipelineTurretTrial implements VisionProcessor, Cam
 
     public double getDetectedAngle() {
         return detectedAngle;
-    }
-
-    public void setColorDetection(boolean detectRed, boolean detectBlue, boolean detectYellow) {
-        this.detectRed = detectRed;
-        this.detectBlue = detectBlue;
-        this.detectYellow = detectYellow;
     }
 }

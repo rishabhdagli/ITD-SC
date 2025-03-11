@@ -97,8 +97,7 @@ public class AutoAlignTuner extends LinearOpMode{
         dash = FtcDashboard.getInstance();
         dash.getInstance().startCameraStream(pipeline,0);
         // Create the VisionPortal with the pipeline
-        VP = VisionPortal.easyCreateWithDefaults(
-                hardwareMap.get(WebcamName.class, "Webcam 1"), pipeline);
+        VP = VisionPortal.easyCreateWithDefaults(hardwareMap.get(WebcamName.class, "Webcam 1"), pipeline);
 
 
         /*
@@ -234,8 +233,8 @@ tele.update();
                 case 4:
                     tele.addLine("Tune area for sample not detected and switch to 5 for autoalign full tester");
                     tele.addLine("Change lower and upper bounds");
-                    pipeline.setLowerBounds(cp.lowerBound);
-                    pipeline.setUpperBounds(cp.upperBound);
+                    //pipeline.setLowerBounds(cp.lowerBound);
+                    //pipeline.setUpperBounds(cp.upperBound);
                     runOnce = true;
                     break;
                 case 5:

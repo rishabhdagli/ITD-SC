@@ -11,9 +11,13 @@ import com.pedropathing.util.Timer;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
+import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
+import org.firstinspires.ftc.vision.VisionPortal;
+
 import Subsystems.Boxtube;
 import Subsystems.EndEffector;
 import Subsystems.Robot;
+import opmode.Vision.CrushSampleAnglePipelineTurretTrial;
 import pedroPathing.constants.FConstants;
 import pedroPathing.constants.LConstants;
 
@@ -23,6 +27,8 @@ public class SampleAuto extends LinearOpMode {
 
     public static Follower follower;
     public Robot r;
+    public VisionPortal VP;
+    public CrushSampleAnglePipelineTurretTrial pipeline;
     private Timer pathTimer = new Timer();
     private Timer actionTimer = new Timer();
     public boolean pathDone = false;
@@ -56,17 +62,15 @@ public class SampleAuto extends LinearOpMode {
         }
     }
 
-
     @Override
     public void runOpMode() throws InterruptedException {
         Constants.setConstants(FConstants.class, LConstants.class);
-        follower = new Follower(hardwareMap);
-        buildPaths();
         r = new Robot(hardwareMap);
+        follower = new Follower(hardwareMap);
         follower.setStartingPose(new Pose(7.000,104.000,Math.toRadians(-90)));
-
-
+        buildPaths();
         r.InitPosition();
+
         while(opModeInInit()){r.boxtube.update();}
 
         waitForStart();
@@ -83,12 +87,14 @@ public class SampleAuto extends LinearOpMode {
             switch (currentPathState) {
 
                 case Preload:
-                    r.PivotBack();
-                    follower.followPath(PreloadScore);
-                    setPathState(PathStates.PickupOne);
+                    if(!follower.isBusy()) {
+                        r.PivotBack();
+                        follower.followPath(PreloadScore);
+                        setPathState(PathStates.PickupOne);
+                    }
                     break;
 
-                case PickupOne:
+                case PickupOne: //this is scoring the preload
                     if (!follower.isBusy()) {
                         resetActionTimer();
 
@@ -104,36 +110,39 @@ public class SampleAuto extends LinearOpMode {
                              r.SampleHoverAuto();
                          }
 
-
-
                     }
                     break;
-                case ScoreOne:
+                case ScoreOne: //picking up the first one
                     if (!follower.isBusy()) {
                         resetActionTimer();
-
-                        if (actionTimer.getElapsedTimeSeconds() < 2)
-                        {
-                            r.AutoAlign();
-                        }
-                        if(actionTimer.getElapsedTimeSeconds() > 2){
+                        if (actionTimer.getElapsedTimeSeconds() < 8)
+                        {r.AutoAlign();}
+                        else if(actionTimer.getElapsedTimeSeconds() < 10){
                             follower.followPath(Score2);
                             setPathState(PathStates.PickupTwo);
                         }
                     }
                     break;
 
-                case PickupTwo:
+                case PickupTwo: //score the first one
                     if (!follower.isBusy()) {
                         resetActionTimer();
-                         if(actionTimer.getElapsedTimeSeconds() > 2){
+
+                        if ( actionTimer.getElapsedTimeSeconds() < 2) {r.BasketExtension();
+                        }
+                        else if (actionTimer.getElapsedTimeSeconds() < 4) {r.BasketScore();
+                        }
+                        else if (actionTimer.getElapsedTimeSeconds() <6) {r.BasketReturn();
+                        }
+                        else if (actionTimer.getElapsedTimeSeconds() <8) {
                             follower.followPath(Pickup2);
                             setPathState(PathStates.ScoreTwo);
+                            r.SampleHoverAuto();
                         }
                     }
                     break;
 
-                case ScoreTwo:
+                case ScoreTwo: //pick up the second one
                     if(!follower.isBusy()){
                     resetActionTimer();
                      if(actionTimer.getElapsedTimeSeconds() > 2){
@@ -143,12 +152,19 @@ public class SampleAuto extends LinearOpMode {
                     }
                     break;
 
-                case PickupThree:
+                case PickupThree: //score the third one
                     if (!follower.isBusy()) {
-                        resetActionTimer();
-                        if(actionTimer.getElapsedTimeSeconds() > 2){
+
+                        if ( actionTimer.getElapsedTimeSeconds() < 2) {r.BasketExtension();
+                        }
+                        else if (actionTimer.getElapsedTimeSeconds() < 4) {r.BasketScore();
+                        }
+                        else if (actionTimer.getElapsedTimeSeconds() <6) {r.BasketReturn();
+                        }
+                        else if (actionTimer.getElapsedTimeSeconds() <8) {
                             follower.followPath(Pickup3);
                             setPathState(PathStates.ScoreThree);
+                            r.SampleHoverAuto();
                         }
                     }
                     break;

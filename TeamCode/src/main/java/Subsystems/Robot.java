@@ -30,6 +30,7 @@ public class Robot {
 
 
 
+
     //PIVOT VARIABLES
 
     //over shoort 1120 to ensure locking
@@ -49,8 +50,8 @@ public class Robot {
     //Gamepads
     Gamepad gamepadOperator, gamepadDriver;
     //VISION
-    private CrushSampleAnglePipelineTurretTrial pipeline;
-    private VisionPortal VP;
+    public CrushSampleAnglePipelineTurretTrial pipeline;
+    public VisionPortal VP;
 
 
     //AutoAlign Varibles
@@ -97,9 +98,6 @@ public class Robot {
     }
 
     public Robot(HardwareMap h) {
-
-        Constants.setConstants(FConstants.class, LConstants.class);
-
         boxtube = new Boxtube(h);
         endEffector = new EndEffector(h);
         follower = new Follower(h);
@@ -108,7 +106,7 @@ public class Robot {
 
         timer = new ElapsedTime(ElapsedTime.Resolution.SECONDS);
         pipeline = new CrushSampleAnglePipelineTurretTrial();
-//        VP = VisionPortal.easyCreateWithDefaults(hardwareMap.get(WebcamName.class, "Webcam 1"), pipeline);
+       VP = VisionPortal.easyCreateWithDefaults(h.get(WebcamName.class, "Webcam 1"), pipeline);
 
     }
 
@@ -182,12 +180,13 @@ public class Robot {
     }
 
     public void SampleHoverAuto(){
+        boxtube.setExt(0);
+        boxtube.setPivot(pivotHorizontal);
         endEffector.arm(0.45);
-        endEffector.wrist(0.1);
+        endEffector.wrist(0.15);
         endEffector.turret(0.55);
         endEffector.hand(0.17);
         ClawOpen();
-
     }// method end
 
     public void AutoAlign(){
@@ -239,12 +238,12 @@ public class Robot {
 
 
     //Common methods
-    public void ClawOpen() {
-        endEffector.claw(0.4);
+    public void ClawClose() {
+        endEffector.claw(0.29);
     }
 
-    public void ClawClose() {
-        endEffector.claw(0.71);
+    public void ClawOpen() {
+        endEffector.claw(0.75);
     }
 
     public void InsideGrabPecked() {
@@ -272,8 +271,8 @@ public class Robot {
     public void SampleHover() {
         double JoystickIncrement = 0;
         boxtube.setPivot(pivotHorizontal);
-        endEffector.arm(0.45);
-        endEffector.wrist(0.1);
+        endEffector.arm(0.49);
+        endEffector.wrist(0.18);
         endEffector.turret(0.55);
 
 
@@ -345,8 +344,8 @@ public class Robot {
     }
 
     public void SampleGrab() {
-        endEffector.arm(0.5);
-        endEffector.wrist(0.14);
+        endEffector.arm(0.55);
+        endEffector.wrist(0.22);
     }
 
     public void LoiterSample() {
@@ -376,7 +375,7 @@ public class Robot {
 
         ClawOpen();
         endEffector.arm(0.5);
-        endEffector.hand(0.5);
+        endEffector.hand(0.17);
         endEffector.turret(0.55);
         endEffector.wrist(0.72); //flick position
     }
@@ -446,7 +445,7 @@ public class Robot {
         boxtube.setPivot(pivotBackPos);
         endEffector.hand(0.8);
         endEffector.turret(0.55);
-        endEffector.arm(0.22);
+        endEffector.arm(0.245);
         endEffector.wrist(0.27);
         ClawClose();
     }
