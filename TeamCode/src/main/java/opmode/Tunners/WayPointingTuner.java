@@ -1,6 +1,7 @@
 package opmode.Tunners;
 
 import com.acmerobotics.dashboard.FtcDashboard;
+import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
@@ -10,6 +11,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 import Subsystems.Drivetrain;
 
+@Config
 @TeleOp(name = "Way Point Tuner")
 public class WayPointingTuner extends LinearOpMode {
 
@@ -21,7 +23,7 @@ public class WayPointingTuner extends LinearOpMode {
 
      Drivetrain drive;
 
-     public static double KpX = 0, KpY = 0, KpTheta = 0, KdX = 0, KdY = 0,
+     public static double KpX = -0.15, KpY = -0.4, KpTheta = -0.1, KdX = 0, KdY = 0,
     targetHeading = 0,targetX = 0,targetY = 0;
 
      private boolean wasPressedGampadA = false;
@@ -74,9 +76,9 @@ public class WayPointingTuner extends LinearOpMode {
                     break;
                 case 4:
                     tele.addLine("Y PID (guessed tele-op carfull!!!)");
-                    tele.addData("Current Y", drive.getPos()[2]);
+                    tele.addData("Current Y", drive.getPos()[1]);
                     tele.addData("Target Y",targetY);
-                    powerY = KpX*(targetY - drive.getPos()[1]) + KdX*(targetY - drive.getPos()[1] - lastErrory)/time.seconds();
+                    powerY = KpY*(targetY - drive.getPos()[1]) + KdY*(targetY - drive.getPos()[1] - lastErrory)/time.seconds();
                     time.reset();
                     lastErrory = targetY - drive.getPos()[1];
                     drive.TeleopControl(0,powerY,0);
@@ -87,7 +89,7 @@ public class WayPointingTuner extends LinearOpMode {
                     powerX = KpX*(targetX - drive.getPos()[0]) + KdX*(targetX - drive.getPos()[0] - lastErrorx)/time.seconds();
                     time.reset();
                     lastErrorx = targetX - drive.getPos()[0];
-                    powerY = KpX*(targetY - drive.getPos()[1]) + KdX*(targetY - drive.getPos()[1] - lastErrory)/time.seconds();
+                    powerY = KpY*(targetY - drive.getPos()[1]) + KdY*(targetY - drive.getPos()[1] - lastErrory)/time.seconds();
                     time.reset();
                     lastErrory = targetY - drive.getPos()[1];
                     drive.TeleopControl(powerX,powerY,KpTheta*(targetHeading - drive.getPos()[2]));
@@ -108,7 +110,7 @@ public class WayPointingTuner extends LinearOpMode {
                         powerX = KpX * (targetX - drive.getPos()[0]) + KdX * (targetX - drive.getPos()[0] - lastErrorx) / time.seconds();
                         time.reset();
                         lastErrorx = targetX - drive.getPos()[0];
-                        powerY = KpX * (targetY - drive.getPos()[1]) + KdX * (targetY - drive.getPos()[1] - lastErrory) / time.seconds();
+                        powerY = KpY * (targetY - drive.getPos()[1]) + KdY * (targetY - drive.getPos()[1] - lastErrory) / time.seconds();
                         time.reset();
                         lastErrory = targetY - drive.getPos()[1];
                         drive.TeleopControl(powerX, powerY, KpTheta * (targetHeading - drive.getPos()[2]));

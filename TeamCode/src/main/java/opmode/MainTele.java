@@ -31,6 +31,8 @@ public class MainTele extends LinearOpMode {
     LED redLED, redLED2, greenLED, greenLED2;
     FtcDashboard dashboard;
 
+    public static double specScorex = 0,specScorey = 0, pickupx = 0,pickupy = 0;
+
     @Override
     public void runOpMode() throws InterruptedException {
         dashboard = FtcDashboard.getInstance();
@@ -72,7 +74,14 @@ public class MainTele extends LinearOpMode {
                 teleRobot.TeleControl(Ymult, 1, rxMult);
             } else if (boxtube.PivotisMoving()) {
                 teleRobot.TeleControl(1, 1, rxMult);
-            } else {
+            }
+            else if(Math.abs(gamepad1.left_trigger) > 0.5){
+
+            }
+            else if (Math.abs(gamepad1.right_trigger) > 0.5){
+
+            }
+            else {
                 teleRobot.TeleControl(1, 1, 1);
             }
 
@@ -145,7 +154,7 @@ public class MainTele extends LinearOpMode {
             telemetry.addData("Pivot Power: ", boxtube.getPivpow());
 
             telemetry.update();
-            boxtube.update();
+            teleRobot.UPDATE();
 
         }// opmode loop active
     }//linear opmode end

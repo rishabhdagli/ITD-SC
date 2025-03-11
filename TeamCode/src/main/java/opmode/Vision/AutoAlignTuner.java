@@ -39,9 +39,9 @@ public class AutoAlignTuner extends LinearOpMode{
     private double prevServoGain = 0,MaxPixelError =0;
 
     public static class CameraParams{
-        public double middleLine = 240,thresholdPixelError = 30,verticalCenterFrame = 320,lowerBound = 0,upperBound = 100000;
+        public double middleLine = 420,thresholdPixelError = 30,verticalCenterFrame = 320,lowerBound = 0,upperBound = 100000;
     }
-    public static class BoxtubeParam{ public double KpExtention = 0, ErrorY = 0;
+    public static class BoxtubeParam{ public double KpExtention = -0.001, ErrorY = 0,thresholdPixelErrorbox = 30,lastError=0, ImportancetoOrigninal = 0.5;
     }
     public static class TurretParams{ public double Turret=0.55,MStandard = 0.003,BStandard=0.28,TurretAngle= 90,
         AGain = 0.0000000100878, BGain = -0.00000012635, CGain = 0.00000109792, error,ServoGain = 0;
@@ -240,7 +240,10 @@ tele.update();
                 case 5:
                     tele.addLine("Full tester");
                     tele.addData("Error",tp.error );
+
                     bp.ErrorY =  pipeline.getMiddleLineY() - cp.middleLine;
+                    bp.ErrorY = (bp.ErrorY)*bp.ImportancetoOrigninal + bp.lastError*(1-bp.ImportancetoOrigninal);
+                    bp.lastError = bp.ErrorY;
                     boxtube.ExtensionPower(bp.KpExtention*bp.ErrorY);
 
                     tp.error  =  cp.verticalCenterFrame - pipeline.getMiddleLineX();
@@ -254,7 +257,7 @@ tele.update();
                             turret.setPosition(turret.getPosition() - tp.ServoGain);
                         }
                     }
-                    else if (cp.thresholdPixelError >=  Math.abs(tp.error) && runOnce){
+                    else if (cp.thresholdPixelError >=  Math.abs(tp.error) && runOnce && bp.thresholdPixelErrorbox >= Math.abs(bp.ErrorY)){
                         State = 6;
                     }
 
@@ -268,10 +271,13 @@ tele.update();
 
                     break;
                     case 8:
-                        tele.addData("Error",tp.error );
-                        tele.addData("Middle line ", cp.middleLine);
-                        bp.ErrorY =  pipeline.getMiddleLineY() - cp.middleLine;
-                        boxtube.ExtensionPower(bp.KpExtention*bp.ErrorY);
+                        tele.addData("Error",bp.ErrorY );
+                        tele.addData("Middle line ", pipeline.getMiddleLineY());
+                        if(bp.ErrorY < bp.ImportancetoOrigninal) {
+                            bp.ErrorY = pipeline.getMiddleLineY() - cp.middleLine;
+                        }
+                            boxtube.ExtensionPower(bp.KpExtention * bp.ErrorY);
+                            tele.addData("boxtube Power", boxtube.BT1.getPower());
 
                     break;
 

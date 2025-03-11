@@ -10,6 +10,7 @@ import com.qualcomm.robotcore.hardware.IMU;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
+import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 
 public class Drivetrain {
 
@@ -51,7 +52,7 @@ public class Drivetrain {
             PinPoint = hardwareMap.get(GoBildaPinpointDriver.class,"odo");
             PinPoint.setEncoderResolution(GoBildaPinpointDriver.GoBildaOdometryPods.goBILDA_4_BAR_POD);
             PinPoint.setEncoderDirections(GoBildaPinpointDriver.EncoderDirection.FORWARD, GoBildaPinpointDriver.EncoderDirection.REVERSED);
-            //PinPoint.setOffsets();
+            PinPoint.setOffsets(79.245,159.20450);
             PinPoint.resetPosAndIMU();
 
 
@@ -134,9 +135,10 @@ public class Drivetrain {
 
     public double[] getPos(){
         double[] pos = new double[3];
-        pos[0] = PinPoint.getPosX();
-        pos[1] = PinPoint.getPosY();
-        pos[2] = PinPoint.getHeading();
+        ;
+        pos[0] = PinPoint.getPosition().getX(DistanceUnit.INCH);
+        pos[1] = PinPoint.getPosition().getY(DistanceUnit.INCH);
+        pos[2] = PinPoint.getPosition().getHeading(AngleUnit.DEGREES);
         return pos;
     }
 
