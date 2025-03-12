@@ -239,11 +239,11 @@ public class Robot {
 
     //Common methods
     public void ClawClose() {
-        endEffector.claw(0.29);
+        endEffector.claw(0.72);
     }
 
     public void ClawOpen() {
-        endEffector.claw(0.8);
+        endEffector.claw(0.46);
     }
 
     public void InsideGrabPecked() {
@@ -271,8 +271,8 @@ public class Robot {
     public void SampleHover() {
         double JoystickIncrement = 0;
         boxtube.setPivot(pivotHorizontal);
-        endEffector.arm(0.49);
-        endEffector.wrist(0.18);
+        endEffector.arm(0.46);
+        endEffector.wrist(0.15);
         endEffector.turret(0.55);
 
 
@@ -344,8 +344,7 @@ public class Robot {
     }
 
     public void SampleGrab() {
-        endEffector.arm(0.53
-        );
+        endEffector.arm(0.53);
         endEffector.wrist(0.2);
     }
 
