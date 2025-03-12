@@ -239,11 +239,11 @@ public class Robot {
 
     //Common methods
     public void ClawClose() {
-        endEffector.claw(0.72);
+        endEffector.claw(0.32);
     }
 
     public void ClawOpen() {
-        endEffector.claw(0.46);
+        endEffector.claw(0.65);
     }
 
     public void InsideGrabPecked() {
@@ -333,9 +333,26 @@ public class Robot {
             wasPressedR = false;
         }
             JoystickIncrement = MainTele.JoyStickInc *gamepadOperator.left_stick_y;
+        //boxutbe adjustment
+
+        double turretAngleLeft = gamepadOperator.left_trigger * 20;
+        double turretAngleRight = gamepadOperator.left_trigger * -20;
+        if(turretAngleLeft > 0 ){
+        endEffector.turret(tp.MStandard*turretAngleLeft + tp.BStandard);
+            endEffector.hand(hand+hp.MStandard*(turretAngleLeft));
+
+        }
+        else if (turretAngleRight > 0) {
+            endEffector.turret(tp.MStandard*turretAngleRight + tp.BStandard);
+            endEffector.hand(hand+hp.MStandard*(turretAngleRight));
+        }
+        else{
+            endEffector.turret(0.55);
+            endEffector.hand(hand);
+
+        }
 
 
-        endEffector.hand(hand);
 
 
         boxtube.setExt(currentExtension-= JoystickIncrement);
@@ -467,8 +484,8 @@ public class Robot {
         boxtube.setPivot(pivotBackPos);
         endEffector.hand(0.8);
         endEffector.turret(0.55);
-        endEffector.arm(0.245);
-        endEffector.wrist(0.27);
+        endEffector.arm(0.2);
+        endEffector.wrist(0.2);
         ClawClose();
     }
 
@@ -478,7 +495,6 @@ public class Robot {
         endEffector.turret(0.55);
         endEffector.arm(0.23);
         endEffector.hand(0.8);
-
         endEffector.wrist(0.5);
         boxtube.setPivot(0);
         ClawOpen();

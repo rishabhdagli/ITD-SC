@@ -17,6 +17,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 import java.util.concurrent.TimeUnit;
 
 import Subsystems.Boxtube;
+import Subsystems.Drivetrain;
 import Subsystems.EndEffector;
 import Subsystems.Robot;
 import pedroPathing.constants.FConstants;
@@ -26,9 +27,11 @@ import pedroPathing.constants.LConstants;
 public class FiveSpecCFCRUSH extends LinearOpMode {
     public  static Follower follower;
     public boolean pathDone = false;
-    public boolean prevPathDone = false, CountDone = false;
+    public boolean prevPathDone = false, CountDone = false, addOffset, minusOffset;
+    public double offset = 0;
     Robot r;
     Boxtube boxtube;
+    Drivetrain d;
     EndEffector endEffector;
     int SpeciminCount = 1;
     PathChain Preload,
@@ -69,6 +72,8 @@ public class FiveSpecCFCRUSH extends LinearOpMode {
         Constants.setConstants(FConstants.class, LConstants.class);
 
         r = new Robot(hardwareMap);
+        d = new Drivetrain(hardwareMap);
+
 
         follower = new Follower(hardwareMap);
         follower.setStartingPose(new Pose(11.500,54.000, Math.toRadians(180)));
@@ -82,6 +87,24 @@ public class FiveSpecCFCRUSH extends LinearOpMode {
         while (opModeInInit()) {
             r.boxtube.update();
             follower.update();
+            if(gamepad2.dpad_up){addOffset = true;}
+            if(gamepad2.dpad_down){minusOffset = true;}
+            if(!gamepad2.dpad_up && addOffset){
+                offset++;
+                addOffset = false;
+                buildPaths();
+            }
+            if(!gamepad2.dpad_down && minusOffset){
+                offset--;
+                minusOffset = false;
+                buildPaths();
+            }
+            if(gamepad1.b){follower.setStartingPose(new Pose(11.500,54.000, Math.toRadians(180)));}
+            telemetry.addData("offset value:", offset);
+            telemetry.addLine("D-Pad up - Oncrease dist between the sub and wall");
+            telemetry.addLine("D-Pad down - Decrease dist between the sub and wall");
+            telemetry.addLine("Button B - Reset Pinpoint");
+            telemetry.update();
         }
 
         waitForStart();
@@ -306,7 +329,7 @@ public class FiveSpecCFCRUSH extends LinearOpMode {
                         new BezierCurve(
                                 new Point(24.000, 18.000, Point.CARTESIAN),
                                 new Point(57.000, 18.000, Point.CARTESIAN),
-                                new Point(57.000, 9.000, Point.CARTESIAN)
+                                new Point(57.000, 7.000, Point.CARTESIAN)
                         )
                 )
                 .setConstantHeadingInterpolation(Math.toRadians(180))
@@ -315,8 +338,8 @@ public class FiveSpecCFCRUSH extends LinearOpMode {
         Push3 = follower.pathBuilder()
                 .addPath(
                         new BezierLine(
-                                new Point(57.000, 9.000, Point.CARTESIAN),
-                                new Point(35.000, 9.000, Point.CARTESIAN)
+                                new Point(57.000, 7.000, Point.CARTESIAN),
+                                new Point(35.000, 7.000, Point.CARTESIAN)
                         )
                 )
                 .setConstantHeadingInterpolation(Math.toRadians(180))
@@ -325,18 +348,18 @@ public class FiveSpecCFCRUSH extends LinearOpMode {
         Pickup1 = follower.pathBuilder()
                 .addPath(
                         new BezierLine(
-                                new Point(35.000, 9.000, Point.CARTESIAN),
-                                new Point(23.000, 9.000, Point.CARTESIAN)
+                                new Point(35.000, 7.000, Point.CARTESIAN),
+                                new Point(21.000+offset, 7.000, Point.CARTESIAN)
                         )
                 )
                 .setConstantHeadingInterpolation(Math.toRadians(180))
-                .setZeroPowerAccelerationMultiplier(0.75)
+                .setZeroPowerAccelerationMultiplier(1)
                 .build();
 
         Score1 = follower.pathBuilder()
                 .addPath(
                         new BezierCurve(
-                                new Point(24.500, 9.000, Point.CARTESIAN),
+                                new Point(24.500, 7.000, Point.CARTESIAN),
                                 new Point(12.903, 62.000, Point.CARTESIAN),
                                 new Point(38.000, 69.2500, Point.CARTESIAN)
                         )
@@ -351,11 +374,11 @@ public class FiveSpecCFCRUSH extends LinearOpMode {
                                 new Point(38.000, 69.250, Point.CARTESIAN),
                                 new Point(16.774, 69.258, Point.CARTESIAN),
                                 new Point(54.000, 33.500, Point.CARTESIAN),
-                                new Point(24.500, 33.500, Point.CARTESIAN)
+                                new Point(22.500+offset, 33.500, Point.CARTESIAN)
                         )
                 )
                 .setConstantHeadingInterpolation(Math.toRadians(180))
-                .setZeroPowerAccelerationMultiplier(2)
+                .setZeroPowerAccelerationMultiplier(2.5)
                 .build();
 
         Score2 = follower.pathBuilder()
@@ -376,7 +399,7 @@ public class FiveSpecCFCRUSH extends LinearOpMode {
                                 new Point(38.500, 71.000, Point.CARTESIAN),
                                 new Point(16.774, 72.258, Point.CARTESIAN),
                                 new Point(54.000, 33.5, Point.CARTESIAN),
-                                new Point(26.5000, 33.500, Point.CARTESIAN)
+                                new Point(26.5000+offset, 33.500, Point.CARTESIAN)
                         )
                 )
                 .setConstantHeadingInterpolation(Math.toRadians(180))
@@ -401,7 +424,7 @@ public class FiveSpecCFCRUSH extends LinearOpMode {
                                 new Point(38.500, 70.000, Point.CARTESIAN),
                                     new Point(16.774, 72.258, Point.CARTESIAN),
                                 new Point(54.000, 33.5, Point.CARTESIAN),
-                                new Point(26.5000, 33.500, Point.CARTESIAN)
+                                new Point(26.5000+offset, 33.500, Point.CARTESIAN)
                         )
                 )
                 .setConstantHeadingInterpolation(Math.toRadians(180))

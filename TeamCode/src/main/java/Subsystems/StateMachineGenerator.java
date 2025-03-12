@@ -87,19 +87,18 @@ public class StateMachineGenerator {
                 .state(States.SampleGrab)
                 .onEnter(r::SampleGrab)
                 .loop(r::SampleGrab)
-                .transitionTimed(0.25, States.CLOSING_CLAW)
+                .transitionTimed(0.1, States.CLOSING_CLAW)
 
 
                 .state(States.CLOSING_CLAW)
                 .onEnter(r::ClawClose)
-                .transition(() -> g.b, States.WAIT1) // ESCAPE
-                .transition(() -> g.x, States.WAIT3)
-//
+                .transitionTimed(0.2, States.LoiterSample)
+
 
 
                 .state(States.WAIT3)
                 .transitionTimed(0.25, States.LoiterSample)
-//                .transition(()-> z.a, States.WAIT10)
+//               .transition(()-> z.a, States.WAIT10)
 
 
                 .state(States.LoiterSample) //Has the sample but the pivot and extention are down
@@ -175,7 +174,7 @@ public class StateMachineGenerator {
 
     enum States {
 
-        Stationary, HANGUP, HANGDOWN, CLOSING_CLAW, LoiterSample, SampleHover, SampleGrab, BasketExtend, BasketPosition2,PivotOverCenter, ObsZoneRelease, PivotBack, SpecimenWall, SpecimenWallGrab, SpecimenPreScore, SpecimenPostScore, WAIT1, WAIT2, WAIT3, WAIT4, WAIT5, WAIT6, WAIT7, WAIT8,WAIT9,WAIT10, WAIT11, SpecimenWallGrabUp, ExtensionDown, SCORE, Passover, SpecimenEscapeState
+        Stationary, HANGUP, HANGDOWN, CLOSING_CLAW, LoiterSample, SampleHover, SampleGrab, SampleAfterGrab, BasketExtend, BasketPosition2,PivotOverCenter, ObsZoneRelease, PivotBack, SpecimenWall, SpecimenWallGrab, SpecimenPreScore, SpecimenPostScore, WAIT1, WAIT2, WAIT3, WAIT4, WAIT5, WAIT6, WAIT7, WAIT8,WAIT9,WAIT10, WAIT11, SpecimenWallGrabUp, ExtensionDown, SCORE, Passover, SpecimenEscapeState
 
     }
 

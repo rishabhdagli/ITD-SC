@@ -65,7 +65,7 @@ public class Drivetrain {
         y = -y; // Remember, Y stick value is reversed
         y = Math.pow(y, 3);
         x = Math.pow(x, 3);
-        rx = rx * 0.75;
+        rx = rx;
 
 
         // Denominator is the largest motor power (absolute value) or 1
