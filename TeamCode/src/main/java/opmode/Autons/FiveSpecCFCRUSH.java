@@ -226,7 +226,6 @@ public class FiveSpecCFCRUSH extends LinearOpMode {
                                     follower.followPath(Pickup4);
                                     setPathState(PathStates.WallPickup);
                                     break;
-
                             }
                         }
                         //gets ready for pick up

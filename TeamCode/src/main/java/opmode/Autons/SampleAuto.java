@@ -88,7 +88,7 @@ public class SampleAuto extends LinearOpMode {
 
                 case Preload:
                     if(!follower.isBusy()) {
-                        r.PivotBack();
+//                        r.PivotBack();
                         follower.followPath(PreloadScore);
                         setPathState(PathStates.PickupOne);
                     }
@@ -97,14 +97,17 @@ public class SampleAuto extends LinearOpMode {
                 case PickupOne: //this is scoring the preload
                     if (!follower.isBusy()) {
                         resetActionTimer();
-
-                         if ( actionTimer.getElapsedTimeSeconds() < 2) {r.BasketExtension();
-                        }
-                        else if (actionTimer.getElapsedTimeSeconds() < 4) {r.BasketScore();
-                        }
-                        else if (actionTimer.getElapsedTimeSeconds() <6)
-                        {r.BasketReturn();}
-                         else if (actionTimer.getElapsedTimeSeconds() <8) {
+//                         if ( actionTimer.getElapsedTimeSeconds() < 2) {
+////                             r.BasketExtension();
+//                        }
+//                        else if (actionTimer.getElapsedTimeSeconds() < 4) {
+////                            r.BasketScore();
+//                        }
+//                        else if (actionTimer.getElapsedTimeSeconds() <6)
+//                        {
+////                            r.BasketReturn();
+//                        }
+                          if (actionTimer.getElapsedTimeSeconds() >2 ) {
                              follower.followPath(Pickup1);
                              setPathState(PathStates.ScoreOne);
                          }
@@ -114,15 +117,14 @@ public class SampleAuto extends LinearOpMode {
                 case ScoreOne: //picking up the first one
                     if (!follower.isBusy()) {
                         resetActionTimer();
-                        if (actionTimer.getElapsedTimeSeconds() < 4)
-                        {
-//                            r.AutoAlign();
-                            r.SampleHoverAuto(1);
-                        }
-                        else if(actionTimer.getElapsedTimeSeconds() < 5){
+//                        if (actionTimer.getElapsedTimeSeconds() < 4)
+//                        {
+////                            r.AutoAlign();
+////                            r.SampleHoverAuto(1);
+//                        }
+                        if (actionTimer.getElapsedTimeSeconds() > 2){
                             follower.followPath(Score2);
-                            setPathState(PathStates.PickupTwo);
-                        }
+                            setPathState(PathStates.PickupTwo);}
                     }
                     break;
 
@@ -130,16 +132,19 @@ public class SampleAuto extends LinearOpMode {
                     if (!follower.isBusy()) {
                         resetActionTimer();
 
-                        if ( actionTimer.getElapsedTimeSeconds() < 2) {r.BasketExtension();
-                        }
-                        else if (actionTimer.getElapsedTimeSeconds() < 4) {r.BasketScore();
-                        }
-                        else if (actionTimer.getElapsedTimeSeconds() <6) {r.BasketReturn();
-                        }
-                        else if (actionTimer.getElapsedTimeSeconds() <8) {
+//                        if ( actionTimer.getElapsedTimeSeconds() < 2) {
+////                            r.BasketExtension();
+//                        }
+//                        else if (actionTimer.getElapsedTimeSeconds() < 4) {
+////                            r.BasketScore();
+//                        }
+//                        else if (actionTimer.getElapsedTimeSeconds() <6) {
+////                            r.BasketReturn();
+//                        }
+                         if (actionTimer.getElapsedTimeSeconds() > 2) {
                             follower.followPath(Pickup2);
                             setPathState(PathStates.ScoreTwo);
-                            r.PivotDown();
+//                            r.PivotDown();
                         }
                     }
                     break;
@@ -157,16 +162,16 @@ public class SampleAuto extends LinearOpMode {
                 case PickupThree: //score the third one
                     if (!follower.isBusy()) {
 
-                        if ( actionTimer.getElapsedTimeSeconds() < 2) {r.BasketExtension();
-                        }
-                        else if (actionTimer.getElapsedTimeSeconds() < 4) {r.BasketScore();
-                        }
-                        else if (actionTimer.getElapsedTimeSeconds() <6) {r.BasketReturn();
-                        }
-                        else if (actionTimer.getElapsedTimeSeconds() <8) {
+//                        if ( actionTimer.getElapsedTimeSeconds() < 2) {r.BasketExtension();
+//                        }
+//                        else if (actionTimer.getElapsedTimeSeconds() < 4) {r.BasketScore();
+//                        }
+//                        else if (actionTimer.getElapsedTimeSeconds() <6) {r.BasketReturn();
+
+                         if (actionTimer.getElapsedTimeSeconds() > 2) {
                             follower.followPath(Pickup3);
                             setPathState(PathStates.ScoreThree);
-                            r.PivotDown();
+//                            r.PivotDown();
                         }
                     }
                     break;
@@ -208,6 +213,7 @@ public class SampleAuto extends LinearOpMode {
                         )
                 )
                 .setLinearHeadingInterpolation(Math.toRadians(270), Math.toRadians(315))
+                .setZeroPowerAccelerationMultiplier(0.75)
                 .build();
 
         Pickup1 = follower.pathBuilder()
@@ -218,6 +224,7 @@ public class SampleAuto extends LinearOpMode {
                         )
                 )
                 .setLinearHeadingInterpolation(Math.toRadians(315), Math.toRadians(0))
+                .setZeroPowerAccelerationMultiplier(0.75)
                 .build();
 
         Score1 = follower.pathBuilder()
@@ -228,6 +235,7 @@ public class SampleAuto extends LinearOpMode {
                         )
                 )
                 .setLinearHeadingInterpolation(Math.toRadians(0), Math.toRadians(315))
+                .setZeroPowerAccelerationMultiplier(0.75)
                 .build();
 
         Pickup2 = follower.pathBuilder()
@@ -238,6 +246,7 @@ public class SampleAuto extends LinearOpMode {
                         )
                 )
                 .setLinearHeadingInterpolation(Math.toRadians(315), Math.toRadians(0))
+                .setZeroPowerAccelerationMultiplier(0.75)
                 .build();
 
         Score2 = follower.pathBuilder()
@@ -248,6 +257,7 @@ public class SampleAuto extends LinearOpMode {
                         )
                 )
                 .setLinearHeadingInterpolation(Math.toRadians(0), Math.toRadians(315))
+                .setZeroPowerAccelerationMultiplier(0.75)
                 .build();
 
         Pickup3 = follower.pathBuilder()
@@ -258,7 +268,7 @@ public class SampleAuto extends LinearOpMode {
                         )
                 )
                 .setLinearHeadingInterpolation(Math.toRadians(315), Math.toRadians(0))
-                .setZeroPowerAccelerationMultiplier(4)
+                .setZeroPowerAccelerationMultiplier(0.75)
                 .build();
 //
         Score3 = follower.pathBuilder()
@@ -269,7 +279,7 @@ public class SampleAuto extends LinearOpMode {
                         )
                 )
                 .setLinearHeadingInterpolation(Math.toRadians(40), Math.toRadians(-45))
-                .setZeroPowerAccelerationMultiplier(4)
+                .setZeroPowerAccelerationMultiplier(0.75)
                 .build();
 
         Park = follower.pathBuilder()
@@ -282,7 +292,7 @@ public class SampleAuto extends LinearOpMode {
                         )
                 )
                 .setLinearHeadingInterpolation(Math.toRadians(315), Math.toRadians(90))
-                .setZeroPowerAccelerationMultiplier(4)
+                .setZeroPowerAccelerationMultiplier(0.75)
                 .build();
     }
 }
