@@ -11,12 +11,15 @@ import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
+import org.firstinspires.ftc.robotcore.external.navigation.Pose2D;
 
 public class Drivetrain {
 
     public DcMotorEx LF,LR,RF,RR;
 
     GoBildaPinpointDriver PinPoint;
+    public static double KpX = -0.15, KpY = -0.4, KpTheta = -0.05, KdX = 0, KdY = 0;
+    private double lastErrorx,lastErrory,powerX,powerY;
 
     public Drivetrain(HardwareMap hardwareMap) {
 
@@ -127,9 +130,22 @@ public class Drivetrain {
     public void Reset(){
         PinPoint.resetPosAndIMU();
     }
+    public void SoftReset(){PinPoint.resetPosAndIMU();}
+
 
     public void update(){
         PinPoint.update();
+    }
+
+    public void PID2P(double TargetY, double TargetX){
+        powerX = KpX*(TargetX - getPos()[0]); //+ KdX*(targetX - getPos()[0] - lastErrorx)/time.seconds();
+       // time.reset();
+        //lastErrorx = targetX - getPos()[0];
+        powerY = KpY*(TargetY - getPos()[1]); //+ KdY*(targetY - getPos()[1] - lastErrory)/time.seconds();
+       //time.reset();
+       // lastErrory = targetY - getPos()[1];
+        TeleopControl(powerX,powerY,KpTheta*(- getPos()[2]));
+
     }
 
 

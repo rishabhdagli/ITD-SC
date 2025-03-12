@@ -26,7 +26,7 @@ public class Robot {
     public Follower follower;
     //COMMON
     ElapsedTime timer;
-    Drivetrain drive;
+    public Drivetrain drive;
 
 
     //PIVOT VARIABLES
@@ -344,8 +344,7 @@ public class Robot {
     }
 
     public void SampleGrab() {
-        endEffector.arm(0.53
-        );
+        endEffector.arm(0.53);
         endEffector.wrist(0.2);
     }
 
@@ -441,6 +440,7 @@ public class Robot {
 
     public void SpecimenWallGrab() {
         ClawClose();
+        //drive.SoftReset(); make a teleop version
     }
 
     public void SpecimenWallUp() {

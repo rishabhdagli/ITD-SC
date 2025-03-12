@@ -67,7 +67,9 @@ public class MainTele extends LinearOpMode {
             } else {
                 specimenMachine.update();
             }
-
+if(gamepad1.options){
+    teleRobot.drive.Reset();
+}
 
             //hopefully this works
             if (gamepad1.right_bumper) {
@@ -76,10 +78,10 @@ public class MainTele extends LinearOpMode {
                 teleRobot.TeleControl(1, 1, rxMult);
             }
             else if(Math.abs(gamepad1.left_trigger) > 0.5){
-
+                teleRobot.drive.PID2P(-41.13,-16.72);
             }
             else if (Math.abs(gamepad1.right_trigger) > 0.5){
-
+                teleRobot.drive.PID2P(0,-5.000);
             }
             else {
                 teleRobot.TeleControl(1, 1, 1);
