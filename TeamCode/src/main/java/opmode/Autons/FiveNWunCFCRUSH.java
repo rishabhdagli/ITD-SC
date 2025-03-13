@@ -233,10 +233,19 @@ public class FiveNWunCFCRUSH extends LinearOpMode {
                         }
                         //gets ready for pick up
                     }
+
+                    break;
                 case Pickup5:
                     if(!follower.isBusy()) {
+                        if (actionTimer.time() < 0.5) {
+                            r.SpecimenPostScore();
+                        }
+                        //drivetrain move
+                        else if (actionTimer.time() < 1) {
+                            r.SpecimenWall();
                         follower.followPath(Pickup5);
                         setPathState(PathStates.SamplePickup);
+                    }
                     }
                     break;
                 case SamplePickup:
@@ -299,6 +308,7 @@ public class FiveNWunCFCRUSH extends LinearOpMode {
                         )
                 )
                 .setConstantHeadingInterpolation(Math.toRadians(180))
+                .setPathEndTimeoutConstraint(0)
                 .build();
 
         Push1 = follower.pathBuilder()
@@ -309,6 +319,8 @@ public class FiveNWunCFCRUSH extends LinearOpMode {
                         )
                 )
                 .setConstantHeadingInterpolation(Math.toRadians(180))
+                .setZeroPowerAccelerationMultiplier(8)
+                .setPathEndTimeoutConstraint(0)
                 .build();
 
         PrePush2 = follower.pathBuilder()
@@ -321,6 +333,8 @@ public class FiveNWunCFCRUSH extends LinearOpMode {
                         )
                 )
                 .setConstantHeadingInterpolation(Math.toRadians(180))
+                .setZeroPowerAccelerationMultiplier(8)
+                .setPathEndTimeoutConstraint(0)
                 .build();
 
         Push2 = follower.pathBuilder()
@@ -331,6 +345,8 @@ public class FiveNWunCFCRUSH extends LinearOpMode {
                         )
                 )
                 .setConstantHeadingInterpolation(Math.toRadians(180))
+                .setZeroPowerAccelerationMultiplier(8)
+                .setPathEndTimeoutConstraint(0)
                 .build();
 
         PrePush3 = follower.pathBuilder()
@@ -342,6 +358,8 @@ public class FiveNWunCFCRUSH extends LinearOpMode {
                         )
                 )
                 .setConstantHeadingInterpolation(Math.toRadians(180))
+                .setZeroPowerAccelerationMultiplier(8)
+                .setPathEndTimeoutConstraint(0)
                 .build();
 
         Push3 = follower.pathBuilder()
@@ -352,6 +370,7 @@ public class FiveNWunCFCRUSH extends LinearOpMode {
                         )
                 )
                 .setConstantHeadingInterpolation(Math.toRadians(180))
+                .setPathEndTimeoutConstraint(25)
                 .build();
 
         Pickup1 = follower.pathBuilder()
@@ -363,6 +382,7 @@ public class FiveNWunCFCRUSH extends LinearOpMode {
                 )
                 .setConstantHeadingInterpolation(Math.toRadians(180))
                 .setZeroPowerAccelerationMultiplier(0.75)
+                .setPathEndTimeoutConstraint(25)
                 .build();
 
         Score1 = follower.pathBuilder()

@@ -380,7 +380,7 @@ public class Robot {
 
     public void PivotBack() {
         boxtube.setPivot(pivotBackPos);
-        endEffector.hand(0.17);
+        endEffector.hand(0.485);
         endEffector.arm(0.5);
         endEffector.turret(0.55);
         endEffector.wrist(0.6);
@@ -396,7 +396,7 @@ public class Robot {
 
         ClawOpen();
         endEffector.arm(0.5);
-        endEffector.hand(0.17);
+        endEffector.hand(0.485);
         endEffector.turret(0.55);
         endEffector.wrist(0.72); //flick position
     }

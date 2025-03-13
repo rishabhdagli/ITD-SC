@@ -31,7 +31,6 @@ public class FiveSpecCFCRUSH extends LinearOpMode {
     public double offset = 0;
     Robot r;
     Boxtube boxtube;
-    Drivetrain d;
     EndEffector endEffector;
     int SpeciminCount = 1;
     PathChain Preload,
@@ -72,19 +71,17 @@ public class FiveSpecCFCRUSH extends LinearOpMode {
         Constants.setConstants(FConstants.class, LConstants.class);
 
         r = new Robot(hardwareMap);
-        d = new Drivetrain(hardwareMap);
 
 
         follower = new Follower(hardwareMap);
         follower.setStartingPose(new Pose(11.500,54.000, Math.toRadians(180)));
-       // buildPaths();
+        buildPaths();
 
         boxtube = r.boxtube;
         endEffector = r.endEffector;
         actionTimer.time(TimeUnit.SECONDS);
 
         r.InitPosition();
-        buildPaths();
         while (opModeInInit()) {
             r.boxtube.update();
             follower.update();
@@ -101,11 +98,10 @@ public class FiveSpecCFCRUSH extends LinearOpMode {
                 minusOffset = false;
                buildPaths();
             }
-            if(gamepad1.b){follower.setStartingPose(new Pose(11.500,54.000, Math.toRadians(180)));}
+
             telemetry.addData("offset value:", offset);
             telemetry.addLine("D-Pad up - Oncrease dist between the sub and wall");
             telemetry.addLine("D-Pad down - Decrease dist between the sub and wall");
-            telemetry.addLine("Button B - Reset Pinpoint");
             telemetry.addData("Starting Pose X", follower.getPose().getX());
             telemetry.addData("Starting Pose Y", follower.getPose().getY());
             telemetry.addData("Starting Pose Heading", follower.getPose().getHeading());
