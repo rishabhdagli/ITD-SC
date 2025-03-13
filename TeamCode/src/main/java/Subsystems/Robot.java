@@ -234,10 +234,9 @@ public class Robot {
                 AutoAlign = false;
                 break;
             case HAND_ALIGN:
-                if(!AutoAlign) {
+                if(!AutoAlign) { //run once
                     hp.HandAngle = 180 - pipeline.getDetectedAngle() + 90;
                     endEffector.hand(ServoRegulizer(hp.MStandard * (hp.HandAngle) + hp.BStandard));
-                    Camerastate = AutoAlignstates.PICK_UP;
                 }
                 AutoAlign = true;
                 break;
@@ -248,11 +247,12 @@ public class Robot {
     public void SampleGrabAuto() {
         endEffector.arm(0.52);
         endEffector.wrist(0.18);
-        if(AutoAlign){
-            tp.TurretAngle = (endEffector.Turret.getPosition() - tp.BStandard)*tp.MStandard;
-            endEffector.hand(ServoRegulizer(hp.MStandard * (-tp.TurretAngle) + hp.BStandard));
-        }
-      AutoAlign = false;
+//        if(AutoAlign){
+//            tp.TurretAngle = (endEffector.Turret.getPosition() - tp.BStandard)*tp.MStandard;
+//            endEffector.hand(ServoRegulizer(hp.MStandard * (-tp.TurretAngle) + hp.BStandard));
+//        }
+//        Camerastate = AutoAlignstates.TURRET_ALIGN;
+//      AutoAlign = false;
     }
 
 

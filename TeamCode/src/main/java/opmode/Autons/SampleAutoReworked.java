@@ -176,19 +176,19 @@ public class SampleAutoReworked extends LinearOpMode {
                         {
                             r.AutoSampleHover();
                         }
-                        else if (actionTimer.getElapsedTimeSeconds() < 2.5)
+                        else if (actionTimer.getElapsedTimeSeconds() < 4)
                         {
                             r.AutoAlign();
                         }
-                        else if (actionTimer.getElapsedTimeSeconds() < 3.0)
+                        else if (actionTimer.getElapsedTimeSeconds() < 4.5)
                         {
                             r.SampleGrabAuto();
                         }
-                        else if (actionTimer.getElapsedTimeSeconds() < 3.25)
+                        else if (actionTimer.getElapsedTimeSeconds() < 5.25)
                         {
                             r.ClawClose();
                         }
-                        if (actionTimer.getElapsedTimeSeconds() > 3.25){
+                        if (actionTimer.getElapsedTimeSeconds() > 6.00){
                             r.LoiterSample();
                             follower.followPath(Score2);
                             setPathState(PathStates.PickupThree);
@@ -297,7 +297,7 @@ public class SampleAutoReworked extends LinearOpMode {
                         )
                 )
                 .setLinearHeadingInterpolation(Math.toRadians(270), Math.toRadians(315))
-                .setZeroPowerAccelerationMultiplier(0.75)
+                .setZeroPowerAccelerationMultiplier(2)
                 .build();
 
         Pickup1 = follower.pathBuilder()
@@ -308,7 +308,7 @@ public class SampleAutoReworked extends LinearOpMode {
                         )
                 )
                 .setLinearHeadingInterpolation(Math.toRadians(315), Math.toRadians(0))
-                .setZeroPowerAccelerationMultiplier(0.75)
+                .setZeroPowerAccelerationMultiplier(2)
                 .build();
 
         Score1 = follower.pathBuilder()
@@ -319,7 +319,8 @@ public class SampleAutoReworked extends LinearOpMode {
                         )
                 )
                 .setLinearHeadingInterpolation(Math.toRadians(0), Math.toRadians(315))
-                .setZeroPowerAccelerationMultiplier(0.75)
+                .setZeroPowerAccelerationMultiplier(2)
+                .setPathEndTimeoutConstraint(100)
                 .build();
 
         Pickup2 = follower.pathBuilder()
@@ -330,7 +331,7 @@ public class SampleAutoReworked extends LinearOpMode {
                         )
                 )
                 .setLinearHeadingInterpolation(Math.toRadians(315), Math.toRadians(0))
-                .setZeroPowerAccelerationMultiplier(0.75)
+                .setZeroPowerAccelerationMultiplier(2)
                 .build();
 
         Score2 = follower.pathBuilder()
@@ -341,7 +342,8 @@ public class SampleAutoReworked extends LinearOpMode {
                         )
                 )
                 .setLinearHeadingInterpolation(Math.toRadians(0), Math.toRadians(315))
-                .setZeroPowerAccelerationMultiplier(0.75)
+                .setZeroPowerAccelerationMultiplier(2)
+                .setPathEndTimeoutConstraint(100)
                 .build();
 
         Pickup3 = follower.pathBuilder()
@@ -352,7 +354,7 @@ public class SampleAutoReworked extends LinearOpMode {
                         )
                 )
                 .setLinearHeadingInterpolation(Math.toRadians(315), Math.toRadians(90))
-                .setZeroPowerAccelerationMultiplier(0.75)
+                .setZeroPowerAccelerationMultiplier(2)
                 .build();
 //
         Score3 = follower.pathBuilder()
@@ -363,7 +365,8 @@ public class SampleAutoReworked extends LinearOpMode {
                         )
                 )
                 .setLinearHeadingInterpolation(Math.toRadians(40), Math.toRadians(-45))
-                .setZeroPowerAccelerationMultiplier(0.75)
+                .setZeroPowerAccelerationMultiplier(2)
+                .setPathEndTimeoutConstraint(100)
                 .build();
 
         Park = follower.pathBuilder()
@@ -376,7 +379,7 @@ public class SampleAutoReworked extends LinearOpMode {
                         )
                 )
                 .setLinearHeadingInterpolation(Math.toRadians(315), Math.toRadians(90))
-                .setZeroPowerAccelerationMultiplier(0.75)
+                .setZeroPowerAccelerationMultiplier(2)
                 .build();
     }
 }

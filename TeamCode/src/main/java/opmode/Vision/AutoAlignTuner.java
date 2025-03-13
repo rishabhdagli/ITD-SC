@@ -39,12 +39,12 @@ public class AutoAlignTuner extends LinearOpMode{
     private double prevServoGain = 0,MaxPixelError =0;
 
     public static class CameraParams{
-        public double middleLine = 420,thresholdPixelError = 30,verticalCenterFrame = 320,lowerBound = 0,upperBound = 100000;
+        public double middleLine = 420,thresholdPixelError = 20,verticalCenterFrame = 370,lowerBound = 0,upperBound = 100000;
     }
     public static class BoxtubeParam{ public double KpExtention = -0.001, ErrorY = 0,thresholdPixelErrorbox = 30,lastError=0, ImportancetoOrigninal = 0.5;
     }
     public static class TurretParams{ public double Turret=0.55,MStandard = 0.003,BStandard=0.28,TurretAngle= 90,
-        AGain = 0.0000000100878, BGain = -0.00000012635, CGain = 0.00000109792, error,ServoGain = 0;
+        AGain = 0.0000000100878, BGain = -0.00000012635, CGain = 0.000001098, error,ServoGain = 0;
     }
 
     public static class HandParams{ public double Hand=0.5,MStandard = 0.00366667,BStandard=0.15,HandAngle = 90;}
@@ -257,7 +257,7 @@ tele.update();
                             turret.setPosition(turret.getPosition() - tp.ServoGain);
                         }
                     }
-                    else if (cp.thresholdPixelError >=  Math.abs(tp.error) && runOnce && bp.thresholdPixelErrorbox >= Math.abs(bp.ErrorY)){
+                    else if (cp.thresholdPixelError >=  Math.abs(tp.error) && runOnce){
                         State = 6;
                     }
 
