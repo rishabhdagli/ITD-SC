@@ -182,18 +182,6 @@ public class Robot {
 
     }
 
-    public void SampleHoverAuto(int x){
-        switch (x) {
-            case 1:
-            boxtube.setExt(30000);
-            boxtube.setPivot(pivotHorizontal);
-            endEffector.arm(0.45);
-            endEffector.wrist(0.15);
-            endEffector.turret(0.47);
-            endEffector.hand(0.25);
-            ClawOpen();
-        }
-    }// method end
 
     public void PivotDown(){
         boxtube.setPivot(0);
@@ -266,6 +254,13 @@ public class Robot {
 
     //SAMPLE METHODS START HERE
 
+    public void AutoSampleHover() {
+        boxtube.setPivot(pivotHorizontal);
+        endEffector.arm(0.46);
+        endEffector.wrist(0.14);
+        endEffector.turret(0.55);
+        ClawOpen();
+    }
 
 
     public void SampleHover() {
