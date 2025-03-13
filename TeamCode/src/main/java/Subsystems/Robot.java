@@ -261,6 +261,14 @@ public class Robot {
         endEffector.turret(0.55);
         ClawOpen();
     }
+    public void AutoSampleHoverForLastThing() {
+        boxtube.setPivot(pivotHorizontal);
+        endEffector.hand(0.485);
+        endEffector.arm(0.46);
+        endEffector.wrist(0.14);
+        endEffector.turret(0.55);
+        ClawOpen();
+    }
 
 
     public void SampleHover() {

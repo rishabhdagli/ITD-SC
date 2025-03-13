@@ -44,7 +44,7 @@ public class SampleAuto extends LinearOpMode {
             Park;
 
     enum PathStates {
-        Preload, PickupOne, ScoreOne, PickupTwo, ScoreTwo, PickupThree, ScoreThree, Park, End
+        Preload, PickupOne, ScoreOne, PickupTwo, ScoreTwo, PickupThree, ScoreThree,ActualScore3, Park, End
     }
 
     PathStates currentPathState;
@@ -156,6 +156,7 @@ public class SampleAuto extends LinearOpMode {
                             r.BasketReturn();
                         } else if (actionTimer.getElapsedTimeSeconds() < 3.5) {
                             r.PivotDown();
+                            r.AutoSampleHover();
                         }
                         if (actionTimer.getElapsedTimeSeconds() > 3.5) {
                             follower.followPath(Pickup2);
@@ -181,6 +182,7 @@ public class SampleAuto extends LinearOpMode {
                             r.ClawClose();
                         }
                         if (actionTimer.getElapsedTimeSeconds() > 3){
+                            r.LoiterSample();
                         follower.followPath(Score2);
                         setPathState(PathStates.PickupThree);
                     }
@@ -190,10 +192,10 @@ public class SampleAuto extends LinearOpMode {
                 case PickupThree: //score the third one
                     if (!follower.isBusy()) {
                         resetActionTimer();
-                        if ( actionTimer.getElapsedTimeSeconds() < 1) {
+                        if (actionTimer.getElapsedTimeSeconds() < 1) {
                             r.PivotBack();
                         }
-                        if ( actionTimer.getElapsedTimeSeconds() < 2) {
+                        else if ( actionTimer.getElapsedTimeSeconds() < 2) {
                             r.BasketExtension();
                         }
                         else if (actionTimer.getElapsedTimeSeconds() < 2.5) {
@@ -202,10 +204,11 @@ public class SampleAuto extends LinearOpMode {
                         else if (actionTimer.getElapsedTimeSeconds() <3)
                         {
                             r.BasketReturn();
-                        } else if (actionTimer.getElapsedTimeSeconds() <3.5) {
+                        } else if (actionTimer.getElapsedTimeSeconds() < 3.5) {
                             r.PivotDown();
+                            r.AutoSampleHoverForLastThing();
                         }
-                        if (actionTimer.getElapsedTimeSeconds() >3.5) {
+                        if (actionTimer.getElapsedTimeSeconds() > 3.5) {
                             follower.followPath(Pickup3);
                             setPathState(PathStates.ScoreThree);
 //                            r.PivotDown();
@@ -218,7 +221,7 @@ public class SampleAuto extends LinearOpMode {
                         resetActionTimer();
                         if (actionTimer.getElapsedTimeSeconds() < 1)
                         {
-                            r.AutoSampleHover();
+                            r.AutoSampleHoverForLastThing();
                         }
                         else if (actionTimer.getElapsedTimeSeconds() < 2)
                         {
@@ -233,6 +236,29 @@ public class SampleAuto extends LinearOpMode {
                             setPathState(PathStates.Park);}
                     }
                     break;
+                case ActualScore3:
+                    if (!follower.isBusy()) {
+                        resetActionTimer();
+                        if (actionTimer.getElapsedTimeSeconds() < 1) {
+                            r.PivotBack();
+                        }
+                        else if ( actionTimer.getElapsedTimeSeconds() < 2) {
+                            r.BasketExtension();
+                        }
+                        else if (actionTimer.getElapsedTimeSeconds() < 2.5) {
+                            r.BasketScore();
+                        }
+                        else if (actionTimer.getElapsedTimeSeconds() <3)
+                        {
+                            r.BasketReturn();
+                        } else if (actionTimer.getElapsedTimeSeconds() < 3.5) {
+                            r.PivotDown();
+                        }
+                        if (actionTimer.getElapsedTimeSeconds() > 3.5) {
+                            follower.followPath(Park);
+                            setPathState(PathStates.Park);
+                        }
+                    }
 
                 case Park:
                     if (!follower.isBusy()) {
@@ -270,7 +296,7 @@ public class SampleAuto extends LinearOpMode {
                 .addPath(
                         new BezierLine(
                                 new Point(13.000, 130.000, Point.CARTESIAN),
-                                new Point(28.000, 119.250, Point.CARTESIAN)
+                                new Point(28.000, 120.7500, Point.CARTESIAN)
                         )
                 )
                 .setLinearHeadingInterpolation(Math.toRadians(315), Math.toRadians(0))
@@ -280,7 +306,7 @@ public class SampleAuto extends LinearOpMode {
         Score1 = follower.pathBuilder()
                 .addPath(
                         new BezierLine(
-                                new Point(33.500, 120.000, Point.CARTESIAN),
+                                new Point(28.500, 120.000, Point.CARTESIAN),
                                 new Point(13.000, 130.000, Point.CARTESIAN)
                         )
                 )
@@ -292,7 +318,7 @@ public class SampleAuto extends LinearOpMode {
                 .addPath(
                         new BezierLine(
                                 new Point(13.000, 130.000, Point.CARTESIAN),
-                                new Point(33.500, 131.500, Point.CARTESIAN)
+                                new Point(27.500, 131.500, Point.CARTESIAN)
                         )
                 )
                 .setLinearHeadingInterpolation(Math.toRadians(315), Math.toRadians(0))
@@ -302,7 +328,7 @@ public class SampleAuto extends LinearOpMode {
         Score2 = follower.pathBuilder()
                 .addPath(
                         new BezierLine(
-                                new Point(33.500, 131.000, Point.CARTESIAN),
+                                new Point(27.500, 131.000, Point.CARTESIAN),
                                 new Point(13.000, 130.000, Point.CARTESIAN)
                         )
                 )
@@ -314,17 +340,17 @@ public class SampleAuto extends LinearOpMode {
                 .addPath(
                         new BezierLine(
                                 new Point(13.000, 130.000, Point.CARTESIAN),
-                                new Point(33.500, 137.000, Point.CARTESIAN)
+                                new Point(45.500, 125.000, Point.CARTESIAN)
                         )
                 )
-                .setLinearHeadingInterpolation(Math.toRadians(315), Math.toRadians(0))
+                .setLinearHeadingInterpolation(Math.toRadians(315), Math.toRadians(90))
                 .setZeroPowerAccelerationMultiplier(0.75)
                 .build();
 //
         Score3 = follower.pathBuilder()
                 .addPath(
                         new BezierLine(
-                                new Point(33.500, 137.000, Point.CARTESIAN),
+                                new Point(28.500, 137.000, Point.CARTESIAN),
                                 new Point(13.000, 130.000, Point.CARTESIAN)
                         )
                 )
