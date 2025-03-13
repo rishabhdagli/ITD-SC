@@ -189,7 +189,7 @@ public class FiveNWunCFCRUSH extends LinearOpMode {
                                     break;
                                 case 4:
                                     follower.followPath(Score4);
-                                    setPathState(PathStates.Pickup5);
+                                    setPathState(PathStates.Score2);
                                     break;
                             }
                             telemetry.addData("Path:", follower.getCurrentPath().toString());
@@ -229,37 +229,17 @@ public class FiveNWunCFCRUSH extends LinearOpMode {
                                     follower.followPath(Pickup4);
                                     setPathState(PathStates.WallPickup);
                                     break;
+                                case 5:
+                                    follower.followPath(Pickup5);
+                                    setPathState(PathStates.SamplePickup);
                             }
                         }
                         //gets ready for pick up
                     }
-
-                    break;
-                case Pickup5:
-                    if(!follower.isBusy()) {
-                        if (actionTimer.time() < 0.5) {
-                            r.SpecimenPostScore();
-                        }
-                        //drivetrain move
-                        else if (actionTimer.time() < 1) {
-                            r.SpecimenWall();
-                        follower.followPath(Pickup5);
-                        setPathState(PathStates.SamplePickup);
-                    }
-                    }
                     break;
                 case SamplePickup:
                     if(!follower.isBusy()){
-                    resetActionTimer();
-                    if (actionTimer.time() < 0.2) {
-                        r.SpecimenWallGrab();
-                    }
-                    else if (actionTimer.time() < 0.4) {
-                        r.SpecimenWallUp();
-                    }
-                    else{
                         follower.followPath(ScoreSample);
-                    }
                     }
                 case SampleScore:
                     r.PivotBack();
@@ -370,7 +350,7 @@ public class FiveNWunCFCRUSH extends LinearOpMode {
                         )
                 )
                 .setConstantHeadingInterpolation(Math.toRadians(180))
-                .setPathEndTimeoutConstraint(25)
+                .setZeroPowerAccelerationMultiplier(4)
                 .build();
 
         Pickup1 = follower.pathBuilder()
@@ -382,7 +362,6 @@ public class FiveNWunCFCRUSH extends LinearOpMode {
                 )
                 .setConstantHeadingInterpolation(Math.toRadians(180))
                 .setZeroPowerAccelerationMultiplier(0.75)
-                .setPathEndTimeoutConstraint(25)
                 .build();
 
         Score1 = follower.pathBuilder()
@@ -474,7 +453,7 @@ public class FiveNWunCFCRUSH extends LinearOpMode {
         Pickup5 = follower.pathBuilder()
                 .addPath(
                         new BezierCurve(
-                                new Point(38.500, 70.000, Point.CARTESIAN),
+                                new Point(43.500, 75.000, Point.CARTESIAN),
                                 new Point(16.774, 72.258, Point.CARTESIAN),
                                 new Point(54.000, 33.5, Point.CARTESIAN),
                                 new Point(26.5000, 33.500, Point.CARTESIAN)

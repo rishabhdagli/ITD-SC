@@ -155,7 +155,7 @@ public class StateMachineGenerator {
 
 
                 .state(States.WAIT9)
-                .transitionTimed(0.25,States.SCORE)
+                .transitionTimed(0.5,States.SCORE)
 
                 .state(States.SCORE)// just opens claw at highbasket
                 .onEnter(r::BasketScore)

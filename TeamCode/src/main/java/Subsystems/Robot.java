@@ -67,6 +67,8 @@ public class Robot {
         return (x > 1) ? (((int)(x * 100)) % 100) / 100.0 : x;
     }
 
+    public boolean AutoAlign = false;
+
 
 
 
@@ -159,6 +161,22 @@ public class Robot {
 
     //AUTON SPECIFIC METHOD HERE
 
+    public void AutoSampleHover() {
+        boxtube.setPivot(pivotHorizontal);
+        endEffector.arm(0.44);
+        endEffector.wrist(0.11);
+        endEffector.turret(0.55);
+        ClawOpen();
+    }
+    public void AutoSampleHoverForLastThing() {
+        boxtube.setPivot(pivotHorizontal);
+        endEffector.hand(0.485);
+        endEffector.arm(0.46);
+        endEffector.wrist(0.14);
+        endEffector.turret(0.55);
+        ClawOpen();
+    }
+
     public void InitPosition() {
         boxtube.setExt(minExtension);
         boxtube.setPivot(420);
@@ -213,15 +231,27 @@ public class Robot {
                 else if (cp.thresholdPixelError >=  Math.abs(tp.error)){
                     Camerastate = AutoAlignstates.HAND_ALIGN;
                 }
-
+                AutoAlign = false;
                 break;
             case HAND_ALIGN:
-                hp.HandAngle = 180 - pipeline.getDetectedAngle()+90;
-                endEffector.hand(ServoRegulizer(hp.MStandard*(hp.HandAngle) + hp.BStandard));
-                Camerastate = AutoAlignstates.PICK_UP;
+                if(!AutoAlign) {
+                    hp.HandAngle = 180 - pipeline.getDetectedAngle() + 90;
+                    endEffector.hand(ServoRegulizer(hp.MStandard * (hp.HandAngle) + hp.BStandard));
+                    Camerastate = AutoAlignstates.PICK_UP;
+                }
+                AutoAlign = true;
                 break;
         }//switch case end
     }//method end
+
+
+    public void SampleGrabAuto() {
+        endEffector.arm(0.52);
+        endEffector.wrist(0.18);
+        tp.TurretAngle = (endEffector.Turret.getPosition() - tp.BStandard)*tp.MStandard;
+        endEffector.hand(ServoRegulizer(hp.MStandard * (-tp.TurretAngle) + hp.BStandard));
+    }
+
 
 
 
@@ -252,23 +282,13 @@ public class Robot {
 
 
 
+
+
+
+
     //SAMPLE METHODS START HERE
 
-    public void AutoSampleHover() {
-        boxtube.setPivot(pivotHorizontal);
-        endEffector.arm(0.46);
-        endEffector.wrist(0.14);
-        endEffector.turret(0.55);
-        ClawOpen();
-    }
-    public void AutoSampleHoverForLastThing() {
-        boxtube.setPivot(pivotHorizontal);
-        endEffector.hand(0.485);
-        endEffector.arm(0.46);
-        endEffector.wrist(0.14);
-        endEffector.turret(0.55);
-        ClawOpen();
-    }
+
 
 
     public void SampleHover() {
