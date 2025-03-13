@@ -1,5 +1,6 @@
 package opmode.Autons;
 
+import com.acmerobotics.dashboard.config.Config;
 import com.pedropathing.follower.Follower;
 import com.pedropathing.localization.Pose;
 import com.pedropathing.pathgen.BezierCurve;
@@ -20,13 +21,23 @@ import Subsystems.Robot;
 import pedroPathing.constants.FConstants;
 import pedroPathing.constants.LConstants;
 
-@Autonomous(name = "5 + 1")
-public class FiveNWunCFCRUSH extends LinearOpMode {
+@Autonomous(name = "5 Specimen WORKING")
+@Config
+public class FiveWorkingCFCRUSH extends LinearOpMode {
     public  static Follower follower;
     public boolean pathDone = false;
     public boolean prevPathDone = false, CountDone = false;
     Robot r;
     Boxtube boxtube;
+
+    public static double posP1 = 24;
+    public static double posP2 = 24.5;
+    public static double posP3 = 26.5;
+    public static double posP4 = 26.5;
+    public static double posP5 = 26.5;
+
+    public static double posScore = 38;
+
     EndEffector endEffector;
     int SpeciminCount = 1;
     PathChain Preload,
@@ -154,7 +165,6 @@ public class FiveNWunCFCRUSH extends LinearOpMode {
 
                 case Pickup1:
                     if (!follower.isBusy()) {
-                        follower.followPath(Pickup1);
                         setPathState(PathStates.WallPickup);
                     }
                     break;
@@ -280,7 +290,7 @@ public class FiveNWunCFCRUSH extends LinearOpMode {
         PrePush1 = follower.pathBuilder()
                 .addPath(
                         new BezierCurve(
-                                new Point(43.000, 73.000, Point.CARTESIAN),
+                                new Point(38.000, 73.000, Point.CARTESIAN),
                                 new Point(2.065, 20.387, Point.CARTESIAN),
                                 new Point(72.774, 44.645, Point.CARTESIAN),
                                 new Point(70.968, 22.194, Point.CARTESIAN),
@@ -346,43 +356,43 @@ public class FiveNWunCFCRUSH extends LinearOpMode {
                 .addPath(
                         new BezierLine(
                                 new Point(57.000, 9.000, Point.CARTESIAN),
-                                new Point(35.000, 9.000, Point.CARTESIAN)
+                                new Point(posP1, 9.000, Point.CARTESIAN)
                         )
                 )
                 .setConstantHeadingInterpolation(Math.toRadians(180))
                 .setZeroPowerAccelerationMultiplier(4)
                 .build();
 
-        Pickup1 = follower.pathBuilder()
-                .addPath(
-                        new BezierLine(
-                                new Point(35.000, 9.000, Point.CARTESIAN),
-                                new Point(23.000, 9.000, Point.CARTESIAN)
-                        )
-                )
-                .setConstantHeadingInterpolation(Math.toRadians(180))
-                .setZeroPowerAccelerationMultiplier(0.75)
-                .build();
+//        Pickup1 = follower.pathBuilder()
+//                .addPath(
+//                        new BezierLine(
+//                                new Point(35.000, 9.000, Point.CARTESIAN),
+//                                new Point(posP1, 9.000, Point.CARTESIAN)
+//                        )
+//                )
+//                .setConstantHeadingInterpolation(Math.toRadians(180))
+//                .setZeroPowerAccelerationMultiplier(4)
+//                .build();
 
         Score1 = follower.pathBuilder()
                 .addPath(
                         new BezierCurve(
-                                new Point(24.500, 9.000, Point.CARTESIAN),
+                                new Point(posP1, 9.000, Point.CARTESIAN),
                                 new Point(12.903, 62.000, Point.CARTESIAN),
-                                new Point(38.000, 69.2500, Point.CARTESIAN)
+                                new Point(posScore, 69.2500, Point.CARTESIAN)
                         )
                 )
                 .setConstantHeadingInterpolation(Math.toRadians(180))
-                .setZeroPowerAccelerationMultiplier(2)
+                .setZeroPowerAccelerationMultiplier(3.5)
                 .build();
 
         Pickup2 = follower.pathBuilder()
                 .addPath(
                         new BezierCurve(
-                                new Point(38.000, 69.250, Point.CARTESIAN),
+                                new Point(posScore, 69.250, Point.CARTESIAN),
                                 new Point(16.774, 69.258, Point.CARTESIAN),
                                 new Point(54.000, 33.500, Point.CARTESIAN),
-                                new Point(24.500, 33.500, Point.CARTESIAN)
+                                new Point(posP2, 33.500, Point.CARTESIAN)
                         )
                 )
                 .setConstantHeadingInterpolation(Math.toRadians(180))
@@ -392,22 +402,23 @@ public class FiveNWunCFCRUSH extends LinearOpMode {
         Score2 = follower.pathBuilder()
                 .addPath(
                         new BezierCurve(
-                                new Point(24.500, 33.500, Point.CARTESIAN),
+                                new Point(posP2, 33.500, Point.CARTESIAN),
                                 new Point(12.903, 62.000, Point.CARTESIAN),
-                                new Point(38.500, 71.000, Point.CARTESIAN)
+                                new Point(posScore, 71.000, Point.CARTESIAN)
                         )
                 )
                 .setConstantHeadingInterpolation(Math.toRadians(180))
-                .setZeroPowerAccelerationMultiplier(2)
+                .setZeroPowerAccelerationMultiplier(3.5)
+
                 .build();
 
         Pickup3 = follower.pathBuilder()
                 .addPath(
                         new BezierCurve(
-                                new Point(38.500, 71.000, Point.CARTESIAN),
+                                new Point(posScore, 71.000, Point.CARTESIAN),
                                 new Point(16.774, 72.258, Point.CARTESIAN),
                                 new Point(54.000, 33.5, Point.CARTESIAN),
-                                new Point(26.5000, 33.500, Point.CARTESIAN)
+                                new Point(posP3, 33.500, Point.CARTESIAN)
                         )
                 )
                 .setConstantHeadingInterpolation(Math.toRadians(180))
@@ -417,22 +428,22 @@ public class FiveNWunCFCRUSH extends LinearOpMode {
         Score3 = follower.pathBuilder()
                 .addPath(
                         new BezierCurve(
-                                new Point(26.5000, 33.500, Point.CARTESIAN),
+                                new Point(posP3, 33.500, Point.CARTESIAN),
                                 new Point(12.903, 62.000, Point.CARTESIAN),
-                                new Point(38.500, 70.000, Point.CARTESIAN)
+                                new Point(posScore, 70.000, Point.CARTESIAN)
                         )
                 )
                 .setConstantHeadingInterpolation(Math.toRadians(180))
-                .setZeroPowerAccelerationMultiplier(2)
+                .setZeroPowerAccelerationMultiplier(3.5)
                 .build();
 
         Pickup4 = follower.pathBuilder()
                 .addPath(
                         new BezierCurve(
-                                new Point(38.500, 70.000, Point.CARTESIAN),
-                                    new Point(16.774, 72.258, Point.CARTESIAN),
+                                new Point(posScore, 70.000, Point.CARTESIAN),
+                                new Point(16.774, 72.258, Point.CARTESIAN),
                                 new Point(54.000, 33.5, Point.CARTESIAN),
-                                new Point(26.5000, 33.500, Point.CARTESIAN)
+                                new Point(posP4, 33.500, Point.CARTESIAN)
                         )
                 )
                 .setConstantHeadingInterpolation(Math.toRadians(180))
@@ -442,21 +453,21 @@ public class FiveNWunCFCRUSH extends LinearOpMode {
         Score4 = follower.pathBuilder()
                 .addPath(
                         new BezierCurve(
-                                new Point(26.5000, 33.500, Point.CARTESIAN),
+                                new Point(posP4, 33.500, Point.CARTESIAN),
                                 new Point(12.903, 62.000, Point.CARTESIAN),
-                                new Point(43.000, 75.000, Point.CARTESIAN)
+                                new Point(posScore, 75.000, Point.CARTESIAN)
                         )
                 )
                 .setConstantHeadingInterpolation(Math.toRadians(180))
-                .setZeroPowerAccelerationMultiplier(2)
+                .setZeroPowerAccelerationMultiplier(3.5)
                 .build();
         Pickup5 = follower.pathBuilder()
                 .addPath(
                         new BezierCurve(
-                                new Point(43.500, 75.000, Point.CARTESIAN),
+                                new Point(posScore, 75.000, Point.CARTESIAN),
                                 new Point(16.774, 72.258, Point.CARTESIAN),
                                 new Point(54.000, 33.5, Point.CARTESIAN),
-                                new Point(26.5000, 33.500, Point.CARTESIAN)
+                                new Point(posP5, 33.500, Point.CARTESIAN)
                         )
                 )
                 .setConstantHeadingInterpolation(Math.toRadians(180))
@@ -465,7 +476,7 @@ public class FiveNWunCFCRUSH extends LinearOpMode {
           ScoreSample = follower.pathBuilder()
                 .addPath(
                         new BezierLine(
-                                new Point(26.500, 33.500, Point.CARTESIAN),
+                                new Point(posP5, 33.500, Point.CARTESIAN),
                                 new Point(12.129, 125.677, Point.CARTESIAN)
                         )
                 )

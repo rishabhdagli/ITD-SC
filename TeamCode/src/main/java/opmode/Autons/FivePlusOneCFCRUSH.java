@@ -1,7 +1,6 @@
 package opmode.Autons;
 
-import android.widget.GridLayout;
-
+import com.acmerobotics.dashboard.config.Config;
 import com.pedropathing.follower.Follower;
 import com.pedropathing.localization.Pose;
 import com.pedropathing.pathgen.BezierCurve;
@@ -17,20 +16,28 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 import java.util.concurrent.TimeUnit;
 
 import Subsystems.Boxtube;
-import Subsystems.Drivetrain;
 import Subsystems.EndEffector;
 import Subsystems.Robot;
 import pedroPathing.constants.FConstants;
 import pedroPathing.constants.LConstants;
 
-@Autonomous(name = "5 Specimen")
-public class FiveSpecCFCRUSH extends LinearOpMode {
+@Autonomous(name = "5 + 1")
+@Config
+public class FivePlusOneCFCRUSH extends LinearOpMode {
     public  static Follower follower;
     public boolean pathDone = false;
-    public boolean prevPathDone = false, CountDone = false, addOffset, minusOffset;
-    public double offset = 0;
+    public boolean prevPathDone = false, CountDone = false;
     Robot r;
     Boxtube boxtube;
+
+    public static double posP1 = 24;
+    public static double posP2 = 24.5;
+    public static double posP3 = 26.5;
+    public static double posP4 = 26.5;
+    public static double posP5 = 26.5;
+
+    public static double posScore = 38;
+
     EndEffector endEffector;
     int SpeciminCount = 1;
     PathChain Preload,
@@ -48,6 +55,8 @@ public class FiveSpecCFCRUSH extends LinearOpMode {
             Score2,
             Score3,
             Score4,
+            Pickup5,
+            ScoreSample,
             Park;
     PathStates currentPathState, lastPathState;
     private Timer pathTimer = new Timer();
@@ -72,7 +81,6 @@ public class FiveSpecCFCRUSH extends LinearOpMode {
 
         r = new Robot(hardwareMap);
 
-
         follower = new Follower(hardwareMap);
         follower.setStartingPose(new Pose(11.500,54.000, Math.toRadians(180)));
         buildPaths();
@@ -85,30 +93,7 @@ public class FiveSpecCFCRUSH extends LinearOpMode {
         while (opModeInInit()) {
             r.boxtube.update();
             follower.update();
-            if(gamepad2.dpad_up){addOffset = true;}
-            if(gamepad2.dpad_down){minusOffset = true;}
-
-            if(!gamepad2.dpad_up && addOffset){
-                offset++;
-                addOffset = false;
-                buildPaths();
-            }
-            if(!gamepad2.dpad_down && minusOffset){
-              offset--;
-                minusOffset = false;
-               buildPaths();
-            }
-
-            telemetry.addData("offset value:", offset);
-            telemetry.addLine("D-Pad up - Oncrease dist between the sub and wall");
-            telemetry.addLine("D-Pad down - Decrease dist between the sub and wall");
-            telemetry.addData("Starting Pose X", follower.getPose().getX());
-            telemetry.addData("Starting Pose Y", follower.getPose().getY());
-            telemetry.addData("Starting Pose Heading", follower.getPose().getHeading());
-            telemetry.update();
-        } //opmode initn
-
-
+        }
 
         waitForStart();
 
@@ -139,7 +124,7 @@ public class FiveSpecCFCRUSH extends LinearOpMode {
                         r.SpecimenPostScore();
                         follower.followPath(PrePush1);
                         setPathState(PathStates.Push1);
-                        }
+                    }
                     break;
 
                 case Push1:
@@ -180,7 +165,6 @@ public class FiveSpecCFCRUSH extends LinearOpMode {
 
                 case Pickup1:
                     if (!follower.isBusy()) {
-                        follower.followPath(Pickup1);
                         setPathState(PathStates.WallPickup);
                     }
                     break;
@@ -194,9 +178,11 @@ public class FiveSpecCFCRUSH extends LinearOpMode {
                         //moves pivot back
                         if (actionTimer.time() < 0.2) {
                             r.SpecimenWallGrab();
-                        } else if (actionTimer.time() < 0.4) {
+                        }
+                        else if (actionTimer.time() < 0.4) {
                             r.SpecimenWallUp();
-                        } else if (actionTimer.time() < 0.55) {
+                        }
+                        else if (actionTimer.time() < 0.55) {
                             r.SpecimenPreScore();
                             switch (SpeciminCount) {
                                 case 1:
@@ -213,11 +199,12 @@ public class FiveSpecCFCRUSH extends LinearOpMode {
                                     break;
                                 case 4:
                                     follower.followPath(Score4);
-                                    setPathState(PathStates.SCORING);
+                                    setPathState(PathStates.Score2);
                                     break;
                             }
                             telemetry.addData("Path:", follower.getCurrentPath().toString());
-                        } else {
+                        }
+                        else {
                             r.SpecimenPreScore(); //Parrelel action
                         }
 
@@ -252,13 +239,43 @@ public class FiveSpecCFCRUSH extends LinearOpMode {
                                     follower.followPath(Pickup4);
                                     setPathState(PathStates.WallPickup);
                                     break;
+                                case 5:
+                                    follower.followPath(Pickup5);
+                                    setPathState(PathStates.SamplePickup);
+                                    break;
                             }
                         }
-                        //gets ready for pick up
                     }
-
                     break;
 
+                case SamplePickup:
+                    if(!follower.isBusy()){
+                        resetActionTimer();
+                        if (actionTimer.time() < 0.2) {
+                            r.SpecimenWallGrab();
+                        }
+                        else if (actionTimer.time() < 0.4) {
+                            r.SpecimenWallUp();
+                        }
+                        else if (actionTimer.time() < 0.55) {
+                            r.PivotBack();
+                        }
+                        follower.followPath(ScoreSample);
+                        setPathState(PathStates.SampleScore);
+                    }
+                case SampleScore:
+                    r.PivotBack();
+                    if(!follower.isBusy()){
+                        resetActionTimer();
+                        if(actionTimer.time() < 1){
+                            r.BasketExtension();
+                        } else if (actionTimer.time() < 1.3) {
+                            r.BasketScore();
+                        } else if (actionTimer.time() < 1.9) {
+                            r.BasketReturn();
+                        }
+
+                    }
                 case End:
                 default:
                     if (!follower.isBusy()) {
@@ -285,7 +302,7 @@ public class FiveSpecCFCRUSH extends LinearOpMode {
         PrePush1 = follower.pathBuilder()
                 .addPath(
                         new BezierCurve(
-                                new Point(43.000, 73.000, Point.CARTESIAN),
+                                new Point(38.000, 73.000, Point.CARTESIAN),
                                 new Point(2.065, 20.387, Point.CARTESIAN),
                                 new Point(72.774, 44.645, Point.CARTESIAN),
                                 new Point(70.968, 22.194, Point.CARTESIAN),
@@ -293,6 +310,7 @@ public class FiveSpecCFCRUSH extends LinearOpMode {
                         )
                 )
                 .setConstantHeadingInterpolation(Math.toRadians(180))
+                .setPathEndTimeoutConstraint(0)
                 .build();
 
         Push1 = follower.pathBuilder()
@@ -303,6 +321,8 @@ public class FiveSpecCFCRUSH extends LinearOpMode {
                         )
                 )
                 .setConstantHeadingInterpolation(Math.toRadians(180))
+                .setZeroPowerAccelerationMultiplier(8)
+                .setPathEndTimeoutConstraint(0)
                 .build();
 
         PrePush2 = follower.pathBuilder()
@@ -315,6 +335,8 @@ public class FiveSpecCFCRUSH extends LinearOpMode {
                         )
                 )
                 .setConstantHeadingInterpolation(Math.toRadians(180))
+                .setZeroPowerAccelerationMultiplier(8)
+                .setPathEndTimeoutConstraint(0)
                 .build();
 
         Push2 = follower.pathBuilder()
@@ -325,6 +347,8 @@ public class FiveSpecCFCRUSH extends LinearOpMode {
                         )
                 )
                 .setConstantHeadingInterpolation(Math.toRadians(180))
+                .setZeroPowerAccelerationMultiplier(8)
+                .setPathEndTimeoutConstraint(0)
                 .build();
 
         PrePush3 = follower.pathBuilder()
@@ -332,77 +356,81 @@ public class FiveSpecCFCRUSH extends LinearOpMode {
                         new BezierCurve(
                                 new Point(24.000, 18.000, Point.CARTESIAN),
                                 new Point(57.000, 18.000, Point.CARTESIAN),
-                                new Point(57.000, 7.000, Point.CARTESIAN)
+                                new Point(57.000, 9.000, Point.CARTESIAN)
                         )
                 )
                 .setConstantHeadingInterpolation(Math.toRadians(180))
+                .setZeroPowerAccelerationMultiplier(8)
+                .setPathEndTimeoutConstraint(0)
                 .build();
 
         Push3 = follower.pathBuilder()
                 .addPath(
                         new BezierLine(
-                                new Point(57.000, 7.000, Point.CARTESIAN),
-                                new Point(35.000, 7.000, Point.CARTESIAN)
+                                new Point(57.000, 9.000, Point.CARTESIAN),
+                                new Point(posP1, 9.000, Point.CARTESIAN)
                         )
                 )
                 .setConstantHeadingInterpolation(Math.toRadians(180))
+                .setZeroPowerAccelerationMultiplier(4)
                 .build();
 
-        Pickup1 = follower.pathBuilder()
-                .addPath(
-                        new BezierLine(
-                                new Point(35.000, 7.000, Point.CARTESIAN),
-                                new Point(21.000+offset, 7.000, Point.CARTESIAN)
-                        )
-                )
-                .setConstantHeadingInterpolation(Math.toRadians(180))
-                .setZeroPowerAccelerationMultiplier(1)
-                .build();
+//        Pickup1 = follower.pathBuilder()
+//                .addPath(
+//                        new BezierLine(
+//                                new Point(35.000, 9.000, Point.CARTESIAN),
+//                                new Point(posP1, 9.000, Point.CARTESIAN)
+//                        )
+//                )
+//                .setConstantHeadingInterpolation(Math.toRadians(180))
+//                .setZeroPowerAccelerationMultiplier(4)
+//                .build();
 
         Score1 = follower.pathBuilder()
                 .addPath(
                         new BezierCurve(
-                                new Point(24.500, 7.000, Point.CARTESIAN),
+                                new Point(posP1, 9.000, Point.CARTESIAN),
                                 new Point(12.903, 62.000, Point.CARTESIAN),
-                                new Point(38.000, 69.2500, Point.CARTESIAN)
+                                new Point(posScore, 69.2500, Point.CARTESIAN)
                         )
                 )
                 .setConstantHeadingInterpolation(Math.toRadians(180))
-                .setZeroPowerAccelerationMultiplier(2)
+                .setZeroPowerAccelerationMultiplier(3.5)
                 .build();
 
         Pickup2 = follower.pathBuilder()
                 .addPath(
                         new BezierCurve(
-                                new Point(38.000, 69.250, Point.CARTESIAN),
+                                new Point(posScore, 69.250, Point.CARTESIAN),
                                 new Point(16.774, 69.258, Point.CARTESIAN),
                                 new Point(54.000, 33.500, Point.CARTESIAN),
-                                new Point(22.500+offset, 33.500, Point.CARTESIAN)
-                        )
-                )
-                .setConstantHeadingInterpolation(Math.toRadians(180))
-                .setZeroPowerAccelerationMultiplier(2.5)
-                .build();
-
-        Score2 = follower.pathBuilder()
-                .addPath(
-                        new BezierCurve(
-                                new Point(24.500, 33.500, Point.CARTESIAN),
-                                new Point(12.903, 62.000, Point.CARTESIAN),
-                                new Point(38.500, 71.000, Point.CARTESIAN)
+                                new Point(posP2, 33.500, Point.CARTESIAN)
                         )
                 )
                 .setConstantHeadingInterpolation(Math.toRadians(180))
                 .setZeroPowerAccelerationMultiplier(2)
                 .build();
 
+        Score2 = follower.pathBuilder()
+                .addPath(
+                        new BezierCurve(
+                                new Point(posP2, 33.500, Point.CARTESIAN),
+                                new Point(12.903, 62.000, Point.CARTESIAN),
+                                new Point(posScore, 71.000, Point.CARTESIAN)
+                        )
+                )
+                .setConstantHeadingInterpolation(Math.toRadians(180))
+                .setZeroPowerAccelerationMultiplier(3.5)
+
+                .build();
+
         Pickup3 = follower.pathBuilder()
                 .addPath(
                         new BezierCurve(
-                                new Point(38.500, 71.000, Point.CARTESIAN),
+                                new Point(posScore, 71.000, Point.CARTESIAN),
                                 new Point(16.774, 72.258, Point.CARTESIAN),
                                 new Point(54.000, 33.5, Point.CARTESIAN),
-                                new Point(26.5000+offset, 33.500, Point.CARTESIAN)
+                                new Point(posP3, 33.500, Point.CARTESIAN)
                         )
                 )
                 .setConstantHeadingInterpolation(Math.toRadians(180))
@@ -412,22 +440,22 @@ public class FiveSpecCFCRUSH extends LinearOpMode {
         Score3 = follower.pathBuilder()
                 .addPath(
                         new BezierCurve(
-                                new Point(26.5000, 33.500, Point.CARTESIAN),
+                                new Point(posP3, 33.500, Point.CARTESIAN),
                                 new Point(12.903, 62.000, Point.CARTESIAN),
-                                new Point(38.500, 70.000, Point.CARTESIAN)
+                                new Point(posScore, 70.000, Point.CARTESIAN)
                         )
                 )
                 .setConstantHeadingInterpolation(Math.toRadians(180))
-                .setZeroPowerAccelerationMultiplier(2)
+                .setZeroPowerAccelerationMultiplier(3.5)
                 .build();
 
         Pickup4 = follower.pathBuilder()
                 .addPath(
                         new BezierCurve(
-                                new Point(38.500, 70.000, Point.CARTESIAN),
-                                    new Point(16.774, 72.258, Point.CARTESIAN),
+                                new Point(posScore, 70.000, Point.CARTESIAN),
+                                new Point(16.774, 72.258, Point.CARTESIAN),
                                 new Point(54.000, 33.5, Point.CARTESIAN),
-                                new Point(26.5000+offset, 33.500, Point.CARTESIAN)
+                                new Point(posP4, 33.500, Point.CARTESIAN)
                         )
                 )
                 .setConstantHeadingInterpolation(Math.toRadians(180))
@@ -437,13 +465,34 @@ public class FiveSpecCFCRUSH extends LinearOpMode {
         Score4 = follower.pathBuilder()
                 .addPath(
                         new BezierCurve(
-                                new Point(26.5000, 33.500, Point.CARTESIAN),
+                                new Point(posP4, 33.500, Point.CARTESIAN),
                                 new Point(12.903, 62.000, Point.CARTESIAN),
-                                new Point(43.000, 75.000, Point.CARTESIAN)
+                                new Point(posScore, 75.000, Point.CARTESIAN)
                         )
                 )
                 .setConstantHeadingInterpolation(Math.toRadians(180))
-                .setZeroPowerAccelerationMultiplier(2)
+                .setZeroPowerAccelerationMultiplier(3.5)
+                .build();
+        Pickup5 = follower.pathBuilder()
+                .addPath(
+                        new BezierCurve(
+                                new Point(posScore, 75.000, Point.CARTESIAN),
+                                new Point(16.774, 72.258, Point.CARTESIAN),
+                                new Point(54.000, 33.5, Point.CARTESIAN),
+                                new Point(posP5, 33.500, Point.CARTESIAN)
+                        )
+                )
+                .setConstantHeadingInterpolation(Math.toRadians(180))
+                .setZeroPowerAccelerationMultiplier(3)
+                .build();
+        ScoreSample = follower.pathBuilder()
+                .addPath(
+                        new BezierLine(
+                                new Point(posP5, 33.500, Point.CARTESIAN),
+                                new Point(12.129, 125.677, Point.CARTESIAN)
+                        )
+                )
+                .setLinearHeadingInterpolation(Math.toRadians(180), Math.toRadians(315))
                 .build();
         Park = follower.pathBuilder()
                 .addPath(
@@ -457,6 +506,6 @@ public class FiveSpecCFCRUSH extends LinearOpMode {
     }
 
     enum PathStates {
-        DriveToPreloadScoringPosition, ScorePreload, PrePush2, PrePush3, Push1, Push2, Push3, Pickup1, SCORING, Pickup3, Pickup4, WallPickup, Score2, Score3, Score4, Park, End, WAIT1
+        Pickup5,SamplePickup,SampleScore, DriveToPreloadScoringPosition, ScorePreload, PrePush2, PrePush3, Push1, Push2, Push3, Pickup1, SCORING, Pickup3, Pickup4, WallPickup, Score2, Score3, Score4, Park, End, WAIT1
     }
 }
