@@ -121,7 +121,7 @@ public class SampleAuto extends LinearOpMode {
                         resetActionTimer();
                         if (actionTimer.getElapsedTimeSeconds() < 1)
                         {
-                            r.AutoSampleHover();
+//                            r.AutoSampleHover();
                         }
                         else if (actionTimer.getElapsedTimeSeconds() < 2)
                         {
@@ -169,7 +169,7 @@ public class SampleAuto extends LinearOpMode {
                         resetActionTimer();
                         if (actionTimer.getElapsedTimeSeconds() < 1)
                         {
-                            r.AutoSampleHover();
+//                            r.AutoSampleHover();
                         }
                         else if (actionTimer.getElapsedTimeSeconds() < 2)
                         {
@@ -217,7 +217,7 @@ public class SampleAuto extends LinearOpMode {
                         resetActionTimer();
                         if (actionTimer.getElapsedTimeSeconds() < 1)
                         {
-                            r.AutoSampleHover();
+//                            r.AutoSampleHover();
                         }
                         else if (actionTimer.getElapsedTimeSeconds() < 2)
                         {

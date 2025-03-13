@@ -272,8 +272,7 @@ public class Robot {
         double JoystickIncrement = 0;
         boxtube.setPivot(pivotHorizontal);
         endEffector.arm(0.46);
-        endEffector.wrist(0.15);
-        endEffector.turret(0.55);
+        endEffector.wrist(0.11);
 
 
         ClawOpen();
@@ -301,7 +300,8 @@ public class Robot {
 
         if (!gamepadOperator.triangle && wasPressedTriangle) {
             horizontal = !horizontal;
-            hand = (horizontal)? 0.5 : 0.17;
+            //hand = (horizontal)? 0.5:0.17;
+            hp.HandAngle = (horizontal)? 90 : 180;
             wasPressedTriangle = false;
         }
         if (!gamepadOperator.dpad_down && minExtendSubPressed) {
@@ -325,45 +325,44 @@ public class Robot {
         }
 
         if (!gamepadOperator.left_bumper && wasPressedL) {
-           hand+=0.1;
+          // hand+=0.1;
+            hp.HandAngle +=30;
             wasPressedL = false;
         }
         if (!gamepadOperator.right_bumper && wasPressedR) {
-           hand-=0.1;
+           //hand-=0.1;
+            hp.HandAngle -=30;
             wasPressedR = false;
         }
             JoystickIncrement = MainTele.JoyStickInc *gamepadOperator.left_stick_y;
         //boxutbe adjustment
 
-        double turretAngleLeft = gamepadOperator.left_trigger * 20;
-        double turretAngleRight = gamepadOperator.left_trigger * -20;
-        if(turretAngleLeft > 0 ){
-        endEffector.turret(tp.MStandard*turretAngleLeft + tp.BStandard);
-            endEffector.hand(hand+hp.MStandard*(turretAngleLeft));
 
-        }
-        else if (turretAngleRight > 0) {
-            endEffector.turret(tp.MStandard*turretAngleRight + tp.BStandard);
-            endEffector.hand(hand+hp.MStandard*(turretAngleRight));
-        }
-        else{
-            endEffector.turret(0.55);
-            endEffector.hand(hand);
+        hand = ServoRegulizer(hp.MStandard*(hp.HandAngle - tp.TurretAngle) + hp.BStandard); //getting the angle
 
+
+       if(Math.abs(gamepadOperator.left_trigger) > 0){
+           tp.TurretAngle = 90 + gamepadOperator.left_trigger * 30; //freecking wire offset
+       }
+       if (Math.abs(gamepadOperator.right_trigger) > 0){
+           tp.TurretAngle = 90 + gamepadOperator.right_trigger * -20;
         }
 
 
+        endEffector.turret(tp.MStandard*(tp.TurretAngle)+tp.BStandard);
 
+        endEffector.hand(hand);
 
-        boxtube.setExt(currentExtension-= JoystickIncrement);
+       boxtube.setExt(currentExtension-= JoystickIncrement);
 
         //Add stuff to move extension + hand stuff using new .copy() method
     }
 
     public void SampleGrab() {
-        endEffector.arm(0.53);
-        endEffector.wrist(0.2);
+        endEffector.arm(0.50);
+        endEffector.wrist(0.15);
     }
+
 
 
 
