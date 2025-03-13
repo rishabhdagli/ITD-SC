@@ -248,8 +248,11 @@ public class Robot {
     public void SampleGrabAuto() {
         endEffector.arm(0.52);
         endEffector.wrist(0.18);
-        tp.TurretAngle = (endEffector.Turret.getPosition() - tp.BStandard)*tp.MStandard;
-        endEffector.hand(ServoRegulizer(hp.MStandard * (-tp.TurretAngle) + hp.BStandard));
+        if(AutoAlign){
+            tp.TurretAngle = (endEffector.Turret.getPosition() - tp.BStandard)*tp.MStandard;
+            endEffector.hand(ServoRegulizer(hp.MStandard * (-tp.TurretAngle) + hp.BStandard));
+        }
+      AutoAlign = false;
     }
 
 
@@ -413,7 +416,7 @@ public class Robot {
     }
 
     public void BasketScore() {
-
+    tp.TurretAngle = 90;
         ClawOpen();
         endEffector.arm(0.5);
         endEffector.hand(0.485);
