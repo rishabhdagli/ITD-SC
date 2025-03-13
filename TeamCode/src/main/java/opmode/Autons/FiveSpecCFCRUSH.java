@@ -77,35 +77,42 @@ public class FiveSpecCFCRUSH extends LinearOpMode {
 
         follower = new Follower(hardwareMap);
         follower.setStartingPose(new Pose(11.500,54.000, Math.toRadians(180)));
-        buildPaths();
+       // buildPaths();
 
         boxtube = r.boxtube;
         endEffector = r.endEffector;
         actionTimer.time(TimeUnit.SECONDS);
 
         r.InitPosition();
+        buildPaths();
         while (opModeInInit()) {
             r.boxtube.update();
             follower.update();
             if(gamepad2.dpad_up){addOffset = true;}
             if(gamepad2.dpad_down){minusOffset = true;}
+
             if(!gamepad2.dpad_up && addOffset){
                 offset++;
                 addOffset = false;
                 buildPaths();
             }
             if(!gamepad2.dpad_down && minusOffset){
-                offset--;
+              offset--;
                 minusOffset = false;
-                buildPaths();
+               buildPaths();
             }
             if(gamepad1.b){follower.setStartingPose(new Pose(11.500,54.000, Math.toRadians(180)));}
             telemetry.addData("offset value:", offset);
             telemetry.addLine("D-Pad up - Oncrease dist between the sub and wall");
             telemetry.addLine("D-Pad down - Decrease dist between the sub and wall");
             telemetry.addLine("Button B - Reset Pinpoint");
+            telemetry.addData("Starting Pose X", follower.getPose().getX());
+            telemetry.addData("Starting Pose Y", follower.getPose().getY());
+            telemetry.addData("Starting Pose Heading", follower.getPose().getHeading());
             telemetry.update();
-        }
+        } //opmode initn
+
+
 
         waitForStart();
 

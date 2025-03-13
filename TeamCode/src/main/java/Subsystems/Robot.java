@@ -227,7 +227,7 @@ public class Robot {
 
     //Common methods
     public void ClawClose() {
-        endEffector.claw(0.32);
+        endEffector.claw(0.24);
     }
 
     public void ClawOpen() {
@@ -354,8 +354,8 @@ public class Robot {
     }
 
     public void SampleGrab() {
-        endEffector.arm(0.50);
-        endEffector.wrist(0.15);
+        endEffector.arm(0.52);
+        endEffector.wrist(0.18);
     }
 
 
@@ -458,8 +458,8 @@ public class Robot {
         boxtube.setExt(specimenWallExtension);
         boxtube.setPivot(pivotHorizontal);
         endEffector.hand(0.17);
-        endEffector.wrist(0.4);
-        endEffector.arm(0.36);
+        endEffector.wrist(0.45);
+        endEffector.arm(0.32);
         endEffector.turret(0.55);
         ClawClose();
     }
@@ -467,8 +467,8 @@ public class Robot {
         boxtube.setExt(0);
         boxtube.setPivot(pivotHorizontal);
         endEffector.hand(0.17);
-        endEffector.wrist(0.32);
-        endEffector.arm(0.245);
+        endEffector.wrist(0.45);
+        endEffector.arm(0.32);
         endEffector.turret(0.55);
         ClawClose();
     }
@@ -478,8 +478,8 @@ public class Robot {
         boxtube.setPivot(pivotBackPos);
         endEffector.hand(0.8);
         endEffector.turret(0.55);
-        endEffector.arm(0.2);
-        endEffector.wrist(0.2);
+        endEffector.arm(0.23);
+        endEffector.wrist(0.25);
         ClawClose();
     }
 
@@ -488,8 +488,8 @@ public class Robot {
         boxtube.setExt(0);
         endEffector.turret(0.55);
         endEffector.arm(0.23);
-        endEffector.hand(0.8);
-        endEffector.wrist(0.5);
+        endEffector.hand(0.2);
+        endEffector.wrist(0.6);
         boxtube.setPivot(0);
         ClawOpen();
 

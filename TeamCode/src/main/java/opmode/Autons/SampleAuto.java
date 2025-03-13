@@ -108,6 +108,7 @@ public class SampleAuto extends LinearOpMode {
                             r.BasketReturn();
                         } else if (actionTimer.getElapsedTimeSeconds() < 3.5) {
                              r.PivotDown();
+                             r.AutoSampleHover();
                          }
                         if (actionTimer.getElapsedTimeSeconds() >3.5) {
                              follower.followPath(Pickup1);
@@ -121,7 +122,7 @@ public class SampleAuto extends LinearOpMode {
                         resetActionTimer();
                         if (actionTimer.getElapsedTimeSeconds() < 1)
                         {
-//                            r.AutoSampleHover();
+                            r.AutoSampleHover();
                         }
                         else if (actionTimer.getElapsedTimeSeconds() < 2)
                         {
@@ -144,7 +145,7 @@ public class SampleAuto extends LinearOpMode {
                         if ( actionTimer.getElapsedTimeSeconds() < 1) {
                             r.PivotBack();
                         }
-                        if ( actionTimer.getElapsedTimeSeconds() < 2) {
+                        else if ( actionTimer.getElapsedTimeSeconds() < 2) {
                             r.BasketExtension();
                         }
                         else if (actionTimer.getElapsedTimeSeconds() < 2.5) {
@@ -169,7 +170,7 @@ public class SampleAuto extends LinearOpMode {
                         resetActionTimer();
                         if (actionTimer.getElapsedTimeSeconds() < 1)
                         {
-//                            r.AutoSampleHover();
+                            r.AutoSampleHover();
                         }
                         else if (actionTimer.getElapsedTimeSeconds() < 2)
                         {
@@ -217,7 +218,7 @@ public class SampleAuto extends LinearOpMode {
                         resetActionTimer();
                         if (actionTimer.getElapsedTimeSeconds() < 1)
                         {
-//                            r.AutoSampleHover();
+                            r.AutoSampleHover();
                         }
                         else if (actionTimer.getElapsedTimeSeconds() < 2)
                         {
