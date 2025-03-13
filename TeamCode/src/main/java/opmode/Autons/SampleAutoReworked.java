@@ -130,7 +130,7 @@ public class SampleAutoReworked extends LinearOpMode {
                         }
                         else if (actionTimer.getElapsedTimeSeconds() < 3.0)
                         {
-                            r.SampleGrab();
+                            r.SampleGrabAuto();
                         }
                         else if (actionTimer.getElapsedTimeSeconds() < 3.25)
                         {
@@ -182,7 +182,7 @@ public class SampleAutoReworked extends LinearOpMode {
                         }
                         else if (actionTimer.getElapsedTimeSeconds() < 3.0)
                         {
-                            r.SampleGrab();
+                            r.SampleGrabAuto();
                         }
                         else if (actionTimer.getElapsedTimeSeconds() < 3.25)
                         {
