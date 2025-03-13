@@ -59,8 +59,8 @@ For support, contact tech@gobilda.com
 -Ethan Doak
  */
 
-@Disabled
-@TeleOp(name="goBILDA® PinPoint Odometry Example", group="Teleop Test")
+
+@TeleOp(name="Sample Auto Tunner", group="Teleop Test")
 
 public class SensorGoBildaPinpointExample extends LinearOpMode {
 
@@ -115,6 +115,7 @@ public class SensorGoBildaPinpointExample extends LinearOpMode {
          */
         //odo.recalibrateIMU();
         odo.resetPosAndIMU();
+        odo.setPosition(new Pose2D(DistanceUnit.INCH,7,104,AngleUnit.DEGREES,270));
 
         telemetry.addData("Status", "Initialized");
         telemetry.addData("X offset", odo.getXOffset());
