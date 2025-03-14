@@ -124,15 +124,15 @@ public class SampleAutoReworked extends LinearOpMode {
                         {
                             r.AutoSampleHover();
                         }
-                        else if (actionTimer.getElapsedTimeSeconds() < 2.5)
+                        else if (actionTimer.getElapsedTimeSeconds() < 2)
                         {
                             r.AutoAlign();
                         }
-                        else if (actionTimer.getElapsedTimeSeconds() < 3.0)
+                        else if (actionTimer.getElapsedTimeSeconds() < 2.5)
                         {
                             r.SampleGrabAuto();
                         }
-                        else if (actionTimer.getElapsedTimeSeconds() < 3.25)
+                        else if (actionTimer.getElapsedTimeSeconds() < 3)
                         {
                             r.ClawClose();
                         }
@@ -176,19 +176,19 @@ public class SampleAutoReworked extends LinearOpMode {
                         {
                             r.AutoSampleHover();
                         }
-                        else if (actionTimer.getElapsedTimeSeconds() < 4)
+                        else if (actionTimer.getElapsedTimeSeconds() < 2)
                         {
                             r.AutoAlign();
                         }
-                        else if (actionTimer.getElapsedTimeSeconds() < 4.5)
+                        else if (actionTimer.getElapsedTimeSeconds() < 2.5)
                         {
                             r.SampleGrabAuto();
                         }
-                        else if (actionTimer.getElapsedTimeSeconds() < 5.25)
+                        else if (actionTimer.getElapsedTimeSeconds() < 3)
                         {
                             r.ClawClose();
                         }
-                        if (actionTimer.getElapsedTimeSeconds() > 6.00){
+                        if (actionTimer.getElapsedTimeSeconds() > 3.25){
                             r.LoiterSample();
                             follower.followPath(Score2);
                             setPathState(PathStates.PickupThree);
@@ -304,7 +304,7 @@ public class SampleAutoReworked extends LinearOpMode {
                 .addPath(
                         new BezierLine(
                                 new Point(13.000, 130.000, Point.CARTESIAN),
-                                new Point(27.000, 120.7500, Point.CARTESIAN)
+                                new Point(26.000, 120.7500, Point.CARTESIAN)
                         )
                 )
                 .setLinearHeadingInterpolation(Math.toRadians(315), Math.toRadians(0))
@@ -327,7 +327,7 @@ public class SampleAutoReworked extends LinearOpMode {
                 .addPath(
                         new BezierLine(
                                 new Point(14.000, 130.000, Point.CARTESIAN),
-                                new Point(27.000, 131.500, Point.CARTESIAN)
+                                new Point(26.000, 131.500, Point.CARTESIAN)
                         )
                 )
                 .setLinearHeadingInterpolation(Math.toRadians(315), Math.toRadians(0))

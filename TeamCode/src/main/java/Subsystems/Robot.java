@@ -221,25 +221,25 @@ public class Robot {
                 //moving turret
                 else if(cp.thresholdPixelError < Math.abs(tp.error)) {
                     if (tp.error > 0) {
-                        endEffector.turret(endEffector.Turret.getPosition() + tp.ServoGain);
+                        endEffector.turret(endEffector.Turret.getPosition() + tp.ServoGain*1.5);
                     } else if (tp.error < 0) {
-                        endEffector.turret(endEffector.Turret.getPosition() - tp.ServoGain);
+                        endEffector.turret(endEffector.Turret.getPosition() - tp.ServoGain*1.5);
                     }
                 }
 
                 //if in position then move Hand
-                else if (cp.thresholdPixelError >=  Math.abs(tp.error)){
-                    Camerastate = AutoAlignstates.HAND_ALIGN;
-                }
-                AutoAlign = false;
+//                else if (cp.thresholdPixelError >=  Math.abs(tp.error)){
+//                    Camerastate = AutoAlignstates.HAND_ALIGN;
+//                }
+                //AutoAlign = false;
                 break;
-            case HAND_ALIGN:
-                if(!AutoAlign) { //run once
-                    hp.HandAngle = 180 - pipeline.getDetectedAngle() + 90;
-                    endEffector.hand(ServoRegulizer(hp.MStandard * (hp.HandAngle) + hp.BStandard));
-                }
-                AutoAlign = true;
-                break;
+//            case HAND_ALIGN:
+//                if(!AutoAlign) { //run once
+//                    hp.HandAngle = 180 - pipeline.getDetectedAngle() + 90;
+//                    endEffector.hand(ServoRegulizer(hp.MStandard * (hp.HandAngle) + hp.BStandard));
+//                }
+//                AutoAlign = true;
+//                break;
         }//switch case end
     }//method end
 
