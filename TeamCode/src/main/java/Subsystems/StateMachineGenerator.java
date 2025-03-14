@@ -23,8 +23,8 @@ public class StateMachineGenerator {
 
 
                 .state(States.SpecimenWallGrab)   // Grabs the things
-                .onEnter(r::SpecimenWallGrab)
-                .loop(r::SpecimenWallGrab)
+                .onEnter(r::SpecimenWallGrabTele)
+                .loop(r::SpecimenWallGrabTele)
                 .transition(() -> g.x, States.WAIT2)//lift of thing
                 .transition(()-> g.b, States.WAIT6) //escape state
 

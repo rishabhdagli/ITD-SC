@@ -280,7 +280,7 @@ public class FiveWorkingCFCRUSH extends LinearOpMode {
                 .addPath(
                         new BezierLine(
                                 new Point(11.500, 57.000, Point.CARTESIAN),
-                                new Point(38.000, 73.000, Point.CARTESIAN)
+                                new Point(39.000, 73.000, Point.CARTESIAN)
                         )
                 )
                 .setConstantHeadingInterpolation(Math.toRadians(180))
