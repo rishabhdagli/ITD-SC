@@ -37,7 +37,7 @@ public class Robot {
 
 
     //EXTENSION VARIABLES
-    double minExtension = 000, midExtension = 12500, fullExtension = 25000, basketExtension = 56000, specScoreExtension = 15250, currentExtension = minExtension, specimenWallExtension = 15000;
+    double minExtension = 000, midExtension = 12500, fullExtension = 25000, basketExtension = 56000, specScoreExtension = 15250, currentExtension = minExtension, specimenWallExtension = 7000;
 
 
     //For Endeffecotor
