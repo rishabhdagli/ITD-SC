@@ -26,13 +26,17 @@ import pedroPathing.constants.LConstants;
 public class Modifyed5Spec extends LinearOpMode {
     public  static Follower follower;
     public boolean pathDone = false;
+    public boolean dpadEdger = false;
     public boolean prevPathDone = false, CountDone = false;
     Robot r;
     Boxtube boxtube;
 
-    public static double pickupX = 24,pickupY = 33,
-            IncrementScoreY = 2.0,ScoreX = 38, ScoreY = 67,
-    ControlPickupX = 37,ControlPickupY = 33,ControlScoreX = 12.903,ControlScoreY = 62.000;
+    public static double pickupX = 23,pickupY = 33,
+            IncrementScoreY = 2.0,ScoreX = 40, ScoreY = 67, preloadX = 40, sampleScoreY = 124, sampleScoreX = 13,
+    ControlPickupX = 37,ControlPickupY = 36,ControlScoreX = 12.903,ControlScoreY = 62.000;
+    public static double sampleScoreFinalHeading = 300;
+    public static double pushingZpam = 8, pickup1Zpam = 2, pickup3Zpam = 2, pickup4Zpam = 2, pickup5Zpam = 2, score1Zpam = 4, score2Zpam = 4, score3Zpam = 4, score4Zpam = 4, push3Zpam = 4, preloadZpam = 4, incrementPickup1X = -5, sampleScoreZpam = 12;
+    public static double pushingTimeout = 0, pickup1Timeout = 500,pickup3Timeout = 0, pickup4Timeout = 0, pickup5Timeout = 0, score1Timeout = 50, score2Timeout = 50, score3Timeout = 50, score4Timeout = 50, push3Timeout = 300, sampleScoreTimeout = 0;
 
     EndEffector endEffector;
     int SpeciminCount = 1;
@@ -153,7 +157,7 @@ public class Modifyed5Spec extends LinearOpMode {
 
                 case Push3:
                     if (!follower.isBusy()) {
-                        r.SpecimenWall();
+                        r.SpecimenWallPickup1();
                         follower.followPath(Push3);
                         setPathState(PathStates.Pickup1);
                     }
@@ -195,7 +199,11 @@ public class Modifyed5Spec extends LinearOpMode {
                                     break;
                                 case 4:
                                     follower.followPath(Score4);
-                                    setPathState(PathStates.Score2);
+                                    setPathState(PathStates.SCORING);
+                                    break;
+                                case 5:
+//                                    follower.followPath(S);
+//                                  setPathState(PathStates.Park);
                                     break;
                             }
                             telemetry.addData("Path:", follower.getCurrentPath().toString());
@@ -245,21 +253,26 @@ public class Modifyed5Spec extends LinearOpMode {
                     break;
                 case SamplePickup:
                     if(!follower.isBusy()){
-                        follower.followPath(ScoreSample);
+                        resetActionTimer();
+                        if (actionTimer.time() < 0.2) {
+                            r.SpecimenWallGrab();
+                        }
+                        else if (actionTimer.time() < 0.4) {
+                            r.SpecimenWallUpTele();
+                        }
+                        else {
+                            follower.followPath(ScoreSample);
+                            setPathState(PathStates.SampleScore);
+                        }
                     }
+                    break;
                 case SampleScore:
                     r.PivotBack();
+                    if(boxtube.Pivot.getCurrentPosition() < -900){r.BasketExtension();}
                     if(!follower.isBusy()){
-                        resetActionTimer();
-                        if(actionTimer.time() < 1){
-                            r.BasketExtension();
-                        } else if (actionTimer.time() < 1.3) {
-                            r.BasketScore();
-                        } else if (actionTimer.time() < 1.9) {
-                            r.BasketReturn();
-                        }
-
+                        r.BasketScore();
                     }
+                    break;
                 case End:
                 default:
                     if (!follower.isBusy()) {
@@ -276,17 +289,17 @@ public class Modifyed5Spec extends LinearOpMode {
                 .addPath(
                         new BezierLine(
                                 new Point(11.500, 57.000, Point.CARTESIAN),
-                                new Point(39.000, 73.000, Point.CARTESIAN)
+                                new Point(preloadX, 73.000, Point.CARTESIAN)
                         )
                 )
                 .setConstantHeadingInterpolation(Math.toRadians(180))
-                .setZeroPowerAccelerationMultiplier(2)
+                .setZeroPowerAccelerationMultiplier(preloadZpam)
                 .build();
 
         PrePush1 = follower.pathBuilder()
                 .addPath(
                         new BezierCurve(
-                                new Point(38.000, 73.000, Point.CARTESIAN),
+                                new Point(39.000, 73.000, Point.CARTESIAN),
                                 new Point(2.065, 20.387, Point.CARTESIAN),
                                 new Point(72.774, 44.645, Point.CARTESIAN),
                                 new Point(70.968, 22.194, Point.CARTESIAN),
@@ -294,7 +307,7 @@ public class Modifyed5Spec extends LinearOpMode {
                         )
                 )
                 .setConstantHeadingInterpolation(Math.toRadians(180))
-                .setPathEndTimeoutConstraint(0)
+                .setPathEndTimeoutConstraint(pushingTimeout)
                 .build();
 
         Push1 = follower.pathBuilder()
@@ -305,8 +318,8 @@ public class Modifyed5Spec extends LinearOpMode {
                         )
                 )
                 .setConstantHeadingInterpolation(Math.toRadians(180))
-                .setZeroPowerAccelerationMultiplier(8)
-                .setPathEndTimeoutConstraint(0)
+                .setZeroPowerAccelerationMultiplier(pushingZpam)
+                .setPathEndTimeoutConstraint(pushingTimeout)
                 .build();
 
         PrePush2 = follower.pathBuilder()
@@ -319,8 +332,8 @@ public class Modifyed5Spec extends LinearOpMode {
                         )
                 )
                 .setConstantHeadingInterpolation(Math.toRadians(180))
-                .setZeroPowerAccelerationMultiplier(8)
-                .setPathEndTimeoutConstraint(0)
+                .setZeroPowerAccelerationMultiplier(pushingZpam)
+                .setPathEndTimeoutConstraint(pushingTimeout)
                 .build();
 
         Push2 = follower.pathBuilder()
@@ -331,8 +344,8 @@ public class Modifyed5Spec extends LinearOpMode {
                         )
                 )
                 .setConstantHeadingInterpolation(Math.toRadians(180))
-                .setZeroPowerAccelerationMultiplier(8)
-                .setPathEndTimeoutConstraint(0)
+                .setZeroPowerAccelerationMultiplier(pushingZpam)
+                .setPathEndTimeoutConstraint(pushingTimeout)
                 .build();
 
         PrePush3 = follower.pathBuilder()
@@ -340,46 +353,37 @@ public class Modifyed5Spec extends LinearOpMode {
                         new BezierCurve(
                                 new Point(24.000, 18.000, Point.CARTESIAN),
                                 new Point(57.000, 18.000, Point.CARTESIAN),
-                                new Point(57.000, 9.000, Point.CARTESIAN)
+                                new Point(57.000, 10.000, Point.CARTESIAN)
                         )
                 )
                 .setConstantHeadingInterpolation(Math.toRadians(180))
-                .setZeroPowerAccelerationMultiplier(8)
-                .setPathEndTimeoutConstraint(0)
+                .setZeroPowerAccelerationMultiplier(pushingZpam)
+                .setPathEndTimeoutConstraint(pushingTimeout)
                 .build();
 
         Push3 = follower.pathBuilder()
                 .addPath(
                         new BezierLine(
-                                new Point(57.000, 9.000, Point.CARTESIAN),
-                                new Point(pickupX, 9.000, Point.CARTESIAN)
+                                new Point(57.000, 10.000, Point.CARTESIAN),
+                                new Point((pickupX+incrementPickup1X), 10.000, Point.CARTESIAN)
                         )
                 )
                 .setConstantHeadingInterpolation(Math.toRadians(180))
-                .setZeroPowerAccelerationMultiplier(4)
+                .setZeroPowerAccelerationMultiplier(push3Zpam)
+                .setPathEndTimeoutConstraint(push3Timeout)
                 .build();
-
-//        Pickup1 = follower.pathBuilder()
-//                .addPath(
-//                        new BezierLine(
-//                                new Point(35.000, 9.000, Point.CARTESIAN),
-//                                new Point(posP1, 9.000, Point.CARTESIAN)
-//                        )
-//                )
-//                .setConstantHeadingInterpolation(Math.toRadians(180))
-//                .setZeroPowerAccelerationMultiplier(4)
-//                .build();
 
         Score1 = follower.pathBuilder()
                 .addPath(
                         new BezierCurve(
-                                new Point(pickupX, 9.000, Point.CARTESIAN),
+                                new Point((pickupX+incrementPickup1X), 9.500, Point.CARTESIAN),
                                 new Point(ControlScoreX, ControlScoreY, Point.CARTESIAN),
                                 new Point(ScoreX, ScoreY + IncrementScoreY*4, Point.CARTESIAN)
                         )
                 )
                 .setConstantHeadingInterpolation(Math.toRadians(180))
-                .setZeroPowerAccelerationMultiplier(3.5)
+                .setZeroPowerAccelerationMultiplier(score1Zpam)
+                .setPathEndTimeoutConstraint(score1Timeout)
                 .build();
 
         Pickup2 = follower.pathBuilder()
@@ -387,11 +391,12 @@ public class Modifyed5Spec extends LinearOpMode {
                         new BezierCurve(
                                 new Point(ScoreX, ScoreY + IncrementScoreY*4, Point.CARTESIAN),
                                 new Point(ControlPickupX, ControlPickupY, Point.CARTESIAN),
-                                new Point(pickupX, pickupY, Point.CARTESIAN)
+                                new Point((pickupX-2), pickupY, Point.CARTESIAN)
                         )
                 )
                 .setConstantHeadingInterpolation(Math.toRadians(180))
-                .setZeroPowerAccelerationMultiplier(2)
+                .setZeroPowerAccelerationMultiplier(pickup1Zpam)
+                .setPathEndTimeoutConstraint(pickup1Timeout)
                 .build();
 
         Score2 = follower.pathBuilder()
@@ -403,8 +408,8 @@ public class Modifyed5Spec extends LinearOpMode {
                         )
                 )
                 .setConstantHeadingInterpolation(Math.toRadians(180))
-                .setZeroPowerAccelerationMultiplier(3.5)
-
+                .setZeroPowerAccelerationMultiplier(score2Zpam)
+                .setPathEndTimeoutConstraint(score2Timeout)
                 .build();
 
         Pickup3 = follower.pathBuilder()
@@ -416,7 +421,8 @@ public class Modifyed5Spec extends LinearOpMode {
                         )
                 )
                 .setConstantHeadingInterpolation(Math.toRadians(180))
-                .setZeroPowerAccelerationMultiplier(4)
+                .setZeroPowerAccelerationMultiplier(pickup3Zpam)
+                .setPathEndTimeoutConstraint(pickup3Timeout)
                 .build();
 
         Score3 = follower.pathBuilder()
@@ -428,7 +434,8 @@ public class Modifyed5Spec extends LinearOpMode {
                         )
                 )
                 .setConstantHeadingInterpolation(Math.toRadians(180))
-                .setZeroPowerAccelerationMultiplier(3.5)
+                .setZeroPowerAccelerationMultiplier(score3Zpam)
+                .setPathEndTimeoutConstraint(score3Timeout)
                 .build();
 
         Pickup4 = follower.pathBuilder()
@@ -440,7 +447,8 @@ public class Modifyed5Spec extends LinearOpMode {
                         )
                 )
                 .setConstantHeadingInterpolation(Math.toRadians(180))
-                .setZeroPowerAccelerationMultiplier(3)
+                .setZeroPowerAccelerationMultiplier(pickup4Zpam)
+                .setPathEndTimeoutConstraint(pickup4Timeout)
                 .build();
 
         Score4 = follower.pathBuilder()
@@ -452,7 +460,8 @@ public class Modifyed5Spec extends LinearOpMode {
                         )
                 )
                 .setConstantHeadingInterpolation(Math.toRadians(180))
-                .setZeroPowerAccelerationMultiplier(3.5)
+                .setZeroPowerAccelerationMultiplier(score4Zpam)
+                .setPathEndTimeoutConstraint(score4Timeout)
                 .build();
         Pickup5 = follower.pathBuilder()
                 .addPath(
@@ -463,16 +472,19 @@ public class Modifyed5Spec extends LinearOpMode {
                         )
                 )
                 .setConstantHeadingInterpolation(Math.toRadians(180))
-                .setZeroPowerAccelerationMultiplier(3)
+                .setZeroPowerAccelerationMultiplier(pickup5Zpam)
+                .setPathEndTimeoutConstraint(pickup5Timeout)
                 .build();
         ScoreSample = follower.pathBuilder()
                 .addPath(
                         new BezierLine(
                                 new Point(pickupX, pickupY, Point.CARTESIAN),
-                                new Point(12.129, 125.677, Point.CARTESIAN)
+                                new Point(sampleScoreX, sampleScoreY, Point.CARTESIAN)
                         )
                 )
-                .setLinearHeadingInterpolation(Math.toRadians(180), Math.toRadians(315))
+                .setLinearHeadingInterpolation(Math.toRadians(180), Math.toRadians(sampleScoreFinalHeading))
+                .setZeroPowerAccelerationMultiplier(sampleScoreZpam)
+                .setPathEndTimeoutConstraint(sampleScoreTimeout)
                 .build();
         Park = follower.pathBuilder()
                 .addPath(

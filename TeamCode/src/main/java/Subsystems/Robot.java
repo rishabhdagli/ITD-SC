@@ -466,9 +466,20 @@ public class Robot {
     public void SpecimenWall() {
         boxtube.setExt(specimenWallExtension);
         boxtube.setPivot(pivotHorizontal);
-        endEffector.hand(0.16);
-        endEffector.wrist(0.34);
-        endEffector.arm(0.34);
+        endEffector.hand(0.15);
+        endEffector.wrist(0.3);
+        endEffector.arm(0.28);
+        endEffector.turret(0.55);
+        ClawOpenWide();
+
+    }
+
+    public void SpecimenWallPickup1() {
+        boxtube.setExt(specimenWallExtension + 300);
+        boxtube.setPivot(pivotHorizontal);
+        endEffector.hand(0.15);
+        endEffector.wrist(0.3);
+        endEffector.arm(0.28);
         endEffector.turret(0.55);
         ClawOpenWide();
 
@@ -476,9 +487,9 @@ public class Robot {
     public void SpecimenWallTele() {
         boxtube.setExt(0);
         boxtube.setPivot(pivotHorizontal);
-        endEffector.hand(0.16);
-        endEffector.wrist(0.32);
-        endEffector.arm(0.32);
+        endEffector.hand(0.15);
+        endEffector.wrist(0.3);
+        endEffector.arm(0.28);
         endEffector.turret(0.55);
         ClawOpenWide();
 
@@ -522,14 +533,13 @@ public class Robot {
     }
 
     public void SpecimenPostScore() {
-
         boxtube.setExt(0);
         endEffector.turret(0.55);
-        endEffector.arm(0.23);
-        endEffector.hand(0.2);
+        endEffector.arm(0.2);
+        endEffector.hand(0.8);
         endEffector.wrist(0.6);
         boxtube.setPivot(0);
-        ClawOpen();
+        ClawOpenWide();
 
 
     }
