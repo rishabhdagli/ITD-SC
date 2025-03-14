@@ -63,7 +63,7 @@ public class Drivetrain {
 
     public void TeleopControl(double y, double x, double rx) {
         y = -y; // Remember, Y stick value is reversed
-        y = Math.pow(y, 3);
+        //y = Math.pow(y, 3);
         x = Math.pow(x, 3);
         rx = rx;
 
