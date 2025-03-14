@@ -27,6 +27,7 @@ public class Robot {
     //COMMON
     ElapsedTime timer;
     public Drivetrain drive;
+    public double skipoffset = 0.00;
 
 
     //PIVOT VARIABLES
@@ -266,6 +267,9 @@ public class Robot {
     public void ClawOpen() {
         endEffector.claw(0.65);
     }
+    public void ClawOpenWide(){
+        endEffector.claw(0.8);
+    }
 
     public void InsideGrabPecked() {
         endEffector.claw(0.75);
@@ -466,7 +470,7 @@ public class Robot {
         endEffector.wrist(0.34);
         endEffector.arm(0.34);
         endEffector.turret(0.55);
-        ClawOpen();
+        ClawOpenWide();
 
     }
     public void SpecimenWallTele() {
@@ -476,13 +480,16 @@ public class Robot {
         endEffector.wrist(0.32);
         endEffector.arm(0.32);
         endEffector.turret(0.55);
-        ClawOpen();
+        ClawOpenWide();
 
     }
 
     public void SpecimenWallGrab() {
         ClawClose();
-        //drive.SoftReset(); make a teleop version
+    }
+    public void SpecimenWallGrabTele() {
+        ClawClose();
+        drive.SoftReset();
     }
 
     public void SpecimenWallUp() {
@@ -510,7 +517,7 @@ public class Robot {
         endEffector.hand(0.8);
         endEffector.turret(0.55);
         endEffector.arm(0.23);
-        endEffector.wrist(0.25);
+        endEffector.wrist(0.3);
         ClawClose();
     }
 

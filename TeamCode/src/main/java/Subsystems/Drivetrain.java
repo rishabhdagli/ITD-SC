@@ -13,12 +13,14 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.Pose2D;
 
+import opmode.Tunners.WayPointingTuner;
+
 public class Drivetrain {
 
     public DcMotorEx LF,LR,RF,RR;
 
     GoBildaPinpointDriver PinPoint;
-    public static double KpX = -0.15, KpY = -0.4, KpTheta = -0.05, KdX = 0, KdY = 0;
+    public static double KpX = WayPointingTuner.KpX, KpY = WayPointingTuner.KpY, KpTheta = WayPointingTuner.KpTheta, KdX = 0, KdY = 0;
     private double lastErrorx,lastErrory,powerX,powerY;
 
     public Drivetrain(HardwareMap hardwareMap) {
@@ -130,7 +132,7 @@ public class Drivetrain {
     public void Reset(){
         PinPoint.resetPosAndIMU();
     }
-    public void SoftReset(){PinPoint.resetPosAndIMU();}
+    public void SoftReset(){PinPoint.setPosition(new Pose2D(DistanceUnit.INCH,0,0,AngleUnit.DEGREES,0));}
 
 
     public void update(){
