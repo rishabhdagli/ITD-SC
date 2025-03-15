@@ -1,5 +1,6 @@
 package opmode.Autons;
 
+
 import com.acmerobotics.dashboard.config.Config;
 import com.pedropathing.follower.Follower;
 import com.pedropathing.localization.Pose;
@@ -13,13 +14,16 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
+
 import java.util.concurrent.TimeUnit;
+
 
 import Subsystems.Boxtube;
 import Subsystems.EndEffector;
 import Subsystems.Robot;
 import pedroPathing.constants.FConstants;
 import pedroPathing.constants.LConstants;
+
 
 @Autonomous(name = "5 Specimen Smooth")
 @Config
@@ -31,12 +35,14 @@ public class Modifyed5Spec extends LinearOpMode {
     Robot r;
     Boxtube boxtube;
 
+
     public static double pickupX = 23,pickupY = 33,
-            IncrementScoreY = 2.0,ScoreX = 40, ScoreY = 67, preloadX = 40, sampleScoreY = 124, sampleScoreX = 13,
-    ControlPickupX = 37,ControlPickupY = 36,ControlScoreX = 12.903,ControlScoreY = 62.000;
+            IncrementScoreY = 2.0,ScoreX = 38, ScoreY = 67, preloadX = 38, sampleScoreY = 124, sampleScoreX = 13,
+            ControlPickupX = 37,ControlPickupY = 36,ControlScoreX = 12.903,ControlScoreY = 62.000;
     public static double sampleScoreFinalHeading = 300;
     public static double pushingZpam = 8, pickup1Zpam = 2, pickup3Zpam = 2, pickup4Zpam = 2, pickup5Zpam = 2, score1Zpam = 4, score2Zpam = 4, score3Zpam = 4, score4Zpam = 4, push3Zpam = 4, preloadZpam = 4, incrementPickup1X = -5, sampleScoreZpam = 12;
-    public static double pushingTimeout = 0, pickup1Timeout = 500,pickup3Timeout = 0, pickup4Timeout = 0, pickup5Timeout = 0, score1Timeout = 50, score2Timeout = 50, score3Timeout = 50, score4Timeout = 50, push3Timeout = 300, sampleScoreTimeout = 0;
+    public static double pushingTimeout = 350, pickup1Timeout = 300,pickup3Timeout = 100, pickup4Timeout = 100, pickup5Timeout = 100, score1Timeout = 100, score2Timeout = 100, score3Timeout = 100, score4Timeout = 100, push3Timeout = 250, sampleScoreTimeout = 100;
+
 
     EndEffector endEffector;
     int SpeciminCount = 1;
@@ -62,11 +68,13 @@ public class Modifyed5Spec extends LinearOpMode {
     private Timer pathTimer = new Timer();
     private ElapsedTime actionTimer = new ElapsedTime();
 
+
     private void setPathState(PathStates state) {
         currentPathState = state;
         pathTimer.resetTimer();
         pathDone = false;
     }
+
 
     private void resetActionTimer() {
         pathDone = true;
@@ -75,19 +83,24 @@ public class Modifyed5Spec extends LinearOpMode {
         }
     }
 
+
     @Override
     public void runOpMode() throws InterruptedException {
         Constants.setConstants(FConstants.class, LConstants.class);
 
+
         r = new Robot(hardwareMap);
+
 
         follower = new Follower(hardwareMap);
         follower.setStartingPose(new Pose(11.500,54.000, Math.toRadians(180)));
         buildPaths();
 
+
         boxtube = r.boxtube;
         endEffector = r.endEffector;
         actionTimer.time(TimeUnit.SECONDS);
+
 
         r.InitPosition();
         while (opModeInInit()) {
@@ -95,11 +108,14 @@ public class Modifyed5Spec extends LinearOpMode {
             follower.update();
         }
 
+
         waitForStart();
+
 
         currentPathState = PathStates.DriveToPreloadScoringPosition;
         actionTimer.reset();
         pathTimer.resetTimer();
+
 
         while (opModeIsActive()) {
             boxtube.updatePiv();
@@ -109,7 +125,9 @@ public class Modifyed5Spec extends LinearOpMode {
             telemetry.addData("Specimen Count", SpeciminCount);
             telemetry.update();
 
+
             switch (currentPathState) {
+
 
                 case DriveToPreloadScoringPosition: //Drivng to preload position
                     follower.followPath(Preload);
@@ -117,6 +135,7 @@ public class Modifyed5Spec extends LinearOpMode {
                     r.SpecimenPreScore(); //moves pivot up
                     setPathState(PathStates.ScorePreload);
                     break;
+
 
                 case ScorePreload: //Scoring preload
                     if (!follower.isBusy()) {
@@ -127,12 +146,14 @@ public class Modifyed5Spec extends LinearOpMode {
                     }
                     break;
 
+
                 case Push1:
                     if (!follower.isBusy()) {
                         follower.followPath(Push1);
                         setPathState(PathStates.PrePush2);
                     }
                     break;
+
 
                 case PrePush2:
                     if (!follower.isBusy()) {
@@ -141,6 +162,7 @@ public class Modifyed5Spec extends LinearOpMode {
                     }
                     break;
 
+
                 case Push2:
                     if (!follower.isBusy()) {
                         follower.followPath(Push2);
@@ -148,12 +170,14 @@ public class Modifyed5Spec extends LinearOpMode {
                     }
                     break;
 
+
                 case PrePush3:
                     if (!follower.isBusy()) {
                         follower.followPath(PrePush3);
                         setPathState(PathStates.Push3);
                     }
                     break;
+
 
                 case Push3:
                     if (!follower.isBusy()) {
@@ -163,16 +187,19 @@ public class Modifyed5Spec extends LinearOpMode {
                     }
                     break;
 
+
                 case Pickup1:
                     if (!follower.isBusy()) {
                         setPathState(PathStates.WallPickup);
                     }
                     break;
 
+
                 case WallPickup:
                     if (!follower.isBusy()) {
                         CountDone = false;
                         resetActionTimer();
+
 
                         //Grabs specmin
                         //moves pivot back
@@ -212,8 +239,10 @@ public class Modifyed5Spec extends LinearOpMode {
                             r.SpecimenPreScore(); //Parrelel action
                         }
 
+
                     }
                     break;
+
 
                 case SCORING:
                     if (!follower.isBusy()) {
@@ -222,6 +251,7 @@ public class Modifyed5Spec extends LinearOpMode {
                             SpeciminCount++;
                             CountDone = true;
                         }
+
 
                         //brings the thing down
                         if (actionTimer.time() < 0.5) {
@@ -283,7 +313,9 @@ public class Modifyed5Spec extends LinearOpMode {
         }
     }
 
+
     public void buildPaths() {
+
 
         Preload = follower.pathBuilder()
                 .addPath(
@@ -296,10 +328,11 @@ public class Modifyed5Spec extends LinearOpMode {
                 .setZeroPowerAccelerationMultiplier(preloadZpam)
                 .build();
 
+
         PrePush1 = follower.pathBuilder()
                 .addPath(
                         new BezierCurve(
-                                new Point(39.000, 73.000, Point.CARTESIAN),
+                                new Point(preloadX, 73.000, Point.CARTESIAN),
                                 new Point(2.065, 20.387, Point.CARTESIAN),
                                 new Point(72.774, 44.645, Point.CARTESIAN),
                                 new Point(70.968, 22.194, Point.CARTESIAN),
@@ -309,6 +342,7 @@ public class Modifyed5Spec extends LinearOpMode {
                 .setConstantHeadingInterpolation(Math.toRadians(180))
                 .setPathEndTimeoutConstraint(pushingTimeout)
                 .build();
+
 
         Push1 = follower.pathBuilder()
                 .addPath(
@@ -321,6 +355,7 @@ public class Modifyed5Spec extends LinearOpMode {
                 .setZeroPowerAccelerationMultiplier(pushingZpam)
                 .setPathEndTimeoutConstraint(pushingTimeout)
                 .build();
+
 
         PrePush2 = follower.pathBuilder()
                 .addPath(
@@ -336,6 +371,7 @@ public class Modifyed5Spec extends LinearOpMode {
                 .setPathEndTimeoutConstraint(pushingTimeout)
                 .build();
 
+
         Push2 = follower.pathBuilder()
                 .addPath(
                         new BezierLine(
@@ -347,6 +383,7 @@ public class Modifyed5Spec extends LinearOpMode {
                 .setZeroPowerAccelerationMultiplier(pushingZpam)
                 .setPathEndTimeoutConstraint(pushingTimeout)
                 .build();
+
 
         PrePush3 = follower.pathBuilder()
                 .addPath(
@@ -361,6 +398,7 @@ public class Modifyed5Spec extends LinearOpMode {
                 .setPathEndTimeoutConstraint(pushingTimeout)
                 .build();
 
+
         Push3 = follower.pathBuilder()
                 .addPath(
                         new BezierLine(
@@ -373,10 +411,11 @@ public class Modifyed5Spec extends LinearOpMode {
                 .setPathEndTimeoutConstraint(push3Timeout)
                 .build();
 
+
         Score1 = follower.pathBuilder()
                 .addPath(
                         new BezierCurve(
-                                new Point((pickupX+incrementPickup1X), 9.500, Point.CARTESIAN),
+                                new Point((pickupX+incrementPickup1X), 10.000, Point.CARTESIAN),
                                 new Point(ControlScoreX, ControlScoreY, Point.CARTESIAN),
                                 new Point(ScoreX, ScoreY + IncrementScoreY*4, Point.CARTESIAN)
                         )
@@ -385,6 +424,7 @@ public class Modifyed5Spec extends LinearOpMode {
                 .setZeroPowerAccelerationMultiplier(score1Zpam)
                 .setPathEndTimeoutConstraint(score1Timeout)
                 .build();
+
 
         Pickup2 = follower.pathBuilder()
                 .addPath(
@@ -399,10 +439,11 @@ public class Modifyed5Spec extends LinearOpMode {
                 .setPathEndTimeoutConstraint(pickup1Timeout)
                 .build();
 
+
         Score2 = follower.pathBuilder()
                 .addPath(
                         new BezierCurve(
-                                new Point(pickupX, pickupY, Point.CARTESIAN),
+                                new Point((pickupX-2), pickupY, Point.CARTESIAN),
                                 new Point(ControlScoreX, ControlScoreY, Point.CARTESIAN),
                                 new Point(ScoreX, ScoreY + IncrementScoreY*3, Point.CARTESIAN)
                         )
@@ -411,6 +452,7 @@ public class Modifyed5Spec extends LinearOpMode {
                 .setZeroPowerAccelerationMultiplier(score2Zpam)
                 .setPathEndTimeoutConstraint(score2Timeout)
                 .build();
+
 
         Pickup3 = follower.pathBuilder()
                 .addPath(
@@ -425,6 +467,7 @@ public class Modifyed5Spec extends LinearOpMode {
                 .setPathEndTimeoutConstraint(pickup3Timeout)
                 .build();
 
+
         Score3 = follower.pathBuilder()
                 .addPath(
                         new BezierCurve(
@@ -438,6 +481,7 @@ public class Modifyed5Spec extends LinearOpMode {
                 .setPathEndTimeoutConstraint(score3Timeout)
                 .build();
 
+
         Pickup4 = follower.pathBuilder()
                 .addPath(
                         new BezierCurve(
@@ -450,6 +494,7 @@ public class Modifyed5Spec extends LinearOpMode {
                 .setZeroPowerAccelerationMultiplier(pickup4Zpam)
                 .setPathEndTimeoutConstraint(pickup4Timeout)
                 .build();
+
 
         Score4 = follower.pathBuilder()
                 .addPath(
@@ -489,7 +534,7 @@ public class Modifyed5Spec extends LinearOpMode {
         Park = follower.pathBuilder()
                 .addPath(
                         new BezierLine(
-                                new Point(43.250, 77.000, Point.CARTESIAN),
+                                new Point(sampleScoreX, sampleScoreY, Point.CARTESIAN),
                                 new Point(22.000, 30.000, Point.CARTESIAN)
                         )
                 )
@@ -497,7 +542,9 @@ public class Modifyed5Spec extends LinearOpMode {
                 .build();
     }
 
+
     enum PathStates {
         Pickup5,SamplePickup,SampleScore, DriveToPreloadScoringPosition, ScorePreload, PrePush2, PrePush3, Push1, Push2, Push3, Pickup1, SCORING, Pickup3, Pickup4, WallPickup, Score2, Score3, Score4, Park, End, WAIT1
     }
 }
+

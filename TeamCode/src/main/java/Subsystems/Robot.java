@@ -181,7 +181,7 @@ public class Robot {
     public void InitPosition() {
         boxtube.setExt(minExtension);
         boxtube.setPivot(420);
-        endEffector.hand(0.17);
+        endEffector.hand(0.8);
         endEffector.wrist(0.63);
         endEffector.arm(0.15);
         endEffector.claw(0.4);
@@ -371,16 +371,15 @@ public class Robot {
         hand = ServoRegulizer(hp.MStandard*(hp.HandAngle - tp.TurretAngle) + hp.BStandard); //getting the angle
 
 
-       if(Math.abs(gamepadOperator.left_trigger) > 0){
-           tp.TurretAngle = 90 + gamepadOperator.left_trigger * 30; //freecking wire offset
-       }
-       if (Math.abs(gamepadOperator.right_trigger) > 0){
-           tp.TurretAngle = 90 + gamepadOperator.right_trigger * -20;
+        if(Math.abs(gamepadOperator.left_trigger) > 0){
+            tp.TurretAngle = 90 + gamepadOperator.left_trigger * 30; //freecking wire offset
+        }
+        if (Math.abs(gamepadOperator.right_trigger) > 0){
+            tp.TurretAngle = 90 + gamepadOperator.right_trigger * -20;
         }
 
 
         endEffector.turret(tp.MStandard*(tp.TurretAngle)+tp.BStandard);
-
         endEffector.hand(hand);
 
        boxtube.setExt(currentExtension-= JoystickIncrement);
@@ -585,7 +584,7 @@ public class Robot {
         boxtube.setExt(0);
         ClawClose();
         if(boxtube.getExtpos()>-25000){
-            boxtube.setPivot(000);
+            boxtube.setPivot(-1000);
         }
 
 }}
