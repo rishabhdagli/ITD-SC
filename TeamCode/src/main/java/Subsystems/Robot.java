@@ -565,5 +565,27 @@ public class Robot {
 
 
     }
+    // HANGING States
+    public void HangUp(){
+        endEffector.turret(0.55);
+        endEffector.arm(0.7);
+        endEffector.hand(0.16);
+        endEffector.wrist(0.5);
+        boxtube.setPivot(1120);
+        ClawClose();
+        if(boxtube.getPivpos()<-1000){
+            boxtube.setExt(56000);
+        }
+    }
+    public void HangDown(){
+        endEffector.turret(0.55);
+        endEffector.arm(0.7);
+        endEffector.hand(0.16);
+        endEffector.wrist(0.5);
+        boxtube.setExt(0);
+        ClawClose();
+        if(boxtube.getExtpos()>-25000){
+            boxtube.setPivot(000);
+        }
 
-}
+}}
