@@ -205,6 +205,7 @@ public class Tester extends LinearOpMode {
             }
 
 
+
             if(gamepad1.a){
                 teleRobot.drive.PID2P(specScorey,specScorex);
             }
@@ -218,6 +219,7 @@ public class Tester extends LinearOpMode {
                 teleRobot.drive.SoftReset();
                 isGampadx = false;
             }
+
 
 
 

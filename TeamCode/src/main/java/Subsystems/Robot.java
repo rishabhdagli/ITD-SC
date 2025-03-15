@@ -261,11 +261,11 @@ public class Robot {
 
     //Common methods
     public void ClawClose() {
-        endEffector.claw(0.24);
+        endEffector.claw(0.27);
     }
 
     public void ClawOpen() {
-        endEffector.claw(0.65);
+        endEffector.claw(0.7);
     }
     public void ClawOpenWide(){
         endEffector.claw(0.8);
@@ -498,9 +498,9 @@ public class Robot {
     public void SpecimenWallGrab() {
         ClawClose();
     }
-    public void SpecimenWallGrabTele() {
+    public void     SpecimenWallGrabTele() {
         ClawClose();
-        drive.SoftReset();
+        drive.HardReset();
     }
 
     public void ZeroExtension(){

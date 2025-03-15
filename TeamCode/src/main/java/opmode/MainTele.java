@@ -3,13 +3,13 @@ package opmode;
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.config.Config;
 import com.pedropathing.follower.Follower;
-import com.pedropathing.localization.Pose;
-import com.pedropathing.pathgen.Point;
 import com.pedropathing.util.Constants;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.LED;
 import com.sfdev.assembly.state.StateMachine;
+
+import java.util.Arrays;
 
 import Subsystems.Boxtube;
 import Subsystems.Robot;
@@ -21,21 +21,15 @@ import pedroPathing.constants.LConstants;
 @TeleOp(name = "MainTele")
 public class MainTele extends LinearOpMode {
 
-    public static double JoyStickInc = 2250,Ymult = 0.8,rxMult = 0.7;
-    public static class WaypointVals{
-        public static double specScorex = -20,specScorey = -45, pickupx = -2.000,pickupy = 0;
-
-    }
+    public static double JoyStickInc = 2250, Ymult = 0.8, rxMult = 0.7, AvoidRiggingWaypointInc = 18;
+    public static double specScorex = -37, specScorey = -47, pickupx = -5.000, pickupy = 0, noSlamSpecScoreX = -24;
     public Robot teleRobot;
     public Boxtube boxtube;
-     public Follower follower;
+    public Follower follower;
     boolean sampleMode = true, check = false;
     double MonkeyExpressFlashBang = 0;
-
     LED redLED, redLED2, greenLED, greenLED2;
     FtcDashboard dashboard;
-
-    public static double specScorex = 0,specScorey = 0, pickupx = 0,pickupy = 0;
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -66,6 +60,8 @@ public class MainTele extends LinearOpMode {
 
 
         while (opModeIsActive()) {
+
+
             if (sampleMode) {
                 sampleMachine.update();
             } else {
@@ -78,16 +74,44 @@ public class MainTele extends LinearOpMode {
             } else if (boxtube.PivotisMoving()) {
                 teleRobot.TeleControl(1, 1, rxMult);
             }
-            else if(Math.abs(gamepad1.left_trigger) > 0.5){
-                teleRobot.drive.PID2P(specScorey,specScorex);
+
+
+            // Way pointing stuff
+
+            else if (Math.abs(gamepad1.left_trigger) > 0.5 && !sampleMode) {
+                teleRobot.drive.PID2P(specScorey, specScorex);
+                specimenMachine.setState(StateMachineGenerator.States.SpecimenPreScore);
+            } else if (Math.abs(gamepad1.left_trigger) > 0 && Math.abs(gamepad1.left_trigger) < 0.5 && !sampleMode) {
+                teleRobot.drive.PID2P(specScorey, noSlamSpecScoreX);
+                specimenMachine.setState(StateMachineGenerator.States.SpecimenPreScore);
+
+
+            } else if (Math.abs(gamepad1.right_trigger) > 0.5 && !sampleMode) {
+                if (teleRobot.drive.getPos()[0] > specScorex + AvoidRiggingWaypointInc) {
+
+                    teleRobot.drive.PID2P(pickupy, pickupx);
+                    telemetry.addLine("Avoided Rigging");
+                    specimenMachine.setState(StateMachineGenerator.States.SpecimenWall);
+
+                } else {
+
+                    teleRobot.drive.PID2P(specScorey, pickupx);
+                    specimenMachine.setState(StateMachineGenerator.States.SpecimenPostScore);
+
+                    telemetry.addLine("Avoiding Rigging");
+
+                }
+
             }
-            else if (Math.abs(gamepad1.right_trigger) > 0.5){
-                teleRobot.drive.PID2P(pickupy,pickupx);
-            }
+
+
+            //tele-op regular
             else {
                 teleRobot.TeleControl(1, 1, 1);
             }
 
+
+            //LIght stuff
 
             String state = sampleMachine.getStateString();
             if (state.equals("SpecimenWall") || state.equals("SpecimenWallGrab") || state.equals("SpecimenWallGrabUp") || state.equals("SpecimenPreScore") || state.equals("SampleHover") || state.equals("CLOSING_CLAW") || state.equals("LoiterSample") || state.equals("ObsZoneRelease") || state.equals("BasketExtend")) {
@@ -113,6 +137,8 @@ public class MainTele extends LinearOpMode {
 
             }
 
+
+            //state stuff
 
             if (gamepad2.touchpad) {
                 check = true;
@@ -155,9 +181,10 @@ public class MainTele extends LinearOpMode {
 
             telemetry.addData("Extention Power: ", boxtube.getExtpow());
             telemetry.addData("Pivot Power: ", boxtube.getPivpow());
-
+            telemetry.addData("Pinpoint position", Arrays.toString(teleRobot.drive.getPos()));
             telemetry.update();
             teleRobot.UPDATE();
+
 
         }// opmode loop active
     }//linear opmode end

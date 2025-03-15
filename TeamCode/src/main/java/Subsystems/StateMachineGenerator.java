@@ -172,7 +172,7 @@ public class StateMachineGenerator {
                 .build();
     }
 
-    enum States {
+    public enum States {
 
         Stationary, HANGUP, HANGDOWN, CLOSING_CLAW, LoiterSample, SampleHover, SampleGrab, SampleAfterGrab, BasketExtend, BasketPosition2,PivotOverCenter, ObsZoneRelease, PivotBack, SpecimenWall, SpecimenWallGrab, SpecimenPreScore, SpecimenPostScore, WAIT1, WAIT2, WAIT3, WAIT4, WAIT5, WAIT6, WAIT7, WAIT8,WAIT9,WAIT10, WAIT11, SpecimenWallGrabUp, ExtensionDown, SCORE, Passover, SpecimenEscapeState
 

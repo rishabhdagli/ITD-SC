@@ -23,7 +23,7 @@ public class WayPointingTuner extends LinearOpMode {
 
      Drivetrain drive;
 
-     public static double KpX = -0.1, KpY = -0.17, KpTheta = -0.02, KdX = -0.03, KdY = -0.02,
+     public static double KpX = -0.1, KpY = -0.17, KpTheta = -0.023, KdX = -0.02, KdY = -0.02,
     targetHeading = 0,targetX = 0,targetY = 0;
 
      private boolean wasPressedGampadA = false;
