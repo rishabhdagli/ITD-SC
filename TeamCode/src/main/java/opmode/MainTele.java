@@ -22,7 +22,7 @@ import pedroPathing.constants.LConstants;
 public class MainTele extends LinearOpMode {
 
     public static double JoyStickInc = 2250, Ymult = 0.8, rxMult = 0.7, AvoidRiggingWaypointInc = 18;
-    public static double specScorex = -37, specScorey = -47, pickupx = -5.000, pickupy = 0, noSlamSpecScoreX = -24;
+    public static double specScorex = -37, specScorey = -49, pickupx = -5.000, pickupy = 0, noSlamSpecScoreX = -24;
     public Robot teleRobot;
     public Boxtube boxtube;
     public Follower follower;

@@ -265,7 +265,7 @@ public class Robot {
     }
 
     public void ClawOpen() {
-        endEffector.claw(0.7);
+        endEffector.claw(0.8);
     }
     public void ClawOpenWide(){
         endEffector.claw(0.8);
