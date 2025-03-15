@@ -23,7 +23,7 @@ public class WayPointingTuner extends LinearOpMode {
 
      Drivetrain drive;
 
-     public static double KpX = -0.15, KpY = -0.2, KpTheta = -0.07, KdX = 0, KdY = 0,
+     public static double KpX = -0.1, KpY = -0.17, KpTheta = -0.02, KdX = -0.03, KdY = -0.02,
     targetHeading = 0,targetX = 0,targetY = 0;
 
      private boolean wasPressedGampadA = false;
@@ -85,15 +85,12 @@ public class WayPointingTuner extends LinearOpMode {
                     break;
                 case 5:
                     tele.addLine("Full tester");
-
                     powerX = KpX*(targetX - drive.getPos()[0]) + KdX*(targetX - drive.getPos()[0] - lastErrorx)/time.seconds();
-                    time.reset();
                     lastErrorx = targetX - drive.getPos()[0];
                     powerY = KpY*(targetY - drive.getPos()[1]) + KdY*(targetY - drive.getPos()[1] - lastErrory)/time.seconds();
-                    time.reset();
                     lastErrory = targetY - drive.getPos()[1];
                     drive.TeleopControl(powerX,powerY,KpTheta*(targetHeading - drive.getPos()[2]));
-
+                    time.reset();
                     break;
                 case 6:
                     tele.addLine("Full tester but wayPointing (The Pick up pose should be 0,0)");
