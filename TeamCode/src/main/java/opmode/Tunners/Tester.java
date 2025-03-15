@@ -15,6 +15,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 import org.firstinspires.ftc.robotcore.external.navigation.CurrentUnit;
 
 import Subsystems.Boxtube;
+import Subsystems.Robot;
 
 @Config
 @TeleOp(name = "Servo and Port Condensed")
@@ -32,14 +33,17 @@ public class Tester extends LinearOpMode {
     DcMotorEx Pivot, BT1, BT2, BT3;
 
     ElapsedTime Pivottimer,ExentionTimer;
+    public Robot teleRobot;
+
 
     public static class ServoControl{
         public double wrist=0.5, arm = 0.5, hand = 0.17, claw = 0.46, turret = 0.55;
 
     }
+    public static double specScorex = -20,specScorey = -45, pickupx = -2,pickupy = 0;
 
 
-
+    public boolean isGampadx = false;
 
     double PivotDownKp = Boxtube.PivotDownKp, PivotDownKd = Boxtube.PivotDownKd, PivotkP = Boxtube.PivotkP, PivotKd = Boxtube.PivotKd,Tick90 = Boxtube.Tick90,FF = Boxtube.FF, period = Boxtube.period,
             ExtensionKp,ExtensionKd,lasterror,KpExt = Boxtube.upkP,
@@ -200,6 +204,23 @@ public class Tester extends LinearOpMode {
                 power = 0;
             }
 
+
+            if(gamepad1.a){
+                teleRobot.drive.PID2P(specScorey,specScorex);
+            }
+            if(gamepad1.b){
+                teleRobot.drive.PID2P(pickupy,pickupx);
+            }
+            if(gamepad1.x){
+                isGampadx = true;
+            }
+            if(!gamepad1.x && isGampadx){{
+                teleRobot.drive.SoftReset();
+                isGampadx = false;
+            }
+
+
+
             ExentionTimer.reset();
             lastExtError = extensionError;
 
@@ -212,4 +233,4 @@ public class Tester extends LinearOpMode {
         }
 
         }
-    }
+    }}

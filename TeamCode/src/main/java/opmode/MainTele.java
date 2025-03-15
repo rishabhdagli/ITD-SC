@@ -22,6 +22,10 @@ import pedroPathing.constants.LConstants;
 public class MainTele extends LinearOpMode {
 
     public static double JoyStickInc = 2250,Ymult = 0.8,rxMult = 0.7;
+    public static class WaypointVals{
+        public static double specScorex = -20,specScorey = -45, pickupx = -2.000,pickupy = 0;
+
+    }
     public Robot teleRobot;
     public Boxtube boxtube;
      public Follower follower;
@@ -75,10 +79,10 @@ public class MainTele extends LinearOpMode {
                 teleRobot.TeleControl(1, 1, rxMult);
             }
             else if(Math.abs(gamepad1.left_trigger) > 0.5){
-                teleRobot.drive.PID2P(-45,-20);
+                teleRobot.drive.PID2P(specScorey,specScorex);
             }
             else if (Math.abs(gamepad1.right_trigger) > 0.5){
-                teleRobot.drive.PID2P(0,-2.000);
+                teleRobot.drive.PID2P(pickupy,pickupx);
             }
             else {
                 teleRobot.TeleControl(1, 1, 1);

@@ -33,6 +33,7 @@ public class SampleAutoReworked extends LinearOpMode {
     private Timer actionTimer = new Timer();
     public boolean pathDone = false;
     public boolean prevPathDone = false;
+    public static double PreloadScoreX = 13.000, PreloadScoreY = 130.000, Scorex = 14.000, Scorey = 130.000,  Sample1X= 26.00, Sample1Y = 131.500, Sample1Heading = 0, Sample2x = 26.000, Sample2y = 131.500, Sample2Heading = 0, Sample3x =44.500, Sample3y = 125.000, Sample3Heading = 90, Parkx = 64.000, ParkY = 93.000;
 
     PathChain PreloadScore,
             Pickup1,
@@ -304,7 +305,7 @@ public class SampleAutoReworked extends LinearOpMode {
                 .addPath(
                         new BezierLine(
                                 new Point(13.000, 130.000, Point.CARTESIAN),
-                                new Point(26.000, 120.7500, Point.CARTESIAN)
+                                new Point(27.000, 120.7500, Point.CARTESIAN)
                         )
                 )
                 .setLinearHeadingInterpolation(Math.toRadians(315), Math.toRadians(0))
@@ -314,7 +315,7 @@ public class SampleAutoReworked extends LinearOpMode {
         Score1 = follower.pathBuilder()
                 .addPath(
                         new BezierLine(
-                                new Point(28.500, 120.000, Point.CARTESIAN),
+                                new Point(27.000, 120.000, Point.CARTESIAN),
                                 new Point(14.000, 130.000, Point.CARTESIAN)
                         )
                 )
@@ -327,7 +328,7 @@ public class SampleAutoReworked extends LinearOpMode {
                 .addPath(
                         new BezierLine(
                                 new Point(14.000, 130.000, Point.CARTESIAN),
-                                new Point(26.000, 131.500, Point.CARTESIAN)
+                                new Point(27.000, 131.500, Point.CARTESIAN)
                         )
                 )
                 .setLinearHeadingInterpolation(Math.toRadians(315), Math.toRadians(0))
@@ -337,7 +338,7 @@ public class SampleAutoReworked extends LinearOpMode {
         Score2 = follower.pathBuilder()
                 .addPath(
                         new BezierLine(
-                                new Point(27.500, 131.000, Point.CARTESIAN),
+                                new Point(27.000, 131.000, Point.CARTESIAN),
                                 new Point(13.000, 130.000, Point.CARTESIAN)
                         )
                 )
