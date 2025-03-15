@@ -392,6 +392,24 @@ public class Robot {
         endEffector.arm(0.52);
         endEffector.wrist(0.18);
     }
+    public void SampleExtendForPlusOne(){
+        boxtube.setExt(56000);
+        boxtube.setPivot(pivotBackPos);
+        endEffector.hand(0.17);
+        endEffector.arm(0.45);
+        endEffector.turret(0.55);
+        endEffector.wrist(0.675);
+        ClawClose();
+    }
+    public void SampleScorePlusOne(){
+        boxtube.setExt(56000);
+        boxtube.setPivot(pivotBackPos);
+        endEffector.hand(0.17);
+        endEffector.arm(0.41);
+        endEffector.turret(0.55);
+        endEffector.wrist(0.675);
+        ClawOpen();
+    }
 
 
 

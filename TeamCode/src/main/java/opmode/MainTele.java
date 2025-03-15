@@ -77,13 +77,12 @@ public class MainTele extends LinearOpMode {
 
 
             // Way pointing stuff
-
             else if (Math.abs(gamepad1.left_trigger) > 0.5 && !sampleMode) {
                 teleRobot.drive.PID2P(specScorey, specScorex);
-                specimenMachine.setState(StateMachineGenerator.States.SpecimenPreScore);
+//                specimenMachine.setState(StateMachineGenerator.States.SpecimenPreScore);
             } else if (Math.abs(gamepad1.left_trigger) > 0 && Math.abs(gamepad1.left_trigger) < 0.5 && !sampleMode) {
                 teleRobot.drive.PID2P(specScorey, noSlamSpecScoreX);
-                specimenMachine.setState(StateMachineGenerator.States.SpecimenPreScore);
+//                specimenMachine.setState(StateMachineGenerator.States.SpecimenPreScore);
 
 
             } else if (Math.abs(gamepad1.right_trigger) > 0.5 && !sampleMode) {
@@ -91,12 +90,12 @@ public class MainTele extends LinearOpMode {
 
                     teleRobot.drive.PID2P(pickupy, pickupx);
                     telemetry.addLine("Avoided Rigging");
-                    specimenMachine.setState(StateMachineGenerator.States.SpecimenWall);
+//                    specimenMachine.setState(StateMachineGenerator.States.SpecimenWall);
 
                 } else {
 
                     teleRobot.drive.PID2P(specScorey, pickupx);
-                    specimenMachine.setState(StateMachineGenerator.States.SpecimenPostScore);
+//                    specimenMachine.setState(StateMachineGenerator.States.SpecimenPostScore);
 
                     telemetry.addLine("Avoiding Rigging");
 
