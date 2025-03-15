@@ -503,6 +503,10 @@ public class Robot {
         drive.SoftReset();
     }
 
+    public void ZeroExtension(){
+        currentExtension = 0;
+        boxtube.setExt(currentExtension);
+    }
     public void SpecimenWallUp() {
         boxtube.setExt(specimenWallExtension);
         boxtube.setPivot(pivotHorizontal);

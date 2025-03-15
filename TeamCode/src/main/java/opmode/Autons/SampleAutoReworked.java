@@ -272,6 +272,7 @@ public class SampleAutoReworked extends LinearOpMode {
                 case Park:
                     if (!follower.isBusy()) {
                         if(actionTimer.getElapsedTimeSeconds() > 2){
+                            r.ZeroExtension();
                             follower.followPath(Park);
                             setPathState(PathStates.End);}
                     }
