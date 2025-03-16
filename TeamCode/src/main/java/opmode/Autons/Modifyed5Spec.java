@@ -32,11 +32,11 @@ public class Modifyed5Spec extends LinearOpMode {
     Boxtube boxtube;
 
     public static double pickupX = 23,pickupY = 33,
-            IncrementScoreY = 2.0,ScoreX = 40, ScoreY = 67, preloadX = 40, sampleScoreY = 124, sampleScoreX = 13,
+            IncrementScoreY = 2.0,ScoreX = 38, ScoreY = 67, preloadX = 38, sampleScoreY = 124, sampleScoreX = 13,
     ControlPickupX = 37,ControlPickupY = 36,ControlScoreX = 12.903,ControlScoreY = 62.000;
     public static double sampleScoreFinalHeading = 300;
-    public static double pushingZpam = 8, pickup1Zpam = 2, pickup3Zpam = 2, pickup4Zpam = 2, pickup5Zpam = 2, score1Zpam = 4, score2Zpam = 4, score3Zpam = 4, score4Zpam = 4, push3Zpam = 4, preloadZpam = 4, incrementPickup1X = -5, sampleScoreZpam = 12;
-    public static double pushingTimeout = 0, pickup1Timeout = 500,pickup3Timeout = 0, pickup4Timeout = 0, pickup5Timeout = 0, score1Timeout = 50, score2Timeout = 50, score3Timeout = 50, score4Timeout = 50, push3Timeout = 300, sampleScoreTimeout = 0;
+    public static double pushingZpam = 9, pickup1Zpam = 2, pickup3Zpam = 2, pickup4Zpam = 2, pickup5Zpam = 2, score1Zpam = 4, score2Zpam = 4, score3Zpam = 4, score4Zpam = 4, push3Zpam = 3, preloadZpam = 4, incrementPickup1X = -5, sampleScoreZpam = 12;
+    public static double pushingTimeout = 250, pickup1Timeout = 500,pickup3Timeout = 0, pickup4Timeout = 0, pickup5Timeout = 0, score1Timeout = 50, score2Timeout = 50, score3Timeout = 50, score4Timeout = 50, push3Timeout = 275, sampleScoreTimeout = 0;
 
     EndEffector endEffector;
     int SpeciminCount = 1;
@@ -268,9 +268,9 @@ public class Modifyed5Spec extends LinearOpMode {
                     break;
                 case SampleScore:
                     r.PivotBack();
-                    if(boxtube.Pivot.getCurrentPosition() < -900){r.BasketExtension();}
+                    if(boxtube.Pivot.getCurrentPosition() < -900 && follower.isBusy()){r.SampleExtendForPlusOne();}
                     if(!follower.isBusy()){
-                        r.BasketScore();
+                        r.SampleScorePlusOne();
                     }
                     break;
                 case End:
@@ -308,6 +308,7 @@ public class Modifyed5Spec extends LinearOpMode {
                 )
                 .setConstantHeadingInterpolation(Math.toRadians(180))
                 .setPathEndTimeoutConstraint(pushingTimeout)
+                .setPathEndTValueConstraint(0.3)
                 .build();
 
         Push1 = follower.pathBuilder()
