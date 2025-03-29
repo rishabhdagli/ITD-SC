@@ -607,4 +607,9 @@ public class Robot {
             boxtube.setPivot(-1000);
         }
 
-}}
+    }
+    public double getRobotCurrent(){
+        double Current = boxtube.getExtensionCurrent() + boxtube.getPivotCurrent()+ drive.getDriveCurrent();
+        return Current;
+    }
+}

@@ -11,6 +11,7 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+import org.firstinspires.ftc.robotcore.external.navigation.CurrentUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.Pose2D;
 
@@ -173,6 +174,11 @@ public class Drivetrain {
         pos[1] = PinPoint.getPosition().getY(DistanceUnit.INCH);
         pos[2] = PinPoint.getPosition().getHeading(AngleUnit.DEGREES);
         return pos;
+    }
+
+    public double getDriveCurrent(){
+        double CurrentDrawn = LF.getCurrent(CurrentUnit.AMPS)+LR.getCurrent(CurrentUnit.AMPS)+RF.getCurrent(CurrentUnit.AMPS)+RR.getCurrent(CurrentUnit.AMPS);
+        return CurrentDrawn;
     }
 
 

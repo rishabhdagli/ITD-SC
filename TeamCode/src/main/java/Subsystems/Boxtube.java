@@ -8,6 +8,7 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
+import org.firstinspires.ftc.robotcore.external.navigation.CurrentUnit;
 
 public class Boxtube {
 
@@ -199,5 +200,13 @@ public class Boxtube {
         Extensiontimer.reset();
         ExtensionPower(ExtPwr);
 
+    }
+    public double getExtensionCurrent(){
+        double CurrentDrawn = BT1.getCurrent(CurrentUnit.AMPS) + BT2.getCurrent(CurrentUnit.AMPS) + BT3.getCurrent(CurrentUnit.AMPS);
+        return CurrentDrawn;
+    }
+    public double getPivotCurrent(){
+        double CurrentDrawn = Pivot.getCurrent(CurrentUnit.AMPS);
+        return CurrentDrawn;
     }
 }
