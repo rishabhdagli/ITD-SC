@@ -2,6 +2,7 @@ package Subsystems;
 
 import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.hardwareMap;
 
+
 import com.pedropathing.follower.Follower;
 import com.pedropathing.localization.Pose;
 import com.pedropathing.util.Constants;
@@ -29,6 +30,7 @@ public class Robot {
     public Drivetrain drive;
     public double skipoffset = 0.00;
 
+    public Pose oldPose = new Pose(0,0,0);
 
     //PIVOT VARIABLES
 
@@ -94,6 +96,11 @@ public class Robot {
         boxtube = new Boxtube(hardwareMap, 1); //init without reseting 0
         endEffector = new EndEffector(hardwareMap);
 
+        Constants.setConstants(LConstants.class, FConstants.class);
+        follower = new Follower(hardwareMap);
+        follower.setStartingPose(new Pose(0, 0, 0));
+        follower.startTeleopDrive();
+
         gamepadOperator = g2;
         gamepadDriver = g1;
     }
@@ -102,7 +109,8 @@ public class Robot {
         boxtube = new Boxtube(h);
         endEffector = new EndEffector(h);
         follower = new Follower(h);
-
+        follower.setStartingPose(new Pose(0, 0, 0));
+        follower.startTeleopDrive();
         currentExtension = boxtube.getExtpos();
 
         timer = new ElapsedTime(ElapsedTime.Resolution.SECONDS);
@@ -134,11 +142,20 @@ public class Robot {
 
     //TELE - Op drive control
     public void TeleControl(double yMultiplier, double xMultiplier, double rxMultiplier) {
-        drive.TeleopControl(yMultiplier * gamepadDriver.left_stick_y, xMultiplier * gamepadDriver.left_stick_x, rxMultiplier * gamepadDriver.right_stick_x);
+//        drive.TeleopControl(yMultiplier * gamepadDriver.left_stick_y, xMultiplier * gamepadDriver.left_stick_x, rxMultiplier * gamepadDriver.right_stick_x);
+
+        if(Math.abs(gamepadDriver.left_stick_y) < 0.1 && Math.abs(gamepadDriver.left_stick_x) < 0.1 && Math.abs(gamepadDriver.right_stick_x) < 0.1){
+            follower.holdPoint(oldPose);
+        }
+        else {
+            follower.setTeleOpMovementVectors(yMultiplier * -gamepadDriver.left_stick_y, xMultiplier * -gamepadDriver.left_stick_x, rxMultiplier * -gamepadDriver.right_stick_x, true);
+            oldPose = follower.getPose();
+        }
     }
 
     public void UPDATE(){
-        drive.update();
+//        drive.update();
+        follower.update();
         boxtube.update();
     }
 
@@ -381,8 +398,11 @@ public class Robot {
 
         endEffector.turret(tp.MStandard*(tp.TurretAngle)+tp.BStandard);
         endEffector.hand(hand);
-
-       boxtube.setExt(currentExtension-= JoystickIncrement);
+        if(boxtube.getExtpos() > -40000){
+       boxtube.setExt(currentExtension-= JoystickIncrement);}
+        else if(JoystickIncrement > 0){
+            boxtube.setExt(currentExtension-= JoystickIncrement);
+        }
 
         //Add stuff to move extension + hand stuff using new .copy() method
     }
